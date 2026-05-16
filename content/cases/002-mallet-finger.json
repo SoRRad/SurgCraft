@@ -56,5 +56,13 @@
   "references": [
     "Wolfe et al., Green's Operative Hand Surgery — extensor tendon injuries",
     "Lin JS, Samora JB. Surgical and Nonsurgical Management of Mallet Finger"
-  ]
+  ],
+  "reasoningAutopsy": {
+    "shouldHaveNoticedEarly": "The mechanism — axial load to the fingertip — and the DIP extension lag are the two key findings. The lateral x-ray distinguishes tendinous from bony mallet and tells you the articular surface involvement percentage, which determines management.",
+    "whatChangesManagement": "Fragment size >30% of the articular surface, joint subluxation on x-ray, or chronic presentation (>6 weeks) shift management from splinting to surgical pinning. Open mallet injuries also require surgical management.",
+    "attendingMayAskNext": "How do you test terminal extensor function? What is the surgical threshold for fragment size? What happens if untreated and why does swan-neck deformity develop?",
+    "bestRoundsOneLiner": "Bony mallet, small fragment, congruent joint: DIP extension splint full-time 6 weeks — PIP free, and the clock restarts if the DIP flexes once.",
+    "commonMistake": "Splinting the PIP joint as well as the DIP — or not counseling the patient that a single DIP flexion during the 6-week splinting period restarts the clock entirely.",
+    "onePearlToRemember": "Tell the patient: if the DIP flexes even once, the clock starts over. Write it on the splint. Compliance is the most important variable in mallet finger outcomes."
+  }
 }
