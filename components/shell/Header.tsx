@@ -1,40 +1,35 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { Menu } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+
+const isLive = process.env.NEXT_PUBLIC_APP_MODE === "live"
 
 interface HeaderProps {
   className?: string
 }
 
-const NAV_LINKS = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/chat", label: "Tutor" },
-  { href: "/case", label: "Cases" },
-  { href: "/mistakes", label: "Mistakes" },
-  { href: "/donotmiss", label: "Do-Not-Miss" },
-  { href: "/about", label: "About" },
-]
-
 export function Header({ className }: HeaderProps) {
-  const pathname = usePathname()
-
-  function isActive(href: string) {
-    if (href === "/") return pathname === "/"
-    return pathname === href || pathname.startsWith(href + "/")
-  }
-
   return (
-    <header className={cn("sticky top-0 z-40 border-b border-rule bg-bg", className)}>
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3 gap-4">
+    <header className={cn("sticky top-0 z-40 border-b border-rule bg-bg flex-shrink-0", className)}>
+      <div className="flex items-center px-4 py-3 gap-3">
 
-        {/* Wordmark */}
+        {/* Hamburger — mobile only, sidebar drawer comes in Part 2 */}
+        <button
+          type="button"
+          className="md:hidden p-1.5 -ml-1 rounded text-ink-muted hover:text-ink transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
+          aria-label="Open navigation"
+        >
+          <Menu size={20} />
+        </button>
+
+        {/* Wordmark → /c */}
         <Link
-          href="/"
+          href="/c"
           className="flex flex-col gap-0.5 group flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2 rounded"
-          aria-label="SurgiCraft: Handcraft — go to home"
+          aria-label="SurgiCraft : Handcraft — go to chat"
         >
           <span className="text-micro text-ink-muted tracking-wider uppercase font-inter leading-none">
             SurgiCraft
@@ -44,34 +39,30 @@ export function Header({ className }: HeaderProps) {
           </span>
         </Link>
 
-        {/* Phase badges — hidden on small screens */}
-        <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
-          <Badge variant="secondary" className="text-micro">Phase 0A</Badge>
-          <Badge variant="outline" className="text-micro text-ink-muted">No AI API</Badge>
-        </div>
+        {/* Center spacer */}
+        <div className="flex-1" />
 
-        {/* Nav */}
-        <nav
-          className="flex items-center gap-1 overflow-x-auto"
-          aria-label="Main navigation"
-        >
-          {NAV_LINKS.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className={cn(
-                "px-2 py-1 rounded text-small whitespace-nowrap transition-colors duration-150",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2",
-                isActive(href)
-                  ? "text-ink font-medium underline decoration-electric underline-offset-4 decoration-[1.5px]"
-                  : "text-ink-muted hover:text-ink"
-              )}
-              aria-current={isActive(href) ? "page" : undefined}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
+        {/* Right: mode badge + About */}
+        <div className="flex items-center gap-3">
+          <Badge
+            variant="secondary"
+            className={cn(
+              "text-micro hidden sm:flex",
+              isLive
+                ? "bg-correct-soft text-correct border-correct-soft"
+                : "text-ink-muted"
+            )}
+          >
+            {isLive ? "Live AI" : "Demo mode"}
+          </Badge>
+
+          <Link
+            href="/about"
+            className="text-small text-ink-muted hover:text-ink transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2 rounded px-1 whitespace-nowrap"
+          >
+            About
+          </Link>
+        </div>
 
       </div>
     </header>

@@ -129,8 +129,8 @@ export default function OnboardingPage() {
       createdAt: new Date().toISOString(),
     }
 
-    localStorage.setItem("handcraft_user", JSON.stringify(userData))
-    router.push("/dashboard")
+    localStorage.setItem("surgicraft_demo_user", JSON.stringify(userData))
+    router.push("/c")
   }
 
   return (
@@ -339,7 +339,7 @@ export default function OnboardingPage() {
                 Start learning →
               </Button>
               <p className="mt-3 text-center text-micro text-ink-muted">
-                You can edit all of this later in Settings.
+                Educational use only — not for clinical decision-making.
               </p>
             </div>
 

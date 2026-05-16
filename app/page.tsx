@@ -8,9 +8,9 @@ export default function Home() {
   const router = useRouter()
 
   useEffect(() => {
-    const user = localStorage.getItem("handcraft_user")
+    const user = localStorage.getItem("surgicraft_demo_user") ?? localStorage.getItem("handcraft_user")
     if (user) {
-      router.replace("/dashboard")
+      router.replace("/c")
     } else {
       router.replace("/onboarding")
     }

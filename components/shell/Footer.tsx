@@ -18,7 +18,7 @@ export function Footer({ className }: FooterProps) {
           Educational use only. Not for clinical decision-making.
         </p>
         <p className="text-micro text-ink-muted">
-          SurgiCraft: Handcraft · Mayo Clinic Pilot · Phase 0A
+          SurgiCraft : Handcraft · Mayo Clinic Pilot
         </p>
       </div>
     </footer>

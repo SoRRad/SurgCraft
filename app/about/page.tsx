@@ -32,7 +32,7 @@ export default function AboutPage() {
           <p className="text-micro text-ink-muted uppercase tracking-wider font-inter mb-1">SurgiCraft platform</p>
           <h1 className="font-fraunces text-h1 text-ink">About</h1>
           <p className="mt-2 text-body text-ink-muted">
-            SurgiCraft: Handcraft · Piloting at Mayo Clinic · Phase 0A
+            SurgiCraft : Handcraft · Piloting at Mayo Clinic
           </p>
         </div>
 
@@ -139,14 +139,14 @@ export default function AboutPage() {
           <div className="space-y-4">
             {[
               {
-                phase: "Phase 0A (current)",
-                status: "active",
+                phase: "Phase 0A",
+                status: "planned",
                 description:
                   "Fully local faculty-demo prototype. No external API keys required. Mock LLM provider. Validates educational structure, UX, and content before committing to infrastructure cost.",
               },
               {
-                phase: "Phase 0B",
-                status: "planned",
+                phase: "Phase 0B (current)",
+                status: "active",
                 description:
                   "Live LLM integration (provider-agnostic — could be Anthropic, OpenAI, Azure, or Mayo-hosted). Real streaming chat, tutor mode, case reveal logic. Still no auth, no database.",
               },
