@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { AppShell } from "@/components/shell/AppShell"
+import { ChatLayout } from "@/components/chat/ChatLayout"
 import { SectionMarker } from "@/components/shell/SectionMarker"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -15,6 +15,7 @@ const CASES = [
     difficulty: "Intermediate",
     estimatedMinutes: 12,
     tags: ["trauma", "infection", "MCP"],
+    chatPrompt: "Walk me through the fight bite case — 24M with dorsal MCP wound after a bar fight",
   },
   {
     id: "002-mallet-finger",
@@ -23,6 +24,7 @@ const CASES = [
     difficulty: "Intro",
     estimatedMinutes: 8,
     tags: ["extensor", "DIP", "tendon"],
+    chatPrompt: "Walk me through the mallet finger case — 32M who jammed his finger catching a basketball",
   },
   {
     id: "003-distal-radius",
@@ -31,6 +33,7 @@ const CASES = [
     difficulty: "Intermediate",
     estimatedMinutes: 14,
     tags: ["wrist", "fracture", "median-nerve"],
+    chatPrompt: "Walk me through the FOOSH case — 58F with wrist deformity after a fall",
   },
 ]
 
@@ -42,61 +45,79 @@ const DIFFICULTY_COLORS: Record<string, string> = {
 
 export default function CasePage() {
   return (
-    <AppShell>
-      <div className="mx-auto max-w-3xl px-6 py-10">
+    <ChatLayout>
+      <div className="flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-3xl px-6 py-10">
 
-        <div className="mb-8">
-          <SectionMarker number="03" label="Case Unfolds" className="mb-2" />
-          <h1 className="font-fraunces text-h1 text-ink mb-2">Clinical cases</h1>
-          <p className="text-body text-ink-muted">
-            Work through each case step by step. Cards reveal as you ask. Management is gated until you have gathered enough information.
-          </p>
-          <p className="mt-3 text-micro text-ink-muted">
-            3 seed cases · All cases are synthetic — no real patient data.
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {CASES.map((c, index) => (
-            <div
-              key={c.id}
-              className="border border-rule rounded-lg bg-bg-elevated p-6 flex flex-col sm:flex-row sm:items-center gap-4 hover:border-electric transition-colors duration-150"
+          <div className="mb-8 flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <SectionMarker number="03" label="Case Unfolds" className="mb-2" />
+              <h1 className="font-fraunces text-h1 text-ink mb-2">Clinical cases</h1>
+              <p className="text-body text-ink-muted">
+                Work through each case step by step. Cards reveal as you ask. Management is gated until you have gathered enough information.
+              </p>
+              <p className="mt-3 text-micro text-ink-muted">
+                3 seed cases · All cases are synthetic — no real patient data.
+              </p>
+            </div>
+            <a
+              href="/c?prefill=Give+me+a+hand+surgery+case+to+work+through"
+              className="flex-shrink-0 px-4 py-2 rounded-lg bg-electric text-bg text-small font-medium hover:opacity-90 transition-opacity duration-150 whitespace-nowrap"
             >
-              <div className="flex-shrink-0 w-8 h-8 rounded-full border border-rule flex items-center justify-center">
-                <span className="font-mono text-micro text-ink-muted">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-              </div>
+              Use in chat →
+            </a>
+          </div>
 
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <h2 className="font-fraunces text-h3 text-ink">{c.title}</h2>
-                  <Badge variant={DIFFICULTY_COLORS[c.difficulty] as "terracotta" | "secondary" | "default"} className="text-micro flex-shrink-0">
-                    {c.difficulty}
-                  </Badge>
+          <div className="space-y-4">
+            {CASES.map((c, index) => (
+              <div
+                key={c.id}
+                className="border border-rule rounded-lg bg-bg-elevated p-6 flex flex-col sm:flex-row sm:items-center gap-4 hover:border-electric transition-colors duration-150"
+              >
+                <div className="flex-shrink-0 w-8 h-8 rounded-full border border-rule flex items-center justify-center">
+                  <span className="font-mono text-micro text-ink-muted">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
                 </div>
-                <p className="text-body text-ink-muted mb-3">{c.description}</p>
-                <div className="flex items-center gap-3">
-                  <span className="text-micro text-ink-muted">~{c.estimatedMinutes} min</span>
-                  <span className="text-rule">·</span>
-                  <div className="flex gap-1.5 flex-wrap">
-                    {c.tags.map((tag) => (
-                      <span key={tag} className="text-micro text-ink-muted bg-bg rounded px-1.5 py-0.5 border border-rule">
-                        {tag}
-                      </span>
-                    ))}
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h2 className="font-fraunces text-h3 text-ink">{c.title}</h2>
+                    <Badge variant={DIFFICULTY_COLORS[c.difficulty] as "terracotta" | "secondary" | "default"} className="text-micro flex-shrink-0">
+                      {c.difficulty}
+                    </Badge>
+                  </div>
+                  <p className="text-body text-ink-muted mb-3">{c.description}</p>
+                  <div className="flex items-center gap-3">
+                    <span className="text-micro text-ink-muted">~{c.estimatedMinutes} min</span>
+                    <span className="text-rule">·</span>
+                    <div className="flex gap-1.5 flex-wrap">
+                      {c.tags.map((tag) => (
+                        <span key={tag} className="text-micro text-ink-muted bg-bg rounded px-1.5 py-0.5 border border-rule">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
+
+                <div className="flex gap-2 flex-shrink-0">
+                  <a
+                    href={`/c?prefill=${encodeURIComponent(c.chatPrompt)}`}
+                    className="px-3 py-1.5 rounded-md border border-rule text-small text-ink-muted hover:border-electric hover:text-electric transition-colors duration-150"
+                  >
+                    Chat
+                  </a>
+                  <Button asChild>
+                    <Link href={`/case/${c.id}`}>Start case →</Link>
+                  </Button>
+                </div>
               </div>
+            ))}
+          </div>
 
-              <Button asChild className="flex-shrink-0">
-                <Link href={`/case/${c.id}`}>Start case →</Link>
-              </Button>
-            </div>
-          ))}
         </div>
-
       </div>
-    </AppShell>
+    </ChatLayout>
   )
 }

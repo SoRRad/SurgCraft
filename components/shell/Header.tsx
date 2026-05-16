@@ -9,16 +9,18 @@ const isLive = process.env.NEXT_PUBLIC_APP_MODE === "live"
 
 interface HeaderProps {
   className?: string
+  onMenuClick?: () => void
 }
 
-export function Header({ className }: HeaderProps) {
+export function Header({ className, onMenuClick }: HeaderProps) {
   return (
     <header className={cn("sticky top-0 z-40 border-b border-rule bg-bg flex-shrink-0", className)}>
       <div className="flex items-center px-4 py-3 gap-3">
 
-        {/* Hamburger — mobile only, sidebar drawer comes in Part 2 */}
+        {/* Hamburger — mobile only */}
         <button
           type="button"
+          onClick={onMenuClick}
           className="md:hidden p-1.5 -ml-1 rounded text-ink-muted hover:text-ink transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
           aria-label="Open navigation"
         >

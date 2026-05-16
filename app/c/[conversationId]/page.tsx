@@ -1,4 +1,4 @@
-import { Header } from "@/components/shell/Header"
+import { ChatLayout } from "@/components/chat/ChatLayout"
 import { ChatExperience } from "@/components/chat/ChatExperience"
 import type { Metadata } from "next"
 
@@ -12,9 +12,8 @@ export default function ConversationPage({
   params: { conversationId: string }
 }) {
   return (
-    <div className="flex flex-col h-dvh bg-bg overflow-hidden">
-      <Header />
+    <ChatLayout>
       <ChatExperience conversationId={params.conversationId} />
-    </div>
+    </ChatLayout>
   )
 }

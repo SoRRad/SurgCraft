@@ -1,8 +1,9 @@
-import { streamText, convertToModelMessages, createUIMessageStream, createUIMessageStreamResponse, generateId } from "ai"
+import { streamText, convertToModelMessages } from "ai"
 import { anthropic } from "@ai-sdk/anthropic"
 import { readFileSync } from "fs"
 import { join } from "path"
-import { getProvider } from "@/lib/llm"
+import { allTools } from "@/lib/llm/tools"
+import { createMockUIMessageStreamResponse } from "@/lib/llm/mock-stream"
 import { checkSessionLimit, recordUsage } from "@/lib/llm/cost-guard"
 
 let _systemPrompt: string | null = null
@@ -16,9 +17,29 @@ function getSystemPrompt(): string {
   return _systemPrompt
 }
 
+function buildSystemPrompt(quizMode?: { topic: string; intensity: string; questionsAsked: number }): string {
+  const base = getSystemPrompt()
+  if (!quizMode) return base
+
+  const intensityDesc =
+    quizMode.intensity === "pyrotechnic"
+      ? "attending-voice rapid-fire pimp questions"
+      : quizMode.intensity === "gentle"
+      ? "encouraging questions with hints"
+      : "balanced quiz questions"
+
+  return (
+    base +
+    `\n\n## Current quiz mode\nYou are now in quiz mode for the topic: "${quizMode.topic}" (${quizMode.intensity} — ${intensityDesc}).\n` +
+    `Questions asked so far: ${quizMode.questionsAsked}/5.\n` +
+    "Ask one question at a time. After the user answers, briefly grade (correct/partial/incorrect), give a one-sentence explanation, then ask the next question. " +
+    "After 5 questions, summarize the score and key learning points. Do NOT call suggest_followups during quiz mode."
+  )
+}
+
 export async function POST(req: Request) {
   const body = await req.json()
-  const { messages, id, conversationId } = body
+  const { messages, id, conversationId, quizMode } = body
   const sessionId: string = id ?? conversationId ?? "anon"
 
   if (!checkSessionLimit(sessionId)) {
@@ -34,8 +55,9 @@ export async function POST(req: Request) {
   if (mode === "live" && apiKey) {
     const result = streamText({
       model: anthropic("claude-sonnet-4-5"),
-      system: getSystemPrompt(),
+      system: buildSystemPrompt(quizMode),
       messages: await convertToModelMessages(messages),
+      tools: allTools,
       onFinish({ usage }) {
         recordUsage(sessionId, usage.inputTokens ?? 0, usage.outputTokens ?? 0)
       },
@@ -43,33 +65,15 @@ export async function POST(req: Request) {
     return result.toUIMessageStreamResponse()
   }
 
-  // Demo mode: get mock response and simulate streaming via UIMessageStream protocol.
+  // Demo mode: keyword-triggered tool simulation with mock text response.
   const lastMessage = messages?.[messages.length - 1]
-  const lastUserText: string = (lastMessage?.parts ?? [])
-    .filter((p: { type: string }) => p.type === "text")
-    .map((p: { type: string; text?: string }) => p.text ?? "")
-    .join("") || lastMessage?.content || ""
+  const lastUserText: string =
+    (lastMessage?.parts ?? [])
+      .filter((p: { type: string }) => p.type === "text")
+      .map((p: { type: string; text?: string }) => p.text ?? "")
+      .join("") ||
+    lastMessage?.content ||
+    ""
 
-  const mockResponse = await getProvider().respondToTutorQuestion({
-    question: lastUserText,
-    userRole: "PGY-2",
-    conversationHistory: [],
-  })
-
-  const text = mockResponse.answer
-  const chunkSize = 20
-
-  const stream = createUIMessageStream({
-    execute: async ({ writer }) => {
-      const textId = generateId()
-      writer.write({ type: "text-start", id: textId })
-      for (let i = 0; i < text.length; i += chunkSize) {
-        writer.write({ type: "text-delta", id: textId, delta: text.slice(i, i + chunkSize) })
-        await new Promise((r) => setTimeout(r, 25))
-      }
-      writer.write({ type: "text-end", id: textId })
-    },
-  })
-
-  return createUIMessageStreamResponse({ stream })
+  return createMockUIMessageStreamResponse(lastUserText)
 }

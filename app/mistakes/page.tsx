@@ -1,4 +1,4 @@
-import { AppShell } from "@/components/shell/AppShell"
+import { ChatLayout } from "@/components/chat/ChatLayout"
 import { SectionMarker } from "@/components/shell/SectionMarker"
 import { HandMascot } from "@/components/motif/HandMascot"
 import { MISTAKE_MUSEUM } from "@/lib/demo/demo-content"
@@ -52,60 +52,65 @@ export default function MistakesPage() {
   const lastThree = MISTAKE_MUSEUM.slice(3)
 
   return (
-    <AppShell>
-      <div className="mx-auto max-w-4xl px-6 py-10">
+    <ChatLayout>
+      <div className="flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-4xl px-6 py-10">
 
-        {/* Header */}
-        <div className="mb-10">
-          <SectionMarker number="04" label="Mistake Museum" className="mb-3" />
-          <h1 className="font-fraunces text-h1 text-ink mb-3">Common mistakes in hand surgery</h1>
-          <p className="text-body text-ink-muted max-w-2xl">
-            The mistakes that hand surgery attendings correct most often — with the cognitive trap that causes them, the clinical consequence, and the rule that prevents them.
-          </p>
-          <p className="mt-3 text-micro text-ink-muted">
-            Local demo content · All cases synthetic · Not for clinical use
-          </p>
-        </div>
-
-        {/* First row: 1 column (full-width) */}
-        <section className="mb-8">
-          <SectionMarker number="01" label="Don't close it" className="mb-4" />
-          <MistakeCard entry={firstThree[0]} index={0} />
-        </section>
-
-        {/* Second row: 2 columns */}
-        <section className="mb-8">
-          <SectionMarker number="02" label="The splint problem" className="mb-4" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <MistakeCard entry={firstThree[1]} index={1} />
-            <MistakeCard entry={firstThree[2]} index={2} />
+          {/* Header */}
+          <div className="mb-8 flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <SectionMarker number="04" label="Mistake Museum" className="mb-3" />
+              <h1 className="font-fraunces text-h1 text-ink mb-3">Common mistakes in hand surgery</h1>
+              <p className="text-body text-ink-muted max-w-2xl">
+                The mistakes that hand surgery attendings correct most often — with the cognitive trap that causes them, the clinical consequence, and the rule that prevents them.
+              </p>
+              <p className="mt-3 text-micro text-ink-muted">
+                Local demo content · All cases synthetic · Not for clinical use
+              </p>
+            </div>
+            <a
+              href="/c?prefill=Common+mistakes+in+hand+surgery"
+              className="flex-shrink-0 px-4 py-2 rounded-lg bg-electric text-bg text-small font-medium hover:opacity-90 transition-opacity duration-150 whitespace-nowrap"
+            >
+              Use in chat →
+            </a>
           </div>
-        </section>
 
-        {/* Mascot interlude */}
-        <div className="flex items-center gap-4 py-8 px-6 border-y border-rule my-8">
-          <HandMascot pose="open" size={64} className="flex-shrink-0 opacity-70" />
-          <p className="text-body text-ink-muted italic">
-            The attendings who write these cases were once the residents who made these mistakes. That is how the pearls get written.
-          </p>
-        </div>
+          <section className="mb-8">
+            <SectionMarker number="01" label="Don't close it" className="mb-4" />
+            <MistakeCard entry={firstThree[0]} index={0} />
+          </section>
 
-        {/* Third row: full-width */}
-        <section className="mb-8">
-          <SectionMarker number="03" label="The infection trap" className="mb-4" />
-          <MistakeCard entry={lastThree[0]} index={3} />
-        </section>
+          <section className="mb-8">
+            <SectionMarker number="02" label="The splint problem" className="mb-4" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <MistakeCard entry={firstThree[1]} index={1} />
+              <MistakeCard entry={firstThree[2]} index={2} />
+            </div>
+          </section>
 
-        {/* Fourth row: 2 columns */}
-        <section className="mb-8">
-          <SectionMarker number="04" label="The examination problem" className="mb-4" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <MistakeCard entry={lastThree[1]} index={4} />
-            <MistakeCard entry={lastThree[2]} index={5} />
+          <div className="flex items-center gap-4 py-8 px-6 border-y border-rule my-8">
+            <HandMascot pose="open" size={64} className="flex-shrink-0 opacity-70" />
+            <p className="text-body text-ink-muted italic">
+              The attendings who write these cases were once the residents who made these mistakes. That is how the pearls get written.
+            </p>
           </div>
-        </section>
 
+          <section className="mb-8">
+            <SectionMarker number="03" label="The infection trap" className="mb-4" />
+            <MistakeCard entry={lastThree[0]} index={3} />
+          </section>
+
+          <section className="mb-8">
+            <SectionMarker number="04" label="The examination problem" className="mb-4" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <MistakeCard entry={lastThree[1]} index={4} />
+              <MistakeCard entry={lastThree[2]} index={5} />
+            </div>
+          </section>
+
+        </div>
       </div>
-    </AppShell>
+    </ChatLayout>
   )
 }

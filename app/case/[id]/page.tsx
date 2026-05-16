@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { AppShell } from "@/components/shell/AppShell"
+import { ChatLayout } from "@/components/chat/ChatLayout"
 import { SectionMarker } from "@/components/shell/SectionMarker"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -119,7 +119,8 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <AppShell>
+    <ChatLayout>
+      <div className="flex-1 overflow-y-auto">
       <div className="mx-auto max-w-5xl px-6 py-8">
 
         {/* Breadcrumb + meta */}
@@ -315,6 +316,7 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
 
         </div>
       </div>
-    </AppShell>
+      </div>
+    </ChatLayout>
   )
 }

@@ -1,4 +1,4 @@
-import { AppShell } from "@/components/shell/AppShell"
+import { ChatLayout } from "@/components/chat/ChatLayout"
 import { SectionMarker } from "@/components/shell/SectionMarker"
 import { DO_NOT_MISS } from "@/lib/demo/demo-content"
 import type { Metadata } from "next"
@@ -36,11 +36,7 @@ function DoNotMissCard({ entry, index }: {
           <p className="text-body text-ink leading-relaxed">{entry.educationalPoint}</p>
         </div>
       </div>
-      {/* Clinical callout — same on every card, by design */}
-      <div
-        className="mx-5 mb-5 mt-3 rounded px-4 py-3 border-l-[3px] border-wrong bg-wrong-soft"
-        role="note"
-      >
+      <div className="mx-5 mb-5 mt-3 rounded px-4 py-3 border-l-[3px] border-wrong bg-wrong-soft" role="note">
         <p className="text-small text-ink-muted italic">{CLINICAL_CALLOUT}</p>
       </div>
     </article>
@@ -49,35 +45,44 @@ function DoNotMissCard({ entry, index }: {
 
 export default function DoNotMissPage() {
   return (
-    <AppShell>
-      <div className="mx-auto max-w-4xl px-6 py-10">
+    <ChatLayout>
+      <div className="flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-4xl px-6 py-10">
 
-        {/* Header */}
-        <div className="mb-10">
-          <SectionMarker number="05" label="Do-Not-Miss" className="mb-3" />
-          <h1 className="font-fraunces text-h1 text-ink mb-3">Do-not-miss diagnoses</h1>
-          <p className="text-body text-ink-muted max-w-2xl">
-            These are the diagnoses where delayed recognition leads to irreversible harm. Know the clue, know the consequence, know the escalation path.
-          </p>
-          <div className="mt-4 p-4 border border-rule rounded-lg bg-bg-elevated">
-            <p className="text-small text-ink-muted leading-relaxed">
-              <strong className="text-ink">Educational use only.</strong> This page teaches recognition clues and educational context. It is not a clinical decision support tool. In any real clinical scenario involving these diagnoses, escalate immediately to your senior resident and attending — do not rely on this app.
-            </p>
+          {/* Header */}
+          <div className="mb-8 flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <SectionMarker number="05" label="Do-Not-Miss" className="mb-3" />
+              <h1 className="font-fraunces text-h1 text-ink mb-3">Do-not-miss diagnoses</h1>
+              <p className="text-body text-ink-muted max-w-2xl">
+                These are the diagnoses where delayed recognition leads to irreversible harm. Know the clue, know the consequence, know the escalation path.
+              </p>
+              <div className="mt-4 p-4 border border-rule rounded-lg bg-bg-elevated">
+                <p className="text-small text-ink-muted leading-relaxed">
+                  <strong className="text-ink">Educational use only.</strong> This page teaches recognition clues and educational context. It is not a clinical decision support tool. In any real clinical scenario involving these diagnoses, escalate immediately to your senior resident and attending.
+                </p>
+              </div>
+            </div>
+            <a
+              href="/c?prefill=Walk+me+through+do-not-miss+diagnoses+in+hand+surgery"
+              className="flex-shrink-0 px-4 py-2 rounded-lg bg-electric text-bg text-small font-medium hover:opacity-90 transition-opacity duration-150 whitespace-nowrap"
+            >
+              Use in chat →
+            </a>
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {DO_NOT_MISS.map((entry, index) => (
+              <DoNotMissCard key={entry.id} entry={entry} index={index} />
+            ))}
+          </div>
+
+          <p className="mt-8 text-micro text-ink-muted text-center">
+            Local demo content · All content synthetic · Needs faculty verification before pilot use
+          </p>
+
         </div>
-
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {DO_NOT_MISS.map((entry, index) => (
-            <DoNotMissCard key={entry.id} entry={entry} index={index} />
-          ))}
-        </div>
-
-        <p className="mt-8 text-micro text-ink-muted text-center">
-          Local demo content · All content synthetic · Needs faculty verification before pilot use
-        </p>
-
       </div>
-    </AppShell>
+    </ChatLayout>
   )
 }
