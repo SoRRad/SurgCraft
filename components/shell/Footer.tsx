@@ -14,11 +14,11 @@ export function Footer({ className }: FooterProps) {
       )}
     >
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 sm:flex-row">
-        <p className="text-micro text-ink-muted italic">
+        <p className="text-micro text-ink-muted italic font-medium">
           Educational use only. Not for clinical decision-making.
         </p>
         <p className="text-micro text-ink-muted">
-          Handcraft · Mayo Clinic Pilot · Phase 0
+          SurgiCraft: Handcraft · Mayo Clinic Pilot · Phase 0A
         </p>
       </div>
     </footer>

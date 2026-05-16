@@ -35,11 +35,11 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Handcraft",
-    template: "%s · Handcraft",
+    default: "SurgiCraft: Handcraft",
+    template: "%s · SurgiCraft: Handcraft",
   },
   description:
-    "Interactive learning chatbot for hand surgery. Built for medical students, residents, and fellows at Mayo Clinic.",
+    "Interactive surgical education platform. First module: hand surgery for medical students, residents, and fellows. Educational use only.",
   robots: { index: false, follow: false },
 }
 

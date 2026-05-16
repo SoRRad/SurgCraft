@@ -1,8 +1,1 @@
-// Week 2: Anthropic SDK initialization
-// import Anthropic from "@anthropic-ai/sdk"
-//
-// export const anthropic = new Anthropic({
-//   apiKey: process.env.ANTHROPIC_API_KEY,
-// })
-
-export {}
+// Deprecated in Phase 0A. Use lib/llm provider interface instead. See PHASE_0A.md.

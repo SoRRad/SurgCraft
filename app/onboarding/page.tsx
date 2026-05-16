@@ -78,7 +78,7 @@ function PrivacyContract({ onAccept }: { onAccept: () => void }) {
           </li>
         </ul>
         <Button className="w-full" onClick={onAccept}>
-          I understand — let's start
+          I understand &mdash; let&apos;s start
         </Button>
       </div>
     </div>
@@ -147,11 +147,15 @@ export default function OnboardingPage() {
             <div className="flex items-center gap-4 mb-6">
               <HandMascot pose="open" size={64} />
               <div>
+                <p className="text-micro text-ink-muted uppercase tracking-wider font-inter mb-0.5">
+                  SurgiCraft
+                </p>
                 <h1 className="font-fraunces text-h1 text-ink leading-tight">
-                  Welcome to Handcraft
+                  Welcome to SurgiCraft
                 </h1>
                 <p className="text-small text-ink-muted mt-1">
-                  Six quick questions — we&apos;ll adapt everything to you.
+                  Today&apos;s module: <span className="text-ink font-medium">Handcraft</span> — hand surgery.
+                  Six quick questions to adapt everything to you.
                 </p>
               </div>
             </div>

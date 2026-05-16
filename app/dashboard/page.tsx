@@ -150,17 +150,23 @@ export default function DashboardPage() {
       <div className="mx-auto max-w-5xl px-6 py-12">
 
         {/* Welcome */}
-        <div className="flex items-center gap-5 mb-12">
-          <HandMascot pose="open" size={80} className="flex-shrink-0" />
+        <div className="flex items-start gap-5 mb-12">
+          <HandMascot pose="open" size={80} className="flex-shrink-0 mt-1" />
           <div>
-            <SectionMarker number="01" label="Your dashboard" className="mb-1" />
-            <h1 className="font-fraunces text-h1 text-ink leading-tight">
-              Welcome back,{" "}
-              <span className="text-terracotta">{user.handle}</span>
+            <p className="text-micro text-ink-muted uppercase tracking-wider font-inter mb-0.5">
+              § SurgiCraft · Module 01
+            </p>
+            <h1 className="font-fraunces text-display text-ink leading-none">
+              Handcraft
             </h1>
-            <p className="mt-1 text-small text-ink-muted">
-              {user.role} · {user.specialty}
+            <p className="mt-2 text-body text-ink-muted">
+              Welcome back,{" "}
+              <span className="text-ink font-medium">{user.handle}</span>
+              {" "}· {user.role} · {user.specialty}
               {user.onHandService && " · On hand service"}
+            </p>
+            <p className="mt-1 text-micro text-ink-muted">
+              Phase 0A · local faculty-demo prototype · no external AI connected
             </p>
           </div>
         </div>
