@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ── Handcraft design tokens ─────────────────────────────────── */
+    --bg:               #FAF7F2;
+    --bg-elevated:      #FFFFFF;
+    --ink:              #1A1A1A;
+    --ink-muted:        #5C5C5C;
+    --rule:             #E8E2D7;
+
+    --terracotta:       #C0593D;
+    --terracotta-soft:  #F2D9CF;
+
+    --electric:         #5B5CFF;
+    --electric-soft:    #E0E0FF;
+
+    --correct:          #2E7D5B;
+    --correct-soft:     #D4E8DC;
+    --warn:             #B8821A;
+    --warn-soft:        #F2E5C4;
+    --wrong:            #A8324A;
+    --wrong-soft:       #F2D4DA;
+
+    --bg-dark:          #1C1815;
+    --ink-dark:         #F0EBE3;
+
+    /* ── Motion curves ───────────────────────────────────────────── */
+    --ease-standard:    cubic-bezier(0.22, 0.61, 0.36, 1);
+    --ease-reveal:      cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-micro:       cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* ── shadcn/ui HSL tokens (mapped to design system) ─────────── */
+    --background:             38 44% 96%;   /* ≈ #FAF7F2 */
+    --foreground:              0  0% 10%;   /* ≈ #1A1A1A */
+    --card:                    0  0% 100%;
+    --card-foreground:         0  0% 10%;
+    --popover:                 0  0% 100%;
+    --popover-foreground:      0  0% 10%;
+    --primary:               240 100% 68%;  /* ≈ #5B5CFF */
+    --primary-foreground:      0   0% 100%;
+    --secondary:              39  27% 88%;  /* ≈ #E8E2D7 */
+    --secondary-foreground:    0   0% 10%;
+    --muted:                  39  27% 88%;
+    --muted-foreground:        0   0% 36%;  /* ≈ #5C5C5C */
+    --accent:                 39  27% 88%;
+    --accent-foreground:       0   0% 10%;
+    --destructive:           347  56% 43%;  /* ≈ #A8324A */
+    --destructive-foreground:  0   0% 100%;
+    --border:                 39  27% 88%;  /* ≈ #E8E2D7 */
+    --input:                  39  27% 88%;
+    --ring:                  240 100% 68%;  /* electric for focus rings */
+    --radius:                 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-inter), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100dvh;
+  }
+
+  /* Focus rings use electric at 2px offset (per DESIGN_SYSTEM.md §8) */
+  :focus-visible {
+    outline: 2px solid var(--electric);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Respect prefers-reduced-motion (per DESIGN_SYSTEM.md §5 + §8) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

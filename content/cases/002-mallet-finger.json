@@ -1,0 +1,60 @@
+{
+  "id": "002-mallet-finger",
+  "title": "The basketball drop",
+  "difficulty": "intro",
+  "tags": ["trauma", "extensor", "DIP", "tendon"],
+  "specialties": ["hand", "plastics", "ortho", "EM", "sports"],
+  "estimatedMinutes": 8,
+  "author": "Handcraft seed",
+  "verified": false,
+  "stem": "A 32-year-old recreational basketball player jammed his right middle finger catching a pass three days ago. He kept playing, but now can't straighten the tip of the finger.",
+  "cards": {
+    "chief_complaint": {
+      "label": "Chief complaint",
+      "alwaysVisible": true,
+      "content": "32M with droopy DIP of right long finger, 3 days post-jam injury."
+    },
+    "history": {
+      "label": "History",
+      "unlockKeywords": ["history", "HPI", "when", "how", "PMH"],
+      "content": "Axial-load injury to the tip of the right long finger while catching a basketball. Immediate pain at DIP, continued playing. Noticed by evening he couldn't straighten the fingertip. Mild swelling, mild pain, mostly cosmetic complaint now. No previous injury. Right-hand dominant. Office worker."
+    },
+    "exam": {
+      "label": "Physical exam",
+      "unlockKeywords": ["exam", "look", "inspect", "ROM", "neurovascular"],
+      "content": "Right long finger: DIP held in ~40° flexion, cannot actively extend. Passive extension intact and painless. Mild dorsal swelling over DIP. No skin compromise. Tender over dorsal DIP. Sensation intact. PIP and MCP full ROM."
+    },
+    "imaging": {
+      "label": "Imaging",
+      "unlockKeywords": ["X-ray", "xray", "imaging", "radiograph"],
+      "content": "Lateral radiograph of long finger: no DIP joint subluxation. A small (~15% of articular surface) dorsal avulsion fragment is present at the base of the distal phalanx. Joint congruent."
+    },
+    "management": {
+      "label": "Management",
+      "isReveal": true,
+      "content": "Diagnosis: Bony mallet finger (small avulsion, <30% articular surface, joint congruent). Plan: DIP extension splinting (full-time) for 6 weeks, then nighttime for 2 weeks. Critical: counsel patient that the DIP must NEVER flex during the splinting period — even briefly during splint changes — or the clock resets. PIP must remain free. Surgical pinning generally reserved for large fragments (>30%), joint subluxation, or open injuries. Follow up at 2 weeks to assess splint fit and skin."
+    }
+  },
+  "pearls": [
+    {
+      "id": "mallet-flex-resets-clock",
+      "text": "If the DIP flexes even once during splinting, the clock starts over. Tell the patient. Tell them again.",
+      "attribution": "Hand service"
+    },
+    {
+      "id": "mallet-leave-pip",
+      "text": "Splint the DIP only. Leaving the PIP free preserves function and improves compliance.",
+      "attribution": "Hand service"
+    }
+  ],
+  "teachingPoints": [
+    "Mallet finger = disruption of terminal extensor tendon at its insertion on the dorsal distal phalanx.",
+    "Tendinous vs. bony — both treated similarly for small fragments. Surgical threshold = large fragment (>30%), joint subluxation, or chronic untreated mallet with deformity.",
+    "Untreated mallet can evolve into swan-neck deformity over time as the extensor force redistributes proximally.",
+    "Splint type matters less than splint discipline."
+  ],
+  "references": [
+    "Wolfe et al., Green's Operative Hand Surgery — extensor tendon injuries",
+    "Lin JS, Samora JB. Surgical and Nonsurgical Management of Mallet Finger"
+  ]
+}

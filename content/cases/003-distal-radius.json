@@ -1,0 +1,60 @@
+{
+  "id": "003-distal-radius",
+  "title": "FOOSH on the ice",
+  "difficulty": "intermediate",
+  "tags": ["trauma", "distal-radius", "fracture", "wrist"],
+  "specialties": ["hand", "plastics", "ortho", "EM"],
+  "estimatedMinutes": 14,
+  "author": "Handcraft seed",
+  "verified": false,
+  "stem": "A 58-year-old woman slipped on icy steps this morning and fell onto her outstretched left hand. She presents to the ED with wrist pain and an obvious deformity.",
+  "cards": {
+    "chief_complaint": {
+      "label": "Chief complaint",
+      "alwaysVisible": true,
+      "content": "58F, left wrist pain and deformity after FOOSH."
+    },
+    "history": {
+      "label": "History",
+      "unlockKeywords": ["history", "HPI", "when", "how", "PMH", "medications", "hand", "dominance"],
+      "content": "Slip on ice ~2 hours ago, fell onto outstretched left hand. Immediate pain and deformity. No LOC, no other injuries. Right-hand dominant. Retired teacher, gardener. PMH: hypertension, osteopenia (last DEXA 2 years ago). Meds: amlodipine, calcium/D. No anticoagulation. NKDA. Tetanus current."
+    },
+    "exam": {
+      "label": "Physical exam",
+      "unlockKeywords": ["exam", "look", "inspect", "ROM", "neurovascular", "median"],
+      "content": "Left wrist: classic 'dinner fork' deformity with dorsal angulation. Moderate swelling. Skin intact (closed). Tender along distal radius. Limited active ROM, pain-limited. Median nerve: sensation slightly diminished over volar thumb, index, long fingers compared to contralateral side; reports pins-and-needles. Radial pulse 2+. Capillary refill <2s. Compartments soft."
+    },
+    "imaging": {
+      "label": "Imaging",
+      "unlockKeywords": ["X-ray", "xray", "imaging", "radiograph", "CT"],
+      "content": "PA and lateral wrist radiographs: extra-articular distal radius fracture with 25° dorsal angulation, 6mm radial shortening, and 18° radial inclination loss. No intra-articular extension. No DRUJ widening. Concurrent ulnar styloid fracture (non-displaced)."
+    },
+    "management": {
+      "label": "Management",
+      "isReveal": true,
+      "content": "Diagnosis: Closed distal radius fracture (extra-articular, dorsally displaced) with acute median nerve symptoms — concerning for acute carpal tunnel syndrome. Initial plan: Hematoma block + closed reduction in ED, sugar-tong splint. Re-examine median nerve post-reduction — if symptoms resolve, observe; if persistent, urgent carpal tunnel release. Repeat radiographs to confirm acceptable alignment. Hand/ortho follow-up within 1 week. Definitive management likely operative (volar locked plate) given displacement, age, functional demand, and incomplete restoration with reduction is common in this pattern. Discuss osteoporosis workup."
+    }
+  },
+  "pearls": [
+    {
+      "id": "acute-cts-distal-radius",
+      "text": "Median nerve symptoms after a distal radius fracture demand re-examination after reduction. Persistent symptoms = urgent carpal tunnel release, not a watch-and-wait.",
+      "attribution": "Hand service"
+    },
+    {
+      "id": "distal-radius-not-just-a-wrist-fracture",
+      "text": "A distal radius fracture in a 58-year-old woman is a sentinel event. Recommend DEXA and consider osteoporosis workup — the next fracture is often the hip.",
+      "attribution": "Hand service"
+    }
+  ],
+  "teachingPoints": [
+    "Acceptable closed reduction parameters (general): <5° dorsal angulation, <5mm radial shortening, articular step-off <2mm. These tighten with younger, higher-demand patients.",
+    "DRUJ instability changes the surgical plan — always assess.",
+    "Median nerve symptoms before reduction may resolve with reduction; symptoms that persist or develop after reduction are an emergency.",
+    "Volar locked plating is the most common contemporary fixation for displaced extra-articular fractures requiring surgery."
+  ],
+  "references": [
+    "AAOS Clinical Practice Guideline on Distal Radius Fractures",
+    "Wolfe et al., Green's Operative Hand Surgery — distal radius chapter"
+  ]
+}

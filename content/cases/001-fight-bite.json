@@ -1,0 +1,65 @@
+{
+  "id": "001-fight-bite",
+  "title": "The bar fight",
+  "difficulty": "intermediate",
+  "tags": ["trauma", "infection", "metacarpal", "MCP"],
+  "specialties": ["hand", "plastics", "ortho", "EM"],
+  "estimatedMinutes": 12,
+  "author": "Handcraft seed",
+  "verified": false,
+  "stem": "A 24-year-old right-hand-dominant male presents to the ED with a small wound over the dorsum of his right 5th MCP joint, sustained 'a couple nights ago' during what he reluctantly admits was a bar fight. He says it's gotten more swollen since yesterday.",
+  "cards": {
+    "chief_complaint": {
+      "label": "Chief complaint",
+      "alwaysVisible": true,
+      "content": "24M with painful, swollen right 5th MCP wound, 2 days post-injury."
+    },
+    "history": {
+      "label": "History",
+      "unlockKeywords": ["history", "HPI", "when", "how", "PMH", "medications", "allergies", "vaccines"],
+      "content": "Injury 2 days ago, struck another person's mouth with a closed fist. Initial wound was small (~5mm); he washed it at home and didn't seek care. Pain and swelling have progressively worsened. Now reports difficulty making a fist and pain with finger movement. No fevers reported but feels 'a little off.' PMH: none. Meds: none. Allergies: NKDA. Tetanus last >10 years ago. Social: occasional alcohol, no IVDU."
+    },
+    "exam": {
+      "label": "Physical exam",
+      "unlockKeywords": ["exam", "look", "inspect", "swelling", "ROM", "neurovascular", "tenderness"],
+      "content": "Right hand: small (~5mm) wound over dorsal 5th MCP with surrounding erythema extending proximally to mid-metacarpal. Mild fluctuance. Diffuse dorsal swelling. Pain with passive flexion of 5th digit (worse than active). Tender along extensor tendon. Neurovascularly intact distally. No streaking up the forearm. Afebrile, vitals stable."
+    },
+    "imaging": {
+      "label": "Imaging",
+      "unlockKeywords": ["X-ray", "xray", "imaging", "radiograph", "CT"],
+      "content": "Plain films of the right hand obtained (AP, lateral, oblique): No fracture identified. Soft tissue swelling over dorsal 5th MCP. No retained radio-opaque foreign body. No subcutaneous emphysema."
+    },
+    "labs": {
+      "label": "Labs",
+      "unlockKeywords": ["labs", "CBC", "WBC", "CRP", "ESR", "blood"],
+      "content": "WBC 11.8 (mild leukocytosis), CRP 38 (elevated). Otherwise unremarkable."
+    },
+    "management": {
+      "label": "Management",
+      "isReveal": true,
+      "content": "Diagnosis: Fight bite (clenched-fist injury) with likely MCP joint contamination and developing septic arthritis vs. deep space infection. Plan: Admit. IV antibiotics (e.g., ampicillin-sulbactam covering oral flora including Eikenella corrodens). Tetanus update. Hand surgery consult for OR washout — fight bites over the MCP are presumed to involve the joint until proven otherwise. Do NOT close primarily. Counsel patient that delayed presentation increases risk of stiffness and may require multiple washouts."
+    }
+  },
+  "pearls": [
+    {
+      "id": "fight-bite-mcp",
+      "text": "Any wound over the dorsal MCP in a young adult is a fight bite until proven otherwise — and the joint is involved until proven otherwise.",
+      "attribution": "Hand service"
+    },
+    {
+      "id": "eikenella",
+      "text": "Eikenella corrodens is the bug you don't want to miss — and the reason ampicillin-sulbactam beats cephalexin here.",
+      "attribution": "Hand service"
+    }
+  ],
+  "teachingPoints": [
+    "Mechanism dictates suspicion: clenched-fist injuries drive the tooth into the joint capsule, which then 'closes' as the hand extends, sealing the contamination inside.",
+    "Plain films are still useful: look for retained tooth fragments and air in the joint.",
+    "Never close a fight bite primarily.",
+    "Patients underreport mechanism — the wound size lies about the depth."
+  ],
+  "references": [
+    "Wolfe et al., Green's Operative Hand Surgery — chapter on hand infections",
+    "Patzakis MJ et al., Management of human bite injuries of the hand"
+  ]
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "fight-bite-mcp",
+    "content": "Any wound over the dorsal MCP in a young adult is a fight bite until proven otherwise — and the joint is involved until proven otherwise.",
+    "attribution": "Hand service",
+    "tags": ["infection", "trauma", "MCP"],
+    "verified": false
+  },
+  {
+    "id": "eikenella",
+    "content": "Eikenella corrodens is the bug you don't want to miss — and the reason ampicillin-sulbactam beats cephalexin here.",
+    "attribution": "Hand service",
+    "tags": ["infection", "microbiology"],
+    "verified": false
+  },
+  {
+    "id": "mallet-flex-resets-clock",
+    "content": "If the DIP flexes even once during splinting, the clock starts over. Tell the patient. Tell them again.",
+    "attribution": "Hand service",
+    "tags": ["extensor", "splinting", "mallet"],
+    "verified": false
+  },
+  {
+    "id": "mallet-leave-pip",
+    "content": "Splint the DIP only. Leaving the PIP free preserves function and improves compliance.",
+    "attribution": "Hand service",
+    "tags": ["extensor", "splinting", "mallet"],
+    "verified": false
+  },
+  {
+    "id": "acute-cts-distal-radius",
+    "content": "Median nerve symptoms after a distal radius fracture demand re-examination after reduction. Persistent symptoms = urgent carpal tunnel release, not a watch-and-wait.",
+    "attribution": "Hand service",
+    "tags": ["nerve", "distal-radius", "carpal-tunnel"],
+    "verified": false
+  },
+  {
+    "id": "distal-radius-sentinel-event",
+    "content": "A distal radius fracture in a 58-year-old woman is a sentinel event. Recommend DEXA and consider osteoporosis workup — the next fracture is often the hip.",
+    "attribution": "Hand service",
+    "tags": ["distal-radius", "osteoporosis", "prevention"],
+    "verified": false
+  }
+]
