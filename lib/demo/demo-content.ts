@@ -62,6 +62,79 @@ export const PIMPING_TOPICS = [
   { id: "nerve", label: "Peripheral nerve" },
 ] as const
 
+// ── Authored Pearls ───────────────────────────────────────────────────────────
+
+export type PearlEntry = {
+  id: string
+  topic: string
+  content: string
+  attribution: string
+  tags: string[]
+  verified: boolean
+}
+
+export const PEARL_IDS = [
+  "fight-bite-mcp",
+  "eikenella",
+  "mallet-flex-resets-clock",
+  "mallet-leave-pip",
+  "acute-cts-distal-radius",
+  "distal-radius-not-just-a-wrist-fracture",
+] as const
+
+export type PearlId = typeof PEARL_IDS[number]
+
+export const PEARLS: PearlEntry[] = [
+  {
+    id: "fight-bite-mcp",
+    topic: "Fight bite",
+    content: "Any wound over the dorsal MCP in a young adult is a fight bite until proven otherwise — and the joint is involved until proven otherwise.",
+    attribution: "Hand service",
+    tags: ["infection", "trauma", "MCP"],
+    verified: false,
+  },
+  {
+    id: "eikenella",
+    topic: "Fight bite",
+    content: "Eikenella corrodens is the bug you don't want to miss — and the reason ampicillin-sulbactam beats cephalexin here.",
+    attribution: "Hand service",
+    tags: ["infection", "microbiology"],
+    verified: false,
+  },
+  {
+    id: "mallet-flex-resets-clock",
+    topic: "Mallet finger",
+    content: "If the DIP flexes even once during splinting, the clock starts over. Tell the patient. Tell them again.",
+    attribution: "Hand service",
+    tags: ["extensor", "splinting", "mallet"],
+    verified: false,
+  },
+  {
+    id: "mallet-leave-pip",
+    topic: "Mallet finger",
+    content: "Splint the DIP only. Leaving the PIP free preserves function and improves compliance.",
+    attribution: "Hand service",
+    tags: ["extensor", "splinting", "mallet"],
+    verified: false,
+  },
+  {
+    id: "acute-cts-distal-radius",
+    topic: "Distal radius",
+    content: "Median nerve symptoms after a distal radius fracture demand re-examination after reduction. Persistent symptoms = urgent carpal tunnel release, not a watch-and-wait.",
+    attribution: "Hand service",
+    tags: ["nerve", "distal-radius", "carpal-tunnel"],
+    verified: false,
+  },
+  {
+    id: "distal-radius-not-just-a-wrist-fracture",
+    topic: "Distal radius",
+    content: "A distal radius fracture in a 58-year-old woman is a sentinel event. Recommend DEXA and consider osteoporosis workup — the next fracture is often the hip.",
+    attribution: "Hand service",
+    tags: ["distal-radius", "osteoporosis", "prevention"],
+    verified: false,
+  },
+]
+
 // ── Mistake Museum ────────────────────────────────────────────────────────────
 
 export type MistakeEntry = {

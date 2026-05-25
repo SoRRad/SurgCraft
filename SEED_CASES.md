@@ -1,8 +1,9 @@
-# Handcraft — Seed Cases
+# SurgiCraft : Handcraft — Seed Cases
 
-Three synthetic cases for the prototype. Format mirrors `content/cases/*.json`. Faculty should review/edit before pilot.
+Three synthetic cases for module 01. Format mirrors `content/cases/*.json`. Faculty should review/edit before pilot.
 
 > Note: All cases are entirely fictional. No real patient data.
+> Current app usage: cases can be opened from `/case` or launched inline from `/c` through the `launch_case` tool.
 
 ---
 
@@ -217,4 +218,4 @@ Three synthetic cases for the prototype. Format mirrors `content/cases/*.json`. 
 - `unlockKeywords` are matched semantically (via embedding similarity) at runtime, not literal string match. The list seeds intent recognition.
 - `isReveal: true` cards are gated until the user has either explicitly asked for management OR uncovered ≥3 other cards.
 - `verified: true` only after a faculty hand surgeon signs off in the admin UI.
-- Faculty pearls written into cases earn the `attribution` field; "Handcraft seed" is placeholder until reviewed.
+- Faculty pearls written into cases earn the `attribution` field; `Handcraft seed` is the current placeholder author value in `content/cases/*.json` until reviewed.

@@ -1,6 +1,7 @@
-// Per-session cost tracking for the Anthropic provider.
+// Development-only per-session cost tracking for the Anthropic provider.
 // Uses claude-sonnet-4-5 pricing: ~$3/M input, ~$15/M output.
-// Phase 0C will move this to the database.
+// This in-memory Map resets on server restart and does not work across instances.
+// Phase 0C must move this to the database before pilot/live usage.
 
 const INPUT_COST_PER_TOKEN = 3 / 1_000_000
 const OUTPUT_COST_PER_TOKEN = 15 / 1_000_000

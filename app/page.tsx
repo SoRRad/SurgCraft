@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 
-// Landing: redirect to dashboard if onboarding done, else to onboarding.
+// Landing: redirect returning learners to the chat home, else to onboarding.
 export default function Home() {
   const router = useRouter()
 

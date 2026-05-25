@@ -1,4 +1,6 @@
-// Conversation persistence — localStorage under "surgicraft:conversations".
+import type { UIMessage } from "ai"
+
+// Conversation persistence: localStorage under "surgicraft:conversations".
 // SSR-safe: all functions return early if window is undefined.
 // Capped at 50 conversations; oldest are auto-pruned beyond that.
 
@@ -13,6 +15,7 @@ export type ChatMessage = {
   role: "user" | "assistant" | "system"
   content: string
   createdAt: string
+  parts?: UIMessage["parts"]
   feedback?: "up" | "down" | null
   flagged?: boolean
   savedAsPearl?: boolean
@@ -37,6 +40,24 @@ export type SavedPearl = {
   savedAt: string
 }
 
+export type LocalFlaggedMessage = {
+  conversationId: string
+  conversationTitle: string
+  message: ChatMessage
+}
+
+export type LocalDataExport = {
+  version: 1
+  exportedAt: string
+  conversations: Conversation[]
+  pearls: SavedPearl[]
+}
+
+export type LocalDataImportResult = {
+  conversationsImported: number
+  pearlsImported: number
+}
+
 const CONV_KEY = "surgicraft:conversations"
 const PEARLS_KEY = "surgicraft:saved-pearls"
 const MAX_CONVERSATIONS = 50
@@ -46,6 +67,19 @@ function generateId(): string {
     return crypto.randomUUID()
   }
   return Math.random().toString(36).slice(2) + Date.now().toString(36)
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value)
+}
+
+function asString(value: unknown, fallback = ""): string {
+  return typeof value === "string" ? value : fallback
+}
+
+function asDateString(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback
+  return Number.isNaN(new Date(value).getTime()) ? fallback : value
 }
 
 function readAll(): Conversation[] {
@@ -64,7 +98,7 @@ function writeAll(convs: Conversation[]): void {
     localStorage.setItem(CONV_KEY, JSON.stringify(convs))
     window.dispatchEvent(new CustomEvent("surgicraft:conversations:updated"))
   } catch {
-    // localStorage quota exceeded — fail silently
+    // localStorage quota exceeded: fail silently for the Phase 0B local prototype.
   }
 }
 
@@ -82,7 +116,7 @@ export function createConversation(firstMessage: string): Conversation {
   const now = new Date().toISOString()
   const conv: Conversation = {
     id: generateId(),
-    title: firstMessage.length > 40 ? firstMessage.slice(0, 40) + "…" : firstMessage,
+    title: firstMessage.length > 40 ? `${firstMessage.slice(0, 40)}...` : firstMessage,
     createdAt: now,
     updatedAt: now,
     messages: [],
@@ -94,7 +128,7 @@ export function createConversation(firstMessage: string): Conversation {
 
   if (convs.length > MAX_CONVERSATIONS) {
     console.warn(
-      `[surgicraft] Conversation cap (${MAX_CONVERSATIONS}) reached — pruning oldest.`
+      `[surgicraft] Conversation cap (${MAX_CONVERSATIONS}) reached; pruning oldest.`
     )
     convs = convs.slice(0, MAX_CONVERSATIONS)
   }
@@ -104,27 +138,50 @@ export function createConversation(firstMessage: string): Conversation {
 }
 
 export function updateConversationTitle(id: string, title: string): void {
+  const cleanTitle = title.trim()
+  if (!cleanTitle) return
+
   const convs = readAll()
   const idx = convs.findIndex((c) => c.id === id)
   if (idx === -1) return
-  convs[idx] = { ...convs[idx], title, updatedAt: new Date().toISOString() }
+
+  convs[idx] = { ...convs[idx], title: cleanTitle }
   writeAll(convs)
 }
 
-export function appendMessage(conversationId: string, message: Omit<ChatMessage, "id" | "createdAt"> & { id?: string; createdAt?: string }): ChatMessage {
-  const convs = readAll()
-  const idx = convs.findIndex((c) => c.id === conversationId)
-  if (idx === -1) return message as ChatMessage
-
+export function appendMessage(
+  conversationId: string,
+  message: Omit<ChatMessage, "id" | "createdAt"> & { id?: string; createdAt?: string }
+): ChatMessage {
   const full: ChatMessage = {
     id: message.id ?? generateId(),
     createdAt: message.createdAt ?? new Date().toISOString(),
     ...message,
   }
 
+  const convs = readAll()
+  const idx = convs.findIndex((c) => c.id === conversationId)
+  if (idx === -1) return full
+
+  const existingIdx = convs[idx].messages.findIndex((m) => m.id === full.id)
+  const messages =
+    existingIdx === -1
+      ? [...convs[idx].messages, full]
+      : convs[idx].messages.map((m, i) =>
+          i === existingIdx
+            ? {
+                ...m,
+                ...full,
+                feedback: full.feedback ?? m.feedback,
+                flagged: full.flagged ?? m.flagged,
+                savedAsPearl: full.savedAsPearl ?? m.savedAsPearl,
+              }
+            : m
+        )
+
   convs[idx] = {
     ...convs[idx],
-    messages: [...convs[idx].messages, full],
+    messages,
     updatedAt: new Date().toISOString(),
   }
   writeAll(convs)
@@ -156,7 +213,24 @@ export function clearAllConversations(): void {
   writeAll([])
 }
 
-// ── Pearls ────────────────────────────────────────────────────────────────────
+export function listFlaggedMessages(): LocalFlaggedMessage[] {
+  return readAll()
+    .flatMap((conversation) =>
+      conversation.messages
+        .filter((message) => message.flagged)
+        .map((message) => ({
+          conversationId: conversation.id,
+          conversationTitle: conversation.title,
+          message,
+        }))
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.message.createdAt).getTime() - new Date(a.message.createdAt).getTime()
+    )
+}
+
+// Pearls
 
 function readPearls(): SavedPearl[] {
   if (typeof window === "undefined") return []
@@ -172,6 +246,7 @@ function writePearls(pearls: SavedPearl[]): void {
   if (typeof window === "undefined") return
   try {
     localStorage.setItem(PEARLS_KEY, JSON.stringify(pearls))
+    window.dispatchEvent(new CustomEvent("surgicraft:pearls:updated"))
   } catch {}
 }
 
@@ -193,7 +268,129 @@ export function listPearls(): SavedPearl[] {
   return readPearls()
 }
 
-// ── Clear all ─────────────────────────────────────────────────────────────────
+// Import/export
+
+export function exportLocalData(): LocalDataExport {
+  return {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    conversations: readAll(),
+    pearls: readPearls(),
+  }
+}
+
+function normalizeRole(value: unknown): ChatMessage["role"] | null {
+  return value === "user" || value === "assistant" || value === "system" ? value : null
+}
+
+function normalizeMessage(value: unknown): ChatMessage | null {
+  if (!isRecord(value)) return null
+
+  const role = normalizeRole(value.role)
+  if (!role) return null
+
+  const now = new Date().toISOString()
+  const parts = Array.isArray(value.parts) ? (value.parts as UIMessage["parts"]) : undefined
+  const content = asString(value.content)
+  if (!content && !parts?.length) return null
+
+  const feedback =
+    value.feedback === "up" || value.feedback === "down" || value.feedback === null
+      ? value.feedback
+      : undefined
+
+  const message: ChatMessage = {
+    id: asString(value.id) || generateId(),
+    role,
+    content,
+    createdAt: asDateString(value.createdAt, now),
+    ...(parts ? { parts } : {}),
+    ...(feedback !== undefined ? { feedback } : {}),
+    ...(typeof value.flagged === "boolean" ? { flagged: value.flagged } : {}),
+    ...(typeof value.savedAsPearl === "boolean" ? { savedAsPearl: value.savedAsPearl } : {}),
+  }
+
+  return message
+}
+
+function normalizeConversation(value: unknown): Conversation | null {
+  if (!isRecord(value)) return null
+
+  const now = new Date().toISOString()
+  const createdAt = asDateString(value.createdAt, now)
+  const messages = Array.isArray(value.messages)
+    ? value.messages.map(normalizeMessage).filter((m): m is ChatMessage => Boolean(m))
+    : []
+
+  return {
+    id: asString(value.id) || generateId(),
+    title: asString(value.title, "Imported conversation").trim() || "Imported conversation",
+    createdAt,
+    updatedAt: asDateString(value.updatedAt, createdAt),
+    messages,
+    topicTags: Array.isArray(value.topicTags)
+      ? value.topicTags.filter((tag): tag is string => typeof tag === "string")
+      : [],
+  }
+}
+
+function normalizePearl(value: unknown): SavedPearl | null {
+  if (!isRecord(value)) return null
+
+  const content = asString(value.content)
+  if (!content) return null
+
+  return {
+    id: asString(value.id) || generateId(),
+    content,
+    conversationId: asString(value.conversationId),
+    conversationTitle: asString(value.conversationTitle, "Imported conversation"),
+    messageId: asString(value.messageId),
+    savedAt: asDateString(value.savedAt, new Date().toISOString()),
+  }
+}
+
+export function importLocalData(data: unknown): LocalDataImportResult {
+  if (!isRecord(data)) {
+    throw new Error("Expected a SurgiCraft local data export object.")
+  }
+
+  const incomingConversations = Array.isArray(data.conversations)
+    ? data.conversations
+        .map(normalizeConversation)
+        .filter((c): c is Conversation => Boolean(c))
+    : []
+  const incomingPearls = Array.isArray(data.pearls)
+    ? data.pearls.map(normalizePearl).filter((p): p is SavedPearl => Boolean(p))
+    : []
+
+  const conversationsById = new Map(readAll().map((conversation) => [conversation.id, conversation]))
+  for (const conversation of incomingConversations) {
+    conversationsById.set(conversation.id, conversation)
+  }
+
+  const mergedConversations = Array.from(conversationsById.values())
+    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+    .slice(0, MAX_CONVERSATIONS)
+  writeAll(mergedConversations)
+
+  const pearlsById = new Map(readPearls().map((pearl) => [pearl.id, pearl]))
+  for (const pearl of incomingPearls) {
+    pearlsById.set(pearl.id, pearl)
+  }
+
+  const mergedPearls = Array.from(pearlsById.values()).sort(
+    (a, b) => new Date(b.savedAt).getTime() - new Date(a.savedAt).getTime()
+  )
+  writePearls(mergedPearls)
+
+  return {
+    conversationsImported: incomingConversations.length,
+    pearlsImported: incomingPearls.length,
+  }
+}
+
+// Clear all
 
 export function clearAllData(): void {
   if (typeof window === "undefined") return
@@ -203,4 +400,5 @@ export function clearAllData(): void {
   localStorage.removeItem("handcraft_user")
   localStorage.removeItem("surgicraft:privacy-acknowledged")
   window.dispatchEvent(new CustomEvent("surgicraft:conversations:updated"))
+  window.dispatchEvent(new CustomEvent("surgicraft:pearls:updated"))
 }

@@ -31,10 +31,12 @@ Piloting at Mayo Clinic with medical students, residents, and fellows.
 
 ---
 
-## Phase 0B — live LLM, streaming chat, no database
+## Phase 0B — provider-flexible streaming chat, no database
 
-This is the **chat-first phase**. The app now connects to a real LLM (Claude via Anthropic) for
-streaming responses. It still requires no database and no accounts.
+This is the **chat-first phase**. The app can stream from a local mock provider or from a live
+LLM provider. Anthropic Claude is the first live provider wired for Phase 0B, but the chat route
+is designed to select providers through `lib/llm/` rather than hardcoding one vendor. It still
+requires no database and no accounts.
 
 ### Running in demo mode (no API key required)
 
@@ -45,7 +47,7 @@ npm install && npm run dev
 Open http://localhost:3000. You'll land on onboarding, then the chat interface. The app ships with
 a mock LLM provider that uses keyword matching and canned hand surgery content.
 
-### Running with real Claude (live mode)
+### Running with real Claude through Anthropic (live mode)
 
 1. Copy the example env file:
 
@@ -53,12 +55,17 @@ a mock LLM provider that uses keyword matching and canned hand surgery content.
 cp .env.local.example .env.local
 ```
 
-2. Add your Anthropic API key and set live mode:
+2. Add your Anthropic API key and select the Anthropic provider:
 
 ```
+LLM_PROVIDER=anthropic
 ANTHROPIC_API_KEY=sk-ant-...
 NEXT_PUBLIC_APP_MODE=live
 ```
+
+`LLM_PROVIDER=anthropic` is the preferred server-side switch. `NEXT_PUBLIC_APP_MODE=live` is still
+supported for compatibility and currently maps to Anthropic. If Anthropic is selected without an
+API key, SurgiCraft falls back to the mock provider.
 
 3. Start the dev server:
 
@@ -74,13 +81,18 @@ The app also has a built-in per-session cost guard (default $0.50) — see `lib/
 ## Future API strategy — provider-agnostic from day one
 
 The app's LLM layer lives in `lib/llm/`. It exports a single `getProvider()` function that returns an
-`LLMProvider` interface implementation. In demo mode, that's the `MockProvider`. In live mode,
-it's the `AnthropicProvider`. No app code changes are needed to swap providers.
+`LLMProvider` interface implementation. Streaming chat also uses a provider resolver in
+`lib/llm/streaming-provider.ts` so the API route can request `model`, `systemPrompt`, `tools`, and
+`mode` without knowing vendor-specific setup. In demo mode, that's the `MockProvider`. In live
+Anthropic mode, it's the `AnthropicProvider`/Claude stack. No app code changes are needed to add
+the next provider.
 
 | Provider | Notes |
 |----------|-------|
-| Anthropic (Claude) | Current real-provider — Phase 0B |
-| OpenAI (GPT-4o, etc.) | Viable alternative |
+| Anthropic (Claude) | First live provider — Phase 0B |
+| OpenAI (GPT-4o, etc.) | Planned alternative provider |
+| Ollama | Local/offline development option for future prototypes |
+| vLLM | Self-hosted/institution-hosted inference option |
 | Azure OpenAI | Required if Mayo mandates Azure infrastructure |
 | AWS Bedrock | Another viable enterprise path |
 | Vertex AI | Google Cloud option |
@@ -90,11 +102,16 @@ it's the `AnthropicProvider`. No app code changes are needed to swap providers.
 
 ## Phase roadmap
 
+`ROADMAP.md` is the canonical roadmap. Short version:
+
 | Phase | Status | Description |
 |-------|--------|-------------|
 | **0A** | ✅ Done | Local demo, mock LLM, no external dependencies |
-| **0B** | ✅ Active | Live LLM via Anthropic, streaming chat, chat-first UI |
-| **0C** | Planned | Supabase database, pgvector RAG, user accounts, progress tracking |
+| **0B** | ✅ Active | Chat-first UI, local conversations, tools, mock + Anthropic provider |
+| **0B.1** | Planned | Stabilization, tests, QA, docs alignment |
+| **0B.2** | Planned | Ollama/local model provider |
+| **0B.3** | Planned | OpenAI provider |
+| **0C** | Planned | Supabase database, pgvector RAG, content governance |
 | **1 (Pilot)** | Future | 10–20 residents at Mayo, all 6 modes, admin UI, opt-in leaderboards |
 | **2+** | Future | Wider Mayo deployment, second subspecialty module |
 
@@ -116,10 +133,10 @@ it's the `AnthropicProvider`. No app code changes are needed to swap providers.
 ## Folder structure
 
 ```
-app/              Next.js App Router pages and API routes
-components/       React components (ui/, shell/, case/, chat/, etc.)
-lib/llm/          Provider-agnostic LLM layer (mock → Anthropic in Phase 0B)
-lib/demo/         Local demo state (user, progress, content)
+app/              Next.js App Router pages and API routes, including /c chat routes
+components/       React components (chat layout/sidebar/tool-results, case, shell, ui)
+lib/llm/          Provider-agnostic LLM layer (mock, Anthropic, future providers)
+lib/demo/         Local demo state (user, conversations, progress, content)
 lib/supabase/     Supabase clients (not wired until Phase 0C)
 lib/              Other utilities (scoring, analytics, RAG helpers)
 content/          Markdown KB (content/kb/) and seed cases (content/cases/)

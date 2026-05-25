@@ -1,203 +1,249 @@
-# Handcraft — Specification
+# SurgiCraft : Handcraft Specification
 
-> Working name. An interactive learning chatbot for hand surgery, piloting at Mayo Clinic. Designed for medical students, residents, and fellows.
+> Current product spec for the Phase 0B chat-first prototype. `ROADMAP.md` is the canonical phase plan.
+
+SurgiCraft is an interactive surgical education platform. Handcraft is module 01, focused on hand surgery for medical students, residents, and fellows.
+
+The app is educational only. It is not clinical decision support, must not request PHI, and must never guide care for a real patient.
 
 ---
 
 ## 1. Vision
 
-A playful-academic web app that meets learners where they are: a sub-I wanting to not embarrass themselves on rounds, a PGY-2 cramming for the in-service, a hand fellow prepping for a tricky case tomorrow. The bot adapts its voice and depth to the user, grounds answers in a curated knowledge base, and turns passive reading into active reasoning — Socratic dialogue, unfolding cases, calibrated confidence, and faculty pearls.
+SurgiCraft : Handcraft helps learners practice hand surgery reasoning through conversation. The chat can answer educational questions, launch synthetic cases, quiz the learner, surface common mistakes, and point to do-not-miss red flags. The product should feel like a thoughtful senior resident who reads widely: warm, direct, concise, and honest about uncertainty.
 
-**Non-goals (explicit):**
-- Not clinical decision support for real patients
-- Not a substitute for textbooks, ASPS modules, or attending teaching
-- Not a public ranking system that competes with in-service exams
+Handcraft is the first module. The platform name matters because later SurgiCraft modules can reuse the same shell, provider layer, content governance, and faculty review workflows.
+
+**Non-goals:**
+- Clinical decision support for real patients
+- Intake or storage of PHI
+- Replacement for textbooks, ASPS/PSEN content, faculty teaching, or attending judgment
+- Public scoring or punitive learner ranking
+- Use of licensed textbook content without permission
 
 ---
 
 ## 2. Users
 
-Single intake form on first launch (≤6 questions). All answers editable later.
+The first-launch intake remains intentionally lightweight and browser-local in Phase 0B.
 
 | Field | Options |
 |---|---|
 | Role | M3 / M4 / Intern / PGY-2 / PGY-3 / PGY-4 / PGY-5 / Fellow / Attending |
 | Specialty | Plastic Surgery / Orthopaedic Surgery / Emergency Med / Other |
 | Current rotation | On hand service / Not on hand service |
-| Primary goal *this session* | Pre-round prep / Case prep / In-service prep / Casual learning / Pimping drill |
-| Self-rated comfort | 1–5 across: anatomy, trauma, congenital, peripheral nerve, microsurgery |
-| Anonymous handle | User-chosen (default: auto-generated, e.g. "DistalRadius42") |
+| Primary goal this session | Pre-round prep / Case prep / In-service prep / Casual learning / Pimping drill |
+| Self-rated comfort | 1-5 across anatomy, trauma, congenital, peripheral nerve, microsurgery |
+| Anonymous handle | User-chosen, stored locally in Phase 0B |
 
-The bot uses these to set baseline depth, vocabulary, and case complexity. The user can override per-session: "treat me like an M3 today, I'm rusty."
-
----
-
-## 3. Core modes
-
-Toggle via a mode switcher in the header. Default = **Tutor**.
-
-### 3.1 Tutor (default Q&A)
-Free-form chat. User asks; bot answers with citations and offers follow-up paths ("Want a quick case to apply this?"). Adjusts depth to user role.
-
-### 3.2 Case Unfolds
-Virtual patient appears in a **case canvas** (not chat). Cards reveal progressively as user asks:
-- Chief complaint card (always visible)
-- History card (unlocks on history questions)
-- Exam card (unlocks on exam questions)
-- Imaging card (unlocks on imaging request)
-- Labs card (when relevant)
-- Management card (final reveal)
-
-Each card has subtle entrance animation. Right rail shows "What we've established" — a running clinical summary.
-
-### 3.3 Pimping Simulator
-Rapid-fire questions in attending voice. User picks topic + intensity (Gentle / Standard / Pyrotechnic). Optional countdown bar per question (off by default, on by toggle). Bot scores response and gives the "right way to answer on rounds" debrief.
-
-### 3.4 Pre-Op Prep
-User inputs: procedure + attending (optional) + their level. Bot returns:
-- Anatomy refresher (1 paragraph + clickable SVG)
-- Approach overview
-- Likely intraoperative questions
-- Common pitfalls and pearls
-- Linked references
-
-### 3.5 OR Debrief
-User describes a case they saw. Bot asks reflective questions ("What was the indication?", "What would you do differently if you were primary?"). Fills knowledge gaps as they emerge.
-
-### 3.6 Consult Mode (ED-to-hand)
-Bot plays the ED resident: "Hey, I've got a 24M who punched a wall, swollen 5th MCP..." User must elicit the right info, give disposition, and justify it. Bot scores on completeness.
+The app may use the learner profile to adjust depth, but the user can override: "treat me like an M3 today, I'm rusty."
 
 ---
 
-## 4. UI Features (all 8 selected, v1)
+## 3. Chat-First Product Model
 
-| Feature | Mode applied to | Implementation note |
-|---|---|---|
-| Case canvas (progressive card chart) | Case Unfolds | Cards fade/slide in; chart-like layout |
-| Confidence slider before reveal | All quiz-style answers | 0–100% slider; tracked for calibration |
-| Clickable anatomy SVG | Anatomy questions, Pre-op | v1: hand dorsal + palmar views, ~30 labeled structures |
-| Pearl cards | Tutor sidebar, Case end | Collectible; attribution to faculty |
-| Time-pressure mode | Pimping Simulator | Optional; calming timer, not panic-inducing |
-| Two-pane Socratic | Case Unfolds, Tutor (toggle) | Right rail: running summary |
-| Streak rings | Dashboard | 3 rings: question / case / review |
-| Serif case stems | Case Unfolds, Pimping | Typography choice (Fraunces or Instrument Serif) |
+The primary route is `/c`. Chat is the platform surface.
 
----
+- `/` redirects to onboarding or `/c`
+- `/c` starts a new conversation
+- `/c/[conversationId]` loads a local conversation
+- `ChatLayout` provides a sidebar/library on desktop and a drawer on mobile
+- Conversations persist in browser `localStorage` during Phase 0B
+- The old dashboard route is removed
 
-## 5. Engagement & social
-
-**Privacy contract (shown at onboarding, persistent in settings):**
-> "Your individual responses are private. Faculty and program directors cannot see how you score. Aggregate anonymized data helps us improve the platform."
-
-- **Leaderboards:** opt-in only, anonymous handles, cohort-scoped (your program / your PGY / hand fellows nationally). No global default ranking.
-- **Achievement sharing:** completion-based ("I finished the Flexor Tendon module"), not score-based. Shareable as a styled image card.
-- **Streak rings:** personal only; not visible to others.
-- **Cohort goals:** "Mayo hand fellows collectively completed 500 cases this month" — collective, not competitive.
-- **Stump-the-bot:** users submit interesting cases they saw; faculty-reviewed ones enter the corpus with attribution.
+Modes are no longer separate top-level launch cards. Instead, they can be:
+- launched inside chat by tool calls
+- opened from sidebar/library pages
+- referenced by suggested prompt chips
 
 ---
 
-## 6. Content & knowledge
+## 4. Learning Modes
 
-### 6.1 Sources (legality-first)
-| Source | Use |
-|---|---|
-| Faculty-written notes & pearls | ✅ Full use, attributed |
-| Mayo internal hand curriculum | ✅ Full use (Mayo-only deployment) |
-| ASPS course catalog | 🔗 Link out only, do not ingest |
-| Textbooks (Green's, Wolfe) | 🔗 Cite, never reproduce |
-| Journal articles | 🔗 Cite via DOI, paraphrase findings |
-| Open guidelines (AAOS, ASSH) | ✅ Cite and summarize |
-| Patient data from EPIC | ❌ Not in pilot |
-| Synthetic cases written by faculty | ✅ Primary case source |
+### 4.1 Tutor Chat
 
-### 6.2 Retrieval architecture
-RAG pipeline:
-1. Knowledge base = markdown files in `/content/kb/`, embedded into Supabase pgvector
-2. On user query: embed → top-k retrieval → pass as context to Claude with citation instructions
-3. Bot must cite source IDs from the KB; if no relevant chunk, says so plainly and offers to escalate
+Default free-form educational chat. Responses should be concise, role-aware, and citation-honest. If no curated source is available, the model labels the answer as an uncited educational overview needing faculty verification.
 
-### 6.3 Quality safeguards
-- Every bot response has a 👍 / 👎 / "flag for faculty" button
-- Flagged responses queued for hand surgery attending review in a simple admin view
-- Hallucination guard: bot uses an "I'm not sure" template when retrieval confidence is low
-- Faculty can mark KB entries as "verified" (subtle badge on responses citing them)
+### 4.2 Case Unfolds
+
+Synthetic progressive cases can launch inline from chat or be opened from `/case`. Each case reveals cards progressively:
+
+- chief complaint
+- history
+- exam
+- imaging
+- labs when relevant
+- management
+
+Management is gated until enough information is uncovered or the learner explicitly asks to reveal it. Case endings include teaching points, local pearls, references, and Reasoning Autopsy.
+
+### 4.3 Quiz / Pimping Drill
+
+Quiz mode launches inside chat through the `start_quiz` tool. The current Phase 0B version asks and grades short educational questions in the conversation. Dedicated simulator pages are historical/deferred.
+
+### 4.4 Mistake Museum
+
+Common errors are available at `/mistakes` and can be surfaced inline through `show_mistake`. Entries are local demo content and need faculty verification.
+
+### 4.5 Do-Not-Miss
+
+High-stakes red flags are available at `/donotmiss` and can be surfaced inline through `show_donotmiss`. Every surfaced item must repeat the educational-only escalation warning.
+
+### 4.6 Pearls
+
+There are two concepts:
+
+- authored local pearls from the demo registry, surfaced by `show_pearl`
+- user-saved pearls from assistant messages, stored locally at `/pearls`
+
+The model may not fabricate pearl text or attribution. It can only call `show_pearl` with known local pearl IDs.
+
+---
+
+## 5. Safety and Content Honesty
+
+Hard rules:
+
+- No PHI. Do not ask for names, MRNs, dates of birth, addresses, images with identifiers, or other identifiers.
+- If the user describes a real patient or asks for clinical guidance, refuse clinical guidance and offer to convert the scenario into a synthetic educational case.
+- Cite only curated context or static local references actually available to the app.
+- Do not fabricate citations, source IDs, article details, DOIs, or faculty pearls.
+- Label unverified local demo content clearly.
+- All cases are synthetic.
+
+Quality controls planned for Phase 0C:
+
+- faculty verification badges
+- flagged response review
+- KB verification workflow
+- source-grounded RAG
+- persisted audit trails for content changes
+
+---
+
+## 6. Engagement and Privacy
+
+Phase 0B is local-first:
+
+- Conversations stay in browser `localStorage`
+- Saved pearls stay in browser `localStorage`
+- No accounts
+- No database
+- No faculty-visible individual scoring
+
+Future pilot privacy contract:
+
+> Your individual responses are private. Faculty and program directors cannot see how you score. Aggregate anonymized data helps improve the platform.
+
+Leaderboards, if built, must be opt-in, anonymous, cohort-scoped, and non-punitive.
 
 ---
 
 ## 7. Architecture
 
-### 7.1 Stack
-- **Frontend:** Next.js 14+ (App Router), TypeScript, Tailwind CSS, shadcn/ui
-- **Auth & DB:** Supabase (Postgres + pgvector + Auth)
-- **LLM:** Anthropic API
-  - Claude Opus → case generation, Socratic dialogue, pimping
-  - Claude Sonnet → routine Q&A, summarization
-- **Hosting:** Vercel (prototype) → Mayo-sanctioned env before resident pilot
-- **Analytics:** PostHog (self-hosted option exists if needed for compliance)
+### 7.1 Current Stack
 
-### 7.2 Data model (Postgres)
-```
-users           id, handle, role, pgy, specialty, on_hand_service, comfort_jsonb, created_at
-sessions        id, user_id, mode, started_at, ended_at, summary_jsonb
-messages        id, session_id, role, content, citations_jsonb, confidence, created_at
-cases           id, title, stem, cards_jsonb, difficulty, tags, author, verified, created_at
-case_attempts   id, user_id, case_id, transcript_jsonb, score, completed_at
-pearls          id, content, attribution, tags, verified, created_at
-pearl_unlocks   id, user_id, pearl_id, unlocked_at
-kb_chunks       id, content, embedding(vector), source, source_type, verified
-streaks         id, user_id, question_ring, case_ring, review_ring, date
-flags           id, message_id, user_id, reason, status, reviewed_by, reviewed_at
-leaderboards    id, scope (program/pgy/national), period, jsonb_rankings, opt_in_user_ids[]
+- **Frontend:** Next.js App Router, TypeScript, Tailwind CSS, shadcn-style primitives
+- **Chat:** `@ai-sdk/react` on the client, AI SDK streaming route on the server
+- **LLM providers:** provider-agnostic layer under `lib/llm/`
+- **Demo state:** browser `localStorage` under `lib/demo/`
+- **Content:** static JSON cases and markdown KB drafts under `content/`
+- **Database:** Supabase files retained, not wired in Phase 0B
+
+### 7.2 Provider-Agnostic LLM Layer
+
+Provider selection is centralized:
+
+- `lib/llm/provider-selection.ts`
+- `lib/llm/streaming-provider.ts`
+- `lib/llm/index.ts`
+- `lib/llm/provider.ts`
+
+Supported now:
+
+- `mock`
+- `anthropic`
+
+Planned:
+
+- `ollama`
+- `openai`
+- self-hosted or institution-hosted providers such as vLLM
+
+`LLM_PROVIDER` is the preferred server-side selection variable. `NEXT_PUBLIC_APP_MODE=live` is supported for compatibility and currently maps to Anthropic. If a live provider lacks credentials, the app falls back to mock behavior.
+
+### 7.3 API Routes
+
+Current important routes:
+
+```text
+/api/chat              POST streaming chat
+/api/chat/title        POST conversation title generation
+/api/case/start        POST legacy/demo case start
+/api/case/reveal       POST legacy/demo reveal helper
+/api/flag              POST flag placeholder
+/api/pearl/unlock      POST pearl unlock placeholder
+/api/rag/search        POST stub until Phase 0C
 ```
 
-### 7.3 API routes (Next.js)
+The chat route validates request shape with zod, caps newest user input length, passes only the last 20 messages to the model, enforces development-only cost guards, and sets `maxOutputTokens`.
+
+### 7.4 Phase 0C Data Model
+
+Supabase/Postgres is Phase 0C+, not required for Phase 0B. The eventual tables remain:
+
+```text
+users
+sessions
+messages
+cases
+case_attempts
+pearls
+pearl_unlocks
+kb_chunks
+streaks
+flags
+leaderboards
 ```
-/api/chat              POST  streaming chat completion (Claude)
-/api/case/start        POST  generate or load a case
-/api/case/reveal       POST  reveal next card based on user query
-/api/pimping           POST  generate question + grade response
-/api/pearl/unlock      POST  award pearl
-/api/flag              POST  flag a response
-/api/leaderboard       GET   cohort-scoped
-/api/streak            GET/POST
-```
+
+`kb_chunks` will use pgvector for retrieval-grounded responses.
 
 ---
 
-## 8. Build phases
+## 8. Build Phases
 
-| Phase | Timeline | Scope | Gate |
-|---|---|---|---|
-| **0 — Prototype** | ~6 weeks | Tutor + Case Unfolds, 5 cases, basic UI, no auth | Faculty demo |
-| **1 — Pilot** | 3 months | All 6 modes, all 8 UI features, leaderboards, 20 cases, RAG | 10–20 residents at Mayo |
-| **2 — Expand** | TBD | Wider Mayo deployment, 2nd subspecialty groundwork | Pilot success metrics met |
+See `ROADMAP.md` for the canonical phase plan.
 
-**Phase 1 success metrics:**
-- ≥60% enrolled use ≥2x/week voluntarily
-- ≥70% rate "would recommend to co-resident"
-- <5% flag rate on bot responses
-- Knowledge gain (pre/post quiz) directionally positive (secondary)
+Short form:
+
+- **0A complete:** local demo, static content, mock provider
+- **0B active:** chat-first streaming prototype, local conversations, tools, Anthropic first live provider
+- **0B.1 planned:** stabilization, tests, QA, docs
+- **0B.2 planned:** Ollama/local provider
+- **0B.3 planned:** OpenAI provider
+- **0C planned:** Supabase, RAG, content governance, faculty workflows
+- **Phase 1 future:** Mayo pilot readiness
 
 ---
 
-## 9. Risks & mitigations
+## 9. Risks and Mitigations
 
 | Risk | Mitigation |
 |---|---|
-| Single confident hallucination kills trust | RAG + low-confidence template + faculty flag review |
-| Public scoring increases burnout | Opt-in, anonymous, cohort-scoped only |
-| Faculty don't engage with content review | Recruit 1 champion attending first, lightweight review UI |
-| HIPAA concerns from real-feeling cases | Synthetic-only cases, prominent "educational use only" |
-| Feature bloat dilutes pilot | Phase 0 ships only Tutor + Case Unfolds |
-| ASPS / textbook IP exposure | Link-out policy, never ingest licensed content |
+| Real-patient use | Prominent disclaimers, no-PHI prompt rules, refusal templates |
+| Hallucinated citations | Cite only curated/static sources; label uncited overviews |
+| Fabricated pearls | Tool accepts known `pearl_id` only |
+| Tool overreach | Narrow schemas and null-safe UI renderers |
+| Cost spikes | Development cost guard now; DB-backed guard in Phase 0C |
+| Faculty trust | Verification labels and faculty review workflow before pilot |
+| IP exposure | Link out to licensed material; paraphrase and cite |
 
 ---
 
-## 10. Open questions to revisit later
+## 10. Open Questions
 
-- Voice mode (v2)
-- EPIC integration (v3+, governance-heavy)
-- Multi-institution version (different product, different IP rules)
-- Generative anatomy diagrams vs. licensed atlas integration
-- Mobile native app vs. PWA
+- Which provider should be used for Mayo-approved deployment?
+- How much local/offline capability is needed for demos?
+- What is the minimum faculty admin workflow for Phase 0C?
+- Which hand surgery attending will own content verification?
+- How much analytics is acceptable for the pilot?

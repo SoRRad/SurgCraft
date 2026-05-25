@@ -79,6 +79,9 @@ function PearlCard({ pearl }: { pearl: { id: string; text: string; attribution: 
     <div className="border border-terracotta-soft bg-terracotta-soft/30 rounded-lg p-4">
       <p className="text-body text-ink leading-relaxed mb-2">{pearl.text}</p>
       <p className="text-micro text-terracotta font-medium">{pearl.attribution}</p>
+      <p className="text-micro text-ink-muted mt-2">
+        Local demo content · needs faculty verification
+      </p>
     </div>
   )
 }
@@ -268,7 +271,7 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
                     <Link href="/case">← Back to cases</Link>
                   </Button>
                   <Button asChild>
-                    <Link href="/dashboard">Dashboard</Link>
+                    <Link href="/c">Back to chat</Link>
                   </Button>
                 </div>
               </div>

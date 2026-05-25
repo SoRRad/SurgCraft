@@ -26,4 +26,4 @@ The flexor tendons of the hand are divided into five zones that predict injury p
 - Primary repair within 24 hours is ideal; delayed repair remains possible up to 3 weeks.
 - Pulley reconstruction may be necessary if pulleys are violated at repair.
 
-*Source: Handcraft seed content. Not yet faculty verified.*
+*Source: SurgiCraft : Handcraft seed content. Not yet faculty verified.*

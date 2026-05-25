@@ -1,4 +1,6 @@
-# Handcraft — Design System
+# SurgiCraft : Handcraft — Design System
+
+> Current visual system for module 01 of SurgiCraft. The active app is chat-first: `/c` is the primary surface, with library views available from the sidebar.
 
 Playful-academic. Editorial typography, asymmetric layouts, hand-drawn anatomical motifs. Warm, not clinical. Confident, not corporate.
 
@@ -84,8 +86,11 @@ Headlines use generous tracking on Fraunces' display optical size. Body Inter at
 ### Standard (shadcn/ui)
 `Button`, `Card`, `Dialog`, `Sheet`, `Tabs`, `Toast`, `Tooltip`, `Slider`, `Input`, `Textarea`, `Select`, `Switch`, `Avatar`, `Badge`, `Progress`.
 
-### Custom (Handcraft-specific)
+### Custom (SurgiCraft : Handcraft-specific)
 ```
+<ChatLayout />           // Chat-first shell with sidebar + main area
+<Sidebar />              // Conversations, library links, settings/about
+<ChatExperience />       // Streaming conversation surface
 <CaseCanvas />          // Two-pane case mode with progressive cards
 <CaseCard />            // Single revealable card (CC, History, Exam, etc.)
 <ConfidenceSlider />    // Pre-answer 0–100% with delayed reveal
@@ -95,6 +100,12 @@ Headlines use generous tracking on Fraunces' display optical size. Body Inter at
 <ModeSwitcher />        // Header mode selector
 <MessageBubble />       // Chat message with citation chips
 <CitationChip />        // Inline source reference
+<CaseLauncher />        // Inline chat tool result for case launch
+<InlinePearlCard />     // Inline known local pearl tool result
+<InlineMistakeCard />   // Inline mistake tool result
+<DoNotMissCard />       // Inline red-flag tool result
+<QuizStarter />         // Inline quiz mode starter
+<FollowupChips />       // Tool-rendered quick reply chips
 <PimpingTimer />        // Calming countdown bar
 <RunningSummary />      // Right-rail case summary
 <SectionMarker />       // "§ 02 — Anatomy" header style
@@ -128,7 +139,7 @@ Micro:     cubic-bezier(0.4, 0, 0.2, 1)       — 160ms (hover, focus)
 - Achievement names have wit but are domain-grounded: "Kanavel Connoisseur", "Tendon Whisperer", "Scaphoid Scholar", "Nerve Cartographer".
 - Empty states have personality. e.g. "Nothing here yet. Even a hand has to start as a limb bud."
 - Error states never blame the user. "We lost that one. Try again?"
-- Citations format: `[Wolfe, Green's Operative Hand Surgery, Ch. 7] · [DOI: 10.xxxx]`
+- Citations are honest: cite only curated/static sources available to the app. If no source is available, label the answer as an uncited educational overview needing faculty verification.
 - Disclaimer (footer, every page): *Educational use only. Not for clinical decision-making.*
 
 ---

@@ -230,6 +230,9 @@ export function CaseCanvas({ caseId, embedded = false, onComplete, onBack }: Cas
                   <div key={pearl.id} className="border border-terracotta-soft bg-terracotta-soft/30 rounded-lg p-3">
                     <p className="text-body text-ink leading-relaxed mb-1.5">{pearl.text}</p>
                     <p className="text-micro text-terracotta font-medium">{pearl.attribution}</p>
+                    <p className="text-micro text-ink-muted mt-2">
+                      Local demo content · needs faculty verification
+                    </p>
                   </div>
                 ))}
               </div>

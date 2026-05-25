@@ -8,6 +8,7 @@ interface DoNotMissEntry {
   clue: string
   badOutcome: string
   educationalPoint: string
+  verified?: boolean
 }
 
 interface DoNotMissCardProps {
@@ -40,6 +41,11 @@ export function DoNotMissCard({ entry }: DoNotMissCardProps) {
             In a real clinical scenario, escalate immediately to your senior and hand surgery. Never rely on this app for clinical decisions.
           </p>
         </div>
+        {!entry.verified && (
+          <p className="text-micro text-ink-muted">
+            Local demo content · needs faculty verification
+          </p>
+        )}
       </div>
     </div>
   )

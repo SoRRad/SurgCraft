@@ -9,6 +9,7 @@ interface MistakeEntry {
   mistake: string
   whyItMatters: string
   bestCorrectionOneLiner: string
+  verified?: boolean
 }
 
 interface InlineMistakeCardProps {
@@ -46,6 +47,11 @@ export function InlineMistakeCard({ entry }: InlineMistakeCardProps) {
         >
           See all mistakes in Mistake Museum →
         </Link>
+        {!entry.verified && (
+          <p className="text-micro text-ink-muted">
+            Local demo content · needs faculty verification
+          </p>
+        )}
       </div>
     </div>
   )

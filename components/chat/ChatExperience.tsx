@@ -36,8 +36,8 @@ const SUGGESTED_PROMPTS = [
 function toUIMessage(msg: ChatMessage): UIMessage {
   return {
     id: msg.id,
-    role: msg.role as "user" | "assistant",
-    parts: [{ type: "text" as const, text: msg.content }],
+    role: msg.role as UIMessage["role"],
+    parts: msg.parts?.length ? msg.parts : msg.content ? [{ type: "text" as const, text: msg.content }] : [],
   } as UIMessage
 }
 
@@ -46,6 +46,75 @@ function getMessageText(message: UIMessage): string {
     .filter((p): p is { type: "text"; text: string } => p.type === "text")
     .map((p) => p.text)
     .join("")
+}
+
+function getRecordText(value: unknown, key: string): string {
+  if (typeof value !== "object" || value === null || !(key in value)) return ""
+  const field = (value as Record<string, unknown>)[key]
+  return typeof field === "string" ? field : ""
+}
+
+function getToolPartSummary(part: UIMessage["parts"][number]): string | null {
+  if (!part.type.startsWith("tool-")) return null
+
+  const toolName = part.type.slice(5)
+  const toolPart = part as unknown as { state?: string; output?: unknown }
+  if (toolPart.state !== "output-available") return null
+
+  const output = toolPart.output
+  switch (toolName) {
+    case "launch_case": {
+      const title = getRecordText(output, "title")
+      const id = getRecordText(output, "id")
+      return title ? `Tool result: launched case "${title}"${id ? ` (${id})` : ""}.` : null
+    }
+    case "show_pearl": {
+      const topic = getRecordText(output, "topic")
+      const content = getRecordText(output, "content")
+      return content ? `Tool result: pearl${topic ? ` on ${topic}` : ""}: ${content}` : null
+    }
+    case "show_mistake": {
+      const title = getRecordText(output, "title")
+      const mistake = getRecordText(output, "mistake")
+      return title || mistake ? `Tool result: common mistake${title ? `, ${title}` : ""}${mistake ? `: ${mistake}` : "."}` : null
+    }
+    case "show_donotmiss": {
+      const diagnosis = getRecordText(output, "diagnosis")
+      const clue = getRecordText(output, "clue")
+      return diagnosis || clue ? `Tool result: do-not-miss${diagnosis ? `, ${diagnosis}` : ""}${clue ? `: ${clue}` : "."}` : null
+    }
+    case "start_quiz": {
+      const topic = getRecordText(output, "topic")
+      const intensity = getRecordText(output, "intensity")
+      return topic ? `Tool result: quiz ready on ${topic}${intensity ? ` (${intensity})` : ""}.` : null
+    }
+    case "suggest_followups": {
+      if (typeof output !== "object" || output === null) return null
+      const chips = (output as Record<string, unknown>).chips
+      return Array.isArray(chips) && chips.length > 0
+        ? `Tool result: suggested follow-ups: ${chips.filter((chip): chip is string => typeof chip === "string").join("; ")}`
+        : null
+    }
+    default:
+      return null
+  }
+}
+
+function getMessageContentForStorage(message: UIMessage): string {
+  const text = getMessageText(message).trim()
+  const toolSummaries = (message.parts ?? [])
+    .map(getToolPartSummary)
+    .filter((summary): summary is string => Boolean(summary))
+
+  return [text, ...toolSummaries].filter(Boolean).join("\n\n")
+}
+
+function getMessageSnapshot(message: UIMessage): string {
+  return JSON.stringify({
+    id: message.id,
+    role: message.role,
+    parts: message.parts ?? [],
+  })
 }
 
 // ── Markdown + citation renderer ──────────────────────────────────────────────
@@ -121,9 +190,8 @@ function ToolPartRender({
       )
     }
     case "show_pearl": {
-      const data = output as { topic: string; pearl_text: string; attribution: string } | null
-      if (!data) return null
-      return <InlinePearlCard {...data} />
+      const data = output as Parameters<typeof InlinePearlCard>[0]["entry"]
+      return <InlinePearlCard entry={data} />
     }
     case "show_mistake": {
       return <InlineMistakeCard entry={output as Parameters<typeof InlineMistakeCard>[0]["entry"]} />
@@ -430,6 +498,9 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
           <p className="text-body text-ink-muted">
             Ask a question, work through a case, or quiz yourself.
           </p>
+          <p className="text-small text-ink-muted">
+            No PHI: do not enter names, MRNs, dates of birth, or other patient identifiers.
+          </p>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">
@@ -558,7 +629,7 @@ function PrivacyBanner() {
   return (
     <div className="flex items-center gap-3 px-4 py-2.5 bg-bg border-b border-rule text-small text-ink-muted flex-shrink-0">
       <span className="flex-1">
-        Educational use only. Not for clinical decision-making. Conversations are stored locally — never shared with faculty.
+        Educational use only. Not for clinical decision-making. No PHI. Conversations are stored locally and never shared with faculty.
       </span>
       <button
         type="button"
@@ -589,24 +660,27 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
   const router = useRouter()
 
   const [quizState, setQuizState] = useState<QuizState | null>(null)
+  const [convId, setConvId] = useState<string | undefined>(conversationId)
+  const [convTitle, setConvTitle] = useState("")
 
   const transport = useMemo(
     () =>
       new DefaultChatTransport({
         api: "/api/chat",
-        body: quizState ? { quizMode: quizState } : undefined,
+        body: {
+          ...(convId ? { conversationId: convId } : {}),
+          ...(quizState ? { quizMode: quizState } : {}),
+        },
       }),
-    // Rebuild transport when quizState changes so it includes the quiz context
+    // Rebuild transport when session context changes so retries/regenerations keep it.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [quizState?.topic, quizState?.intensity, quizState?.questionsAsked]
+    [convId, quizState?.topic, quizState?.intensity, quizState?.questionsAsked]
   )
 
   const { messages, sendMessage, status, setMessages } = useChat({ transport })
 
   const [input, setInput] = useState("")
   const [handle, setHandle] = useState("doctor")
-  const [convId, setConvId] = useState<string | undefined>(conversationId)
-  const [convTitle, setConvTitle] = useState("")
   const [msgMeta, setMsgMeta] = useState<Record<string, LocalMeta>>({})
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -614,6 +688,7 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
   const [showScrollButton, setShowScrollButton] = useState(false)
   const prevStatusRef = useRef(status)
   const lastAssistantMsgIdRef = useRef<string | null>(null)
+  const lastAssistantSnapshotRef = useRef<string | null>(null)
 
   const isLoading = status === "submitted" || status === "streaming"
 
@@ -625,6 +700,7 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
   }, [])
 
   useEffect(() => {
+    setConvId(conversationId)
     if (!conversationId) return
     const conv = getConversation(conversationId)
     if (!conv) return
@@ -634,7 +710,13 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
       meta[m.id] = { feedback: m.feedback, flagged: m.flagged, savedAsPearl: m.savedAsPearl }
     }
     setMsgMeta(meta)
-    if (conv.messages.length > 0) setMessages(conv.messages.map(toUIMessage))
+    if (conv.messages.length > 0) {
+      const restoredMessages = conv.messages.map(toUIMessage)
+      setMessages(restoredMessages)
+      const lastAssistant = [...restoredMessages].reverse().find((m) => m.role === "assistant")
+      lastAssistantMsgIdRef.current = lastAssistant?.id ?? null
+      lastAssistantSnapshotRef.current = lastAssistant ? getMessageSnapshot(lastAssistant) : null
+    }
   }, [conversationId, setMessages])
 
   // Pre-fill from URL query params (?prefill= or legacy ?q=)
@@ -652,23 +734,34 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
     if (nearBottom || isLoading) messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages, isLoading])
 
-  // Persist assistant message to localStorage when streaming ends
+  // Persist assistant message to localStorage when streaming settles.
   useEffect(() => {
-    if (prevStatusRef.current === "streaming" && status === "ready") {
+    if (status === "ready" && convId) {
       const lastMsg = [...messages].reverse().find((m) => m.role === "assistant")
-      if (lastMsg && convId && lastMsg.id !== lastAssistantMsgIdRef.current) {
-        lastAssistantMsgIdRef.current = lastMsg.id
-        const content = getMessageText(lastMsg)
-        if (content) appendMessage(convId, { id: lastMsg.id, role: "assistant", content })
-        // Increment quiz questions asked
-        if (quizState) {
-          setQuizState((prev) => prev ? { ...prev, questionsAsked: prev.questionsAsked + 1 } : null)
+      if (lastMsg) {
+        const snapshot = getMessageSnapshot(lastMsg)
+        if (snapshot !== lastAssistantSnapshotRef.current) {
+          lastAssistantSnapshotRef.current = snapshot
+          const content = getMessageContentForStorage(lastMsg)
+          appendMessage(convId, {
+            id: lastMsg.id,
+            role: "assistant",
+            content: content || "Assistant response",
+            parts: lastMsg.parts,
+          })
+        }
+
+        if (lastMsg.id !== lastAssistantMsgIdRef.current) {
+          lastAssistantMsgIdRef.current = lastMsg.id
+          // Increment quiz questions asked once per completed assistant turn.
+          if (prevStatusRef.current === "streaming" && quizState) {
+            setQuizState((prev) => prev ? { ...prev, questionsAsked: prev.questionsAsked + 1 } : null)
+          }
         }
       }
     }
     prevStatusRef.current = status
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status])
+  }, [status, messages, convId, quizState])
 
   function handleScroll() {
     const el = scrollContainerRef.current
@@ -680,7 +773,7 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
     setMsgMeta((prev) => ({ ...prev, [id]: { ...prev[id], ...patch } }))
   }, [])
 
-  async function doSend(text: string) {
+  async function doSend(text: string, requestQuizState: QuizState | null = quizState) {
     let currentConvId = convId
 
     if (!currentConvId) {
@@ -701,10 +794,22 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
         .catch(() => {})
     }
 
-    const savedUserMsg = appendMessage(currentConvId, { role: "user", content: text })
+    const savedUserMsg = appendMessage(currentConvId, {
+      role: "user",
+      content: text,
+      parts: [{ type: "text" as const, text }],
+    })
     setMsgMeta((prev) => ({ ...prev, [savedUserMsg.id]: {} }))
 
-    await sendMessage({ text })
+    await sendMessage(
+      { text, messageId: savedUserMsg.id },
+      {
+        body: {
+          conversationId: currentConvId,
+          ...(requestQuizState ? { quizMode: requestQuizState } : {}),
+        },
+      }
+    )
 
     if (!conversationId) router.replace(`/c/${currentConvId}`)
   }
@@ -723,13 +828,14 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
   }
 
   function handleQuizBegin(topic: string, intensity: string) {
-    setQuizState({ topic, intensity, questionsAsked: 0 })
-    doSend(`Begin the quiz on "${topic}" at ${intensity} intensity.`)
+    const nextQuizState = { topic, intensity, questionsAsked: 0 }
+    setQuizState(nextQuizState)
+    doSend(`Begin the quiz on "${topic}" at ${intensity} intensity.`, nextQuizState)
   }
 
   function handleQuizEnd() {
     setQuizState(null)
-    doSend("End the quiz now and give me a summary of how I did.")
+    doSend("End the quiz now and give me a summary of how I did.", null)
   }
 
   function handleCaseComplete(caseId: string, caseTitle: string) {

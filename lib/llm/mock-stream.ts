@@ -1,13 +1,31 @@
 // Mock streaming helper — simulates tool calls from the LLM using keyword detection.
-// Used when NEXT_PUBLIC_APP_MODE != "live" or ANTHROPIC_API_KEY is not set.
+// Used when LLM_PROVIDER resolves to mock or a live provider is missing credentials.
 
 import { createUIMessageStream, createUIMessageStreamResponse, generateId } from "ai"
-import { MISTAKE_MUSEUM, DO_NOT_MISS } from "@/lib/demo/demo-content"
+import { MISTAKE_MUSEUM, DO_NOT_MISS, PEARLS } from "@/lib/demo/demo-content"
 import { findTutorAnswer } from "@/lib/llm/local-demo-engine"
+import case001 from "@/content/cases/001-fight-bite.json"
+import case002 from "@/content/cases/002-mallet-finger.json"
+import case003 from "@/content/cases/003-distal-radius.json"
+
+type MockCase = {
+  id: string
+  title: string
+  stem: string
+  difficulty: string
+  estimatedMinutes: number
+  tags: string[]
+}
+
+const CASE_MAP: Record<string, MockCase> = {
+  "001-fight-bite": case001 as MockCase,
+  "002-mallet-finger": case002 as MockCase,
+  "003-distal-radius": case003 as MockCase,
+}
 
 type MockToolCall =
   | { tool: "launch_case"; args: { case_id: string; reason: string } }
-  | { tool: "show_pearl"; args: { topic: string; pearl_text: string; attribution: string } }
+  | { tool: "show_pearl"; args: { pearl_id: string } }
   | { tool: "show_mistake"; args: { mistake_id: string } }
   | { tool: "show_donotmiss"; args: { donotmiss_id: string } }
   | { tool: "start_quiz"; args: { topic: string; intensity: string } }
@@ -112,13 +130,12 @@ function buildFollowupChips(q: string, usedTools: MockToolCall[]): string[] {
 async function executeToolMock(toolCall: MockToolCall): Promise<unknown> {
   switch (toolCall.tool) {
     case "launch_case": {
-      const { default: caseJson } = await import(`@/content/cases/${toolCall.args.case_id}.json`)
-      const c = caseJson as { id: string; title: string; stem: string; difficulty: string; estimatedMinutes: number; tags: string[] }
+      const c = CASE_MAP[toolCall.args.case_id]
       if (!c) return null
       return { id: c.id, title: c.title, stem: c.stem, difficulty: c.difficulty, estimatedMinutes: c.estimatedMinutes, tags: c.tags, reason: toolCall.args.reason }
     }
     case "show_pearl":
-      return toolCall.args
+      return PEARLS.find((p) => p.id === toolCall.args.pearl_id) ?? null
     case "show_mistake":
       return MISTAKE_MUSEUM.find((m) => m.id === toolCall.args.mistake_id) ?? null
     case "show_donotmiss":
@@ -138,7 +155,7 @@ function getMockTextResponse(userMessage: string): string {
   }
   return (
     "That's a great hand surgery question. In this demo mode, I'm using local keyword matching. " +
-    "For a full AI-powered response, set ANTHROPIC_API_KEY and NEXT_PUBLIC_APP_MODE=live in your .env.local. " +
+    "For a full AI-powered response, set LLM_PROVIDER=anthropic and ANTHROPIC_API_KEY in your .env.local. " +
     "Try asking about fight bites, mallet finger, flexor tendon zones, Kanavel signs, or distal radius fractures."
   )
 }

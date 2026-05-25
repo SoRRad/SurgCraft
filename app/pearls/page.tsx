@@ -67,7 +67,10 @@ function PearlsContent() {
   const [pearls, setPearls] = useState<SavedPearl[]>([])
 
   useEffect(() => {
-    setPearls(listPearls())
+    const refreshPearls = () => setPearls(listPearls())
+    refreshPearls()
+    window.addEventListener("surgicraft:pearls:updated", refreshPearls)
+    return () => window.removeEventListener("surgicraft:pearls:updated", refreshPearls)
   }, [])
 
   if (pearls.length === 0) {

@@ -1,10 +1,10 @@
-// Vercel AI SDK v6 tool definitions for the Handcraft tutor.
+// Vercel AI SDK v6 tool definitions for the SurgiCraft : Handcraft tutor.
 // All tools have server-side execute functions that return structured data.
 // The client renders rich UI based on the tool name and result.
 
 import { tool } from "ai"
 import { z } from "zod"
-import { MISTAKE_MUSEUM, DO_NOT_MISS } from "@/lib/demo/demo-content"
+import { MISTAKE_MUSEUM, DO_NOT_MISS, PEARLS, PEARL_IDS } from "@/lib/demo/demo-content"
 
 import case001 from "@/content/cases/001-fight-bite.json"
 import case002 from "@/content/cases/002-mallet-finger.json"
@@ -50,21 +50,14 @@ export const allTools = {
 
   show_pearl: tool({
     description:
-      "Use when there is a sharp, attributable, high-yield clinical pearl that perfectly captures the teaching point. " +
-      "Use sparingly — at most one per response. Never fabricate a pearl. " +
-      "The pearl must be attributable to a real, citable source.",
+      "Use when one known local demo pearl perfectly captures the teaching point. " +
+      "Use sparingly — at most one per response. Never fabricate pearl text or attribution. " +
+      "Available pearl IDs: fight-bite-mcp, eikenella, mallet-flex-resets-clock, " +
+      "mallet-leave-pip, acute-cts-distal-radius, distal-radius-not-just-a-wrist-fracture.",
     inputSchema: z.object({
-      topic: z.string().describe('Brief topic label, e.g. "Fight bite" or "Mallet finger"'),
-      pearl_text: z
-        .string()
-        .describe("The pearl itself — concise, rounds-ready, under 3 sentences"),
-      attribution: z
-        .string()
-        .describe(
-          'Source, e.g. "Green\'s Operative Hand Surgery, 2022" or "ASSH Clinical Practice Guidelines, 2023"'
-        ),
+      pearl_id: z.enum(PEARL_IDS).describe("ID of the known local pearl to surface"),
     }),
-    execute: async (input) => input,
+    execute: async ({ pearl_id }) => PEARLS.find((p) => p.id === pearl_id) ?? null,
   }),
 
   show_mistake: tool({

@@ -32,4 +32,4 @@ tags: [distal-radius, surgical-approach, operative]
 - PA: restore radial inclination (~23°) and radial height (~12mm)
 - Skyline view: confirm dorsal screw clearance
 
-*Source: Handcraft seed content. Not yet faculty verified.*
+*Source: SurgiCraft : Handcraft seed content. Not yet faculty verified.*

@@ -1,63 +1,117 @@
-import { streamText, convertToModelMessages } from "ai"
-import { anthropic } from "@ai-sdk/anthropic"
-import { readFileSync } from "fs"
-import { join } from "path"
-import { allTools } from "@/lib/llm/tools"
+import { streamText, convertToModelMessages, type UIMessage } from "ai"
+import { z } from "zod"
 import { createMockUIMessageStreamResponse } from "@/lib/llm/mock-stream"
 import { checkSessionLimit, recordUsage } from "@/lib/llm/cost-guard"
+import { getStreamingProviderConfig } from "@/lib/llm/streaming-provider"
 
-let _systemPrompt: string | null = null
-function getSystemPrompt(): string {
-  if (_systemPrompt) return _systemPrompt
-  try {
-    _systemPrompt = readFileSync(join(process.cwd(), "prompts/tutor-chat.md"), "utf-8")
-  } catch {
-    _systemPrompt = "You are a hand surgery education tutor. Be helpful, accurate, and cite sources."
-  }
-  return _systemPrompt
+const MAX_USER_MESSAGE_CHARS = 4000
+const MAX_MESSAGES_FOR_MODEL = 20
+const MAX_APPROX_INPUT_TOKENS = 16_000
+
+const MessagePartSchema = z.object({ type: z.string() }).passthrough()
+
+const MessageSchema = z
+  .object({
+    id: z.string().optional(),
+    role: z.enum(["system", "user", "assistant"]),
+    content: z.string().optional(),
+    parts: z.array(MessagePartSchema).optional(),
+  })
+  .passthrough()
+  .refine((message) => typeof message.content === "string" || Array.isArray(message.parts), {
+    message: "Each message must include content or parts.",
+  })
+
+const QuizModeSchema = z.object({
+  topic: z.string().min(1).max(160),
+  intensity: z.enum(["gentle", "standard", "pyrotechnic"]),
+  questionsAsked: z.number().int().min(0).max(5),
+})
+
+const ChatRequestSchema = z
+  .object({
+    messages: z.array(MessageSchema).min(1).max(100),
+    id: z.string().min(1).max(200).optional(),
+    conversationId: z.string().min(1).max(200).optional(),
+    quizMode: QuizModeSchema.optional(),
+  })
+  .passthrough()
+
+function jsonError(message: string, status: number) {
+  return new Response(JSON.stringify({ error: message }), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  })
 }
 
-function buildSystemPrompt(quizMode?: { topic: string; intensity: string; questionsAsked: number }): string {
-  const base = getSystemPrompt()
-  if (!quizMode) return base
+function getMessageText(message: z.infer<typeof MessageSchema>): string {
+  const partText =
+    message.parts
+      ?.filter((part): part is typeof part & { text: string } => part.type === "text" && typeof part.text === "string")
+      .map((part) => part.text)
+      .join("") ?? ""
 
-  const intensityDesc =
-    quizMode.intensity === "pyrotechnic"
-      ? "attending-voice rapid-fire pimp questions"
-      : quizMode.intensity === "gentle"
-      ? "encouraging questions with hints"
-      : "balanced quiz questions"
+  return partText || message.content || ""
+}
 
-  return (
-    base +
-    `\n\n## Current quiz mode\nYou are now in quiz mode for the topic: "${quizMode.topic}" (${quizMode.intensity} — ${intensityDesc}).\n` +
-    `Questions asked so far: ${quizMode.questionsAsked}/5.\n` +
-    "Ask one question at a time. After the user answers, briefly grade (correct/partial/incorrect), give a one-sentence explanation, then ask the next question. " +
-    "After 5 questions, summarize the score and key learning points. Do NOT call suggest_followups during quiz mode."
+function estimateApproxInputTokens(messages: z.infer<typeof MessageSchema>[], systemPrompt: string): number {
+  const inputChars = messages.reduce(
+    (total, message) => total + JSON.stringify(message).length,
+    systemPrompt.length
   )
+
+  return Math.ceil(inputChars / 4)
 }
 
 export async function POST(req: Request) {
-  const body = await req.json()
-  const { messages, id, conversationId, quizMode } = body
-  const sessionId: string = id ?? conversationId ?? "anon"
-
-  if (!checkSessionLimit(sessionId)) {
-    return new Response(
-      JSON.stringify({ error: "Session cost limit reached. Start a new conversation." }),
-      { status: 429, headers: { "Content-Type": "application/json" } }
-    )
+  let rawBody: unknown
+  try {
+    rawBody = await req.json()
+  } catch {
+    return jsonError("Malformed JSON request body.", 400)
   }
 
-  const mode = process.env.NEXT_PUBLIC_APP_MODE
-  const apiKey = process.env.ANTHROPIC_API_KEY
+  const parsedBody = ChatRequestSchema.safeParse(rawBody)
+  if (!parsedBody.success) {
+    return jsonError("Malformed chat request.", 400)
+  }
 
-  if (mode === "live" && apiKey) {
+  const { messages, id, conversationId, quizMode } = parsedBody.data
+  const sessionId: string = conversationId ?? id ?? "anon"
+  const newestUserMessage = [...messages].reverse().find((message) => message.role === "user")
+
+  if (!newestUserMessage) {
+    return jsonError("Chat request must include a user message.", 400)
+  }
+
+  const newestUserText = getMessageText(newestUserMessage)
+  if (newestUserText.length > MAX_USER_MESSAGE_CHARS) {
+    return jsonError(`Newest user message must be ${MAX_USER_MESSAGE_CHARS} characters or fewer.`, 413)
+  }
+
+  const modelMessages = messages.slice(-MAX_MESSAGES_FOR_MODEL)
+  const providerConfig = getStreamingProviderConfig(quizMode)
+
+  if (!checkSessionLimit(sessionId)) {
+    return jsonError("Session cost limit reached. Start a new conversation.", 429)
+  }
+
+  if (providerConfig.mode === "anthropic") {
+    const approxInputTokens = estimateApproxInputTokens(modelMessages, providerConfig.systemPrompt)
+
+    if (approxInputTokens > MAX_APPROX_INPUT_TOKENS) {
+      return jsonError("Request is too large for this development chat endpoint.", 413)
+    }
+
     const result = streamText({
-      model: anthropic("claude-sonnet-4-5"),
-      system: buildSystemPrompt(quizMode),
-      messages: await convertToModelMessages(messages),
-      tools: allTools,
+      model: providerConfig.model,
+      system: providerConfig.systemPrompt,
+      messages: await convertToModelMessages(modelMessages as UIMessage[], {
+        tools: providerConfig.tools,
+        ignoreIncompleteToolCalls: true,
+      }),
+      tools: providerConfig.tools,
+      maxOutputTokens: providerConfig.maxOutputTokens,
       onFinish({ usage }) {
         recordUsage(sessionId, usage.inputTokens ?? 0, usage.outputTokens ?? 0)
       },
@@ -66,14 +120,5 @@ export async function POST(req: Request) {
   }
 
   // Demo mode: keyword-triggered tool simulation with mock text response.
-  const lastMessage = messages?.[messages.length - 1]
-  const lastUserText: string =
-    (lastMessage?.parts ?? [])
-      .filter((p: { type: string }) => p.type === "text")
-      .map((p: { type: string; text?: string }) => p.text ?? "")
-      .join("") ||
-    lastMessage?.content ||
-    ""
-
-  return createMockUIMessageStreamResponse(lastUserText)
+  return createMockUIMessageStreamResponse(newestUserText)
 }

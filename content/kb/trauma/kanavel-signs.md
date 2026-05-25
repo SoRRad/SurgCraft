@@ -27,4 +27,4 @@ Allen Kanavel described four cardinal signs that distinguish flexor tenosynoviti
 ## Vs. Fight Bite
 Fight bite → MCP joint. Pyogenic tenosynovitis → runs the length of the flexor sheath. Both are hand surgery emergencies. Know the difference.
 
-*Source: Handcraft seed content. Not yet faculty verified.*
+*Source: SurgiCraft : Handcraft seed content. Not yet faculty verified.*

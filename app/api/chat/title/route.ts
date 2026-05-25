@@ -1,5 +1,5 @@
 import { generateText } from "ai"
-import { anthropic } from "@ai-sdk/anthropic"
+import { getStreamingProviderConfig } from "@/lib/llm/streaming-provider"
 
 function mockTitle(firstUserMessage: string): string {
   const words = firstUserMessage.trim().split(/\s+/).slice(0, 5)
@@ -12,13 +12,12 @@ export async function POST(req: Request) {
     return Response.json({ title: "New conversation" })
   }
 
-  const mode = process.env.NEXT_PUBLIC_APP_MODE
-  const apiKey = process.env.ANTHROPIC_API_KEY
+  const providerConfig = getStreamingProviderConfig()
 
-  if (mode === "live" && apiKey) {
+  if (providerConfig.mode === "anthropic") {
     try {
       const { text } = await generateText({
-        model: anthropic("claude-sonnet-4-5"),
+        model: providerConfig.model,
         prompt: `Summarize this medical learning question into a 4–7 word title. Respond with only the title. No quotes, no period.\n\nQuestion: ${firstUserMessage}`,
         maxOutputTokens: 20,
       })
