@@ -1,6 +1,8 @@
 import type { UIMessage } from "ai"
 
 // Conversation persistence: localStorage under "surgicraft:conversations".
+// The storage key namespace is intentionally retained from the SurgiCraft era
+// to preserve existing learner data through the ORION rebrand.
 // SSR-safe: all functions return early if window is undefined.
 // Capped at 50 conversations; oldest are auto-pruned beyond that.
 
@@ -218,7 +220,7 @@ export function createConversation(firstMessage: string): Conversation {
 
   if (convs.length > MAX_CONVERSATIONS) {
     console.warn(
-      `[surgicraft] Conversation cap (${MAX_CONVERSATIONS}) reached; pruning oldest.`
+      `[orion] Conversation cap (${MAX_CONVERSATIONS}) reached; pruning oldest.`
     )
     convs = convs.slice(0, MAX_CONVERSATIONS)
   }
@@ -457,7 +459,7 @@ function normalizePearl(value: unknown): SavedPearl | null {
 
 export function importLocalData(data: unknown): LocalDataImportResult {
   if (!isRecord(data)) {
-    throw new Error("Expected a SurgiCraft local data export object.")
+    throw new Error("Expected an ORION local data export object.")
   }
 
   const incomingConversations = Array.isArray(data.conversations)

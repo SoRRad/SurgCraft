@@ -1,45 +1,43 @@
-# SurgiCraft : Handcraft Demo Script
+# ORION · Hand demo script
 
-Use this 5-minute path for a Phase 0B.2 faculty demo. Run in mock/demo mode unless you are intentionally testing Anthropic live mode.
+Use this ~6-minute path for a Phase 0B.2 faculty demo. Run in mock/demo mode unless you are intentionally testing Anthropic live mode.
 
-## 5-Minute Demo Path
+## Setup (30 seconds)
 
-1. Open the app in demo/mock mode.
-   - Suggested setup: `LLM_PROVIDER=mock`, `NEXT_PUBLIC_APP_MODE=demo`, then `npm run dev`.
-   - Confirm no API key is required.
-2. Complete onboarding as a PGY-2 or M4 using a synthetic learner profile.
-3. Show the chat empty state.
-   - Point out the educational-only and no-PHI warning.
-   - Use the quick-start cards to show the chat-first navigation model.
-4. Ask: "How do I manage a fight bite?"
-   - Emphasize that this is educational only, not real patient guidance.
-5. Ask: "Walk me through a fight bite case."
-   - Show the inline case launcher if it appears.
-6. Launch or open the fight bite case.
-   - Reveal the case cards step by step.
-   - Show the progress indicator and commit-before-management checkpoint.
-7. Show Reasoning Autopsy.
-   - Explain that the aim is to teach reasoning, not just the final answer.
-8. Ask: "Common mistakes in mallet finger."
-   - Show how the chat can surface high-yield error patterns.
-9. Open Mistake Museum.
-   - Highlight the mistake, why learners make it, and how to avoid it.
-10. Open Do-Not-Miss.
-   - Point out escalation language and educational scope.
-11. Save a pearl, then open `/pearls`.
-   - Show that saved pearls are local to this browser.
-12. Flag a response, then open Settings.
-   - Show local flag review and note that it is not sent to faculty yet.
-13. Export local data from Settings.
-   - Explain that export/import is browser-local for demo portability.
-14. Close with current limitations.
-   - Local demo content.
-   - Needs faculty verification.
-   - No PHI.
-   - No real patient guidance.
-   - RAG/content governance planned for Phase 0C.
+- `LLM_PROVIDER=mock`, `NEXT_PUBLIC_APP_MODE=demo`, then `npm run dev`.
+- Confirm no API key is required.
+- Open http://localhost:3000.
 
-## Faculty Feedback Questions
+## Walk-through (5–6 minutes)
+
+1. **First-run onboarding.** Complete as a PGY-2 or M4 using a synthetic learner profile. Show the privacy contract and the "edit later in Settings" affordance.
+2. **Chat empty state.** Point out:
+   - The ORION wordmark and the "Hand" module chip in the header (clickable — opens the **Module switcher**).
+   - The "Educational only · No PHI" pill in the header.
+   - **Today's Pearl** card under the input.
+   - Quick-start cards + topic-index link.
+3. **Slash commands.** Type `/` in the input — the slash palette appears. Try `/case fight bite` and Tab/Enter to expand.
+4. **First chat.** Ask: "How do I manage a fight bite?" Emphasize that this is educational only.
+5. **Inline case launcher.** Ask: "Walk me through a fight bite case." Click the launcher to expand the case inline. Reveal cards step by step. Point out the **progress bar** and the **commit-before-management** checkpoint.
+6. **Reasoning Autopsy.** At end of case, scroll to the postmortem-style debrief. The point is teaching reasoning, not the final answer.
+7. **Mistake Museum.** Open `/mistakes`. The Mistake Museum is **decision-time cognitive errors only**. Click "Show details" on a card to expand. Point out the cross-link to the paired Do-Not-Miss entry.
+8. **Do-Not-Miss.** Open `/donotmiss`. These are **recognition-time red flags only**. The two libraries are strictly separated by intent; cross-links connect paired topics.
+9. **Topic index.** Open `/topics`. One unified index linking every topic to its case, decision mistake, and recognition red flag.
+10. **Modules.** Open `/modules` (or click the chip in the header). Hand is active; Bariatric, Foot & Ankle, Plastic, Pediatric, Vascular are placeholders awaiting faculty champions. Click one to see the recruitment page.
+11. **Faculty review portal.** Open `/admin/review`. The page renders `CONTENT_REVIEW.md` and stats — every authored claim is tracked here for review.
+12. **Save a pearl.** Bookmark an assistant answer. Open `/pearls` to see it. Pearls are local to this browser.
+13. **Flag a response.** Open Settings → Review flags. Note that flags are local in Phase 0B and not yet routed to faculty.
+14. **Export / Settings.** Show export/import in Settings. Close with the keyboard shortcut panel (press `?`).
+
+## Talking points for close
+
+- Local demo content; no real patient data.
+- Needs faculty verification — visible at `/admin/review` and `CONTENT_REVIEW.md`.
+- No PHI; not for clinical decisions.
+- Modules are intentionally a separate concept so ORION can grow beyond Hand as faculty champions sign on.
+- RAG, accounts, faculty admin UI, and persisted analytics planned for Phase 0C.
+
+## Faculty feedback questions
 
 - Is the educational tone appropriate?
 - Are the cases realistic?
@@ -47,3 +45,4 @@ Use this 5-minute path for a Phase 0B.2 faculty demo. Run in mock/demo mode unle
 - What should be faculty-verified first?
 - Would this be useful for rotating learners?
 - What would make you uncomfortable about resident use?
+- Are you (or do you know) a faculty member who could champion another module (Bariatric, Foot & Ankle, Plastic, Pediatric, Vascular)?

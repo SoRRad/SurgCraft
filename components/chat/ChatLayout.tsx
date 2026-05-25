@@ -3,6 +3,7 @@
 import { createContext, useContext, useState } from "react"
 import { Header } from "@/components/shell/Header"
 import { SidebarInner } from "@/components/chat/Sidebar"
+import { KeyboardShortcuts } from "@/components/shell/KeyboardShortcuts"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
 
@@ -55,6 +56,9 @@ export function ChatLayout({ children }: ChatLayoutProps) {
           <SidebarInner onClose={() => setSidebarOpen(false)} />
         </SheetContent>
       </Sheet>
+
+      {/* Global keyboard shortcuts + ? help dialog */}
+      <KeyboardShortcuts />
     </SidebarContext.Provider>
   )
 }

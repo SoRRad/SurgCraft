@@ -1,194 +1,186 @@
-﻿# SurgiCraft : Handcraft
+# ORION Surgery
 
-Interactive surgical education platform. First module: hand surgery.  
-Piloting at Mayo Clinic with medical students, residents, and fellows.
+**ORION** — **O**perative **R**easoning and **I**nteractive **O**nline **N**avigator.
+A multi-module surgical education platform for medical students, residents, and fellows.
 
----
-
-> **Educational use only. Not for clinical decision-making.**  
-> No content in this application should guide the care of a real patient.
+Piloting at Mayo Clinic. Phase 0B.2: chat-first, local-first, deterministic mock provider by default.
 
 ---
 
-## What this is
+> **Educational use only. Not for clinical decision-making.**
+> Do not enter PHI (names, MRNs, DOBs, images, or any patient identifiers).
+> No content here should guide the care of a real patient.
 
-**SurgiCraft** is a platform for interactive surgical education. It meets learners where they are: a sub-I who doesn't want to embarrass themselves on rounds, a PGY-2 cramming for the in-service, a hand fellow prepping for a tricky case. The Phase 0B prototype is chat-first, local-first, and defaults to a deterministic mock provider.
+---
 
-**Handcraft** is the first module - focused on hand surgery. It includes:
-- **Tutor mode:** free-form Q&A with citations and role-aware depth
-- **Case Unfolds:** progressive clinical case reveal (Socratic, card-by-card)
-- **Pimping Simulator:** attending-voice rapid-fire with graded debrief
-- **Pre-Op Prep:** anatomy, approach, intra-op questions, and pearls
-- **Mistake Museum:** common errors with the "right move" (Phase 0A feature)
-- **Do-Not-Miss:** high-stakes diagnoses with mechanism and consequence (Phase 0A feature)
+## Modules
+
+ORION is built as a platform that hosts multiple surgical subspecialty modules. Each module ships its own knowledge base, cases, and tutoring content.
+
+| Module | Status | Scope |
+|---|---|---|
+| **Hand** | ✅ Active | Hand trauma, infection, tendon, nerve, and fracture education. Current Phase 0B.2 surface. |
+| Bariatric | 🟡 In development | Pre-operative selection, operative anatomy, post-operative complications. |
+| Foot & Ankle | 🟡 In development | Ankle fractures, foot trauma, diabetic foot, reconstructive principles. |
+| Plastic & Reconstructive | 🟡 In development | Reconstructive ladder, flap selection, wound coverage. |
+| Pediatric | 🟡 In development | Common pediatric surgical conditions, age-specific differentials. |
+| Vascular | 🟡 In development | Limb ischemia, aneurysmal disease, access surgery. |
+
+In-development modules show a faculty-recruitment page. We are actively seeking a faculty champion per module.
+
+---
+
+## What the Hand module includes
+
+- **Tutor (chat).** Free-form Q&A with role-aware depth, inline citations, and the option to surface tools (case launcher, pearl card, mistake card, do-not-miss card, quiz starter, follow-up chips).
+- **Cases.** Three seed cases (fight bite, mallet finger, distal radius FOOSH) with progressive card reveal, management gated by exploration, end-of-case teaching points and pearls, and a *Reasoning Autopsy* postmortem.
+- **Mistake Museum.** Decision-time cognitive errors — what learners commonly get wrong at the management step.
+- **Do-Not-Miss.** Recognition-time red flags — high-stakes diagnoses where delayed recognition causes irreversible harm.
+- **Pearls.** Save any assistant answer or content pearl to a local library.
+- **Local-only.** All conversations, pearls, flags, and the learner profile live in your browser's localStorage. Export/import via Settings.
+
+---
 
 ## What this is not
 
-- Not real-patient care guidance
-- Not a substitute for textbooks, ASPS modules, or attending teaching
-- Not a public ranking system (leaderboards are opt-in, anonymous, cohort-scoped only)
-- Not connected to any real patient data - all cases are entirely synthetic
+- Not clinical decision support.
+- Not a substitute for textbooks, ASPS modules, or attending teaching.
+- Not connected to any EMR or real patient data.
+- Not a public ranking system (no leaderboards; individual scores are never visible to faculty).
 
 ---
 
-## Phase 0B - provider-flexible streaming chat, no database
-
-This is the **chat-first phase**. The app can stream from a local mock provider or from a live
-LLM provider. Anthropic Claude is the first live provider wired for Phase 0B, but the chat route
-is designed to select providers through `lib/llm/` rather than hardcoding one vendor. It still
-requires no database and no accounts. Supabase, pgvector, RAG, OpenAI, Ollama, and Mayo login are
-deferred to later phases.
-
-### Running in demo mode (no API key required)
+## Run it locally (mock/demo mode — no API key required)
 
 ```bash
-npm install && npm run dev
-```
-
-Open http://localhost:3000. You'll land on onboarding, then the chat interface. The app ships with
-a mock LLM provider that uses keyword matching and canned hand surgery content.
-
-### Running with real Claude through Anthropic (live mode)
-
-1. Copy the example env file:
-
-```bash
-cp .env.local.example .env.local
-```
-
-2. Add your Anthropic API key and select the Anthropic provider:
-
-```
-LLM_PROVIDER=anthropic
-ANTHROPIC_API_KEY=sk-ant-...
-NEXT_PUBLIC_APP_MODE=live
-```
-
-`LLM_PROVIDER=anthropic` is the preferred server-side switch. `NEXT_PUBLIC_APP_MODE=live` is still
-supported for compatibility and currently maps to Anthropic. If Anthropic is selected without an
-API key, SurgiCraft falls back to the mock provider.
-
-3. Start the dev server:
-
-```bash
+npm install
 npm run dev
 ```
 
-**Recommended:** Set a billing cap in the Anthropic console ($20/month is reasonable for development).
-The app also has a built-in per-session cost guard (default $0.50) - see `lib/llm/cost-guard.ts`.
+Open http://localhost:3000. You'll land on onboarding, then the chat interface. The app ships with a deterministic mock provider that uses keyword matching and canned hand surgery content.
+
+## Run it with real Claude (live mode)
+
+```bash
+cp .env.local.example .env.local
+# Edit .env.local:
+#   NEXT_PUBLIC_APP_MODE=live
+#   ANTHROPIC_API_KEY=sk-ant-...
+#   LLM_PROVIDER=anthropic
+npm run dev
+```
+
+The Anthropic key is server-only. The app never exposes it to the browser. A per-session cost guard (default `$0.50/session`) is enforced in `lib/llm/cost-guard.ts`.
+
+> **Recommended:** set a billing cap (~$20/month) on the Anthropic console for peace of mind during development.
+
+If `NEXT_PUBLIC_APP_MODE=live` is set but `ANTHROPIC_API_KEY` is missing, ORION falls back to the mock provider with a console warning.
 
 ---
 
-## Future API strategy - provider-agnostic from day one
+## Provider-agnostic LLM layer
 
-The app's LLM layer lives in `lib/llm/`. It exports a single `getProvider()` function that returns an
-`LLMProvider` interface implementation. Streaming chat also uses a provider resolver in
-`lib/llm/streaming-provider.ts` so the API route can request `model`, `systemPrompt`, `tools`, and
-`mode` without knowing vendor-specific setup. In demo mode, that's the `MockProvider`. In live
-Anthropic mode, it's the `AnthropicProvider`/Claude stack. No app code changes are needed to add
-the next provider.
+`lib/llm/` exposes a `getProvider()` factory. In demo mode it returns `MockProvider`; in live mode it returns `AnthropicProvider`. New providers (OpenAI, Azure, Bedrock, Vertex, Mayo-hosted) implement the same interface — no app code changes are needed.
 
 | Provider | Notes |
-|----------|-------|
-| Anthropic (Claude) | First live provider - Phase 0B |
-| OpenAI (GPT-4o, etc.) | Planned alternative provider |
-| Ollama | Local/offline development option for future prototypes |
-| vLLM | Self-hosted/institution-hosted inference option |
-| Azure OpenAI | Required if Mayo mandates Azure infrastructure |
-| AWS Bedrock | Another viable enterprise path |
-| Vertex AI | Google Cloud option |
-| Mayo-approved internal LLM endpoint | If Mayo deploys its own model |
+|---|---|
+| Mock | Default. Deterministic. No external calls. |
+| Anthropic (Claude) | Current real provider (`claude-sonnet-4-5`). |
+| Azure OpenAI / AWS Bedrock / Vertex AI | Viable enterprise paths. Add a new file in `lib/llm/`. |
+| Mayo-approved internal endpoint | Recommended for the pilot once procurement allows. |
 
 ---
 
 ## Phase roadmap
 
-`ROADMAP.md` is the canonical roadmap. Short version:
-
 | Phase | Status | Description |
-|-------|--------|-------------|
-| **0A** | Done | Local demo, mock LLM, no external dependencies |
-| **0B** | Active | Chat-first UI, local conversations, tools, mock + Anthropic provider |
-| **0B.1** | Done | Stabilization, tests, CI, QA checklist, docs alignment |
-| **0B.2** | Active | Faculty demo polish, frontend/UI refinement, and demo usability |
-| **0B.3** | Planned | Optional Ollama/local model provider |
-| **0B.4** | Planned | Optional OpenAI provider |
-| **0C** | Planned | Supabase database, pgvector RAG, content governance |
-| **1 (Pilot)** | Future | 10-20 residents at Mayo, all 6 modes, admin UI, opt-in leaderboards |
-| **2+** | Future | Wider Mayo deployment, second subspecialty module |
+|---|---|---|
+| **0A** | ✅ Done | Local mock LLM, onboarding, synthetic cases, Mistake Museum, Do-Not-Miss library. |
+| **0B.1** | ✅ Done | Stabilization: request validation, provider status, local persistence, saved pearls, local flags, tests, CI, QA checklist. |
+| **0B.2** | ✅ Active | Faculty-demo polish + ORION rebrand + multi-module foundation + Mistake/Do-Not-Miss separation + dropdown patterns + new features (slash commands, keyboard shortcuts, topic index, today's pearl, faculty review portal). |
+| **0C** | Planned | Supabase database, pgvector RAG, user accounts, faculty verification workflow, governed flagged-output review. |
+| **1 (Pilot)** | Future | 10–20 residents at Mayo. Faculty-reviewed content. Mayo-sanctioned hosting. Learning analytics focused on education, not ranking. |
+| **2+** | Future | Multi-institution scoping. Additional modules ship as faculty champions are recruited. |
 
 ---
 
-## Active Scripts
+## Scripts
 
 | Command | What it does |
-|---------|-------------|
+|---|---|
 | `npm run dev` | Start development server (port 3000) |
-| `npm run build` | Production build |
 | `npm run lint` | ESLint check |
-| `npm run test` | Lightweight Vitest utility tests |
+| `npm run test` | Vitest suite |
+| `npm run build` | Production build |
+| `npm run start` | Start the production server |
 
-### Phase 0C Placeholder Scripts
-
-These scripts are present as future scaffolding and are not part of the active Phase 0B.2 demo flow.
-They require Phase 0C Supabase/pgvector setup before use.
-
-| Command | Status |
-|---------|--------|
-| `npx tsx scripts/seed-db.ts` | Phase 0C placeholder |
-| `npx tsx scripts/ingest-kb.ts` | Phase 0C placeholder |
-| `npx tsx scripts/gen-types.ts` | Phase 0C placeholder |
+CI runs lint + test + build on every push and PR to `main` (see `.github/workflows/ci.yml`).
 
 ---
 
-## Folder structure
+## Folder structure (high level)
 
 ```
-app/              Next.js App Router pages and API routes, including /c chat routes
-components/       React components (chat layout/sidebar/tool-results, case, shell, ui)
-lib/llm/          Provider-agnostic LLM layer (mock, Anthropic, future providers)
-lib/demo/         Local demo state (user, conversations, progress, content)
-lib/supabase/     Supabase clients (not wired until Phase 0C)
-lib/              Other utilities (scoring, analytics, RAG helpers)
-content/          Markdown KB (content/kb/) and seed cases (content/cases/)
-prompts/          System prompts per mode - faculty-editable markdown
-supabase/         SQL migrations (not run until Phase 0C)
-scripts/          Phase 0C placeholder CLI tools for DB seeding and KB ingestion
-public/           Static assets (illustrations, anatomy SVGs)
+app/                  Next.js App Router pages and API routes
+components/           React components
+  chat/               Chat experience, sidebar, tool-result renderers
+  shell/              Header, Footer, AppShell, FacultyReviewBanner, SectionMarker
+  case/               Case canvas + Reasoning Autopsy
+  ui/                 shadcn primitives
+lib/
+  orion/              Branding constants, module registry
+  llm/                Provider-agnostic LLM layer (mock + Anthropic)
+  demo/               Local persistence (conversations, pearls, flags) + demo content
+  supabase/           Database clients (not wired until Phase 0C)
+content/
+  cases/              Seed cases (3 cases, JSON)
+  kb/                 Markdown knowledge base (not yet wired to RAG)
+  pearls/             Seed pearl JSON
+prompts/              System prompts (faculty-editable Markdown)
+supabase/migrations/  SQL migrations (not run until Phase 0C)
+tests/                Vitest suite
+.github/workflows/    CI pipeline
 ```
 
-**Key principle:** content (`/content`) is separate from code. Faculty can edit KB markdown files
-via PR or a future admin UI without touching the app. System prompts live in `/prompts` and can
-be reviewed and edited by faculty without touching code.
-
-GitHub Actions CI runs `npm ci`, `npm run lint`, `npm run test`, and `npm run build` on pushes and
-pull requests to `main`. CI uses mock/demo mode and requires no API keys.
+`content/`, `prompts/`, and `CONTENT_REVIEW.md` are designed for faculty contributions without requiring code changes. See `CONTENT_REVIEW.md` for the central tracking of every authored clinical claim and its review status.
 
 ---
 
-## Content ownership
+## Content ownership policy
 
-All knowledge base content is governed by the following policy:
+| Source | Use |
+|---|---|
+| Faculty-written notes & pearls | ✅ Full use after explicit approval; attributed |
+| Mayo internal curriculum | ✅ Full use (Mayo-only deployment); per-section approval |
+| ASPS / PSEN course content | 🔗 Link out only; never ingested |
+| Textbooks (Green's, Wolfe, etc.) | 🔗 Cite and paraphrase; never reproduce verbatim |
+| Journal articles | 🔗 Cite via DOI and paraphrase conclusions |
+| Open guidelines (AAOS, ASSH) | ✅ Cite and summarize; brief excerpts allowed with attribution |
+| Real patient data (EMR) | ❌ Never. Not in any phase. |
 
-- **Faculty-written notes and pearls:** usable in full after explicit faculty approval; attributed
-- **Mayo internal curriculum:** usable in full (Mayo-only deployment); faculty approval per section
-- **ASPS / PSEN course content:** link out only; do not ingest unless explicitly licensed
-- **Textbooks (Green's, Wolfe):** cite and paraphrase; never reproduce verbatim
-- **Journal articles:** cite via DOI and paraphrase conclusions
-- **Open guidelines (AAOS, ASSH):** cite and summarize
-- **Real patient data:** never; not in any phase of this pilot
+Full policy + faculty workflow expectations are in `/about` inside the running app.
 
-See `/about` in the running app for the full content ownership policy.
+---
+
+## Faculty review
+
+Every authored clinical claim is centrally tracked in [`CONTENT_REVIEW.md`](./CONTENT_REVIEW.md) with columns for reviewer, date, and status. No piece of content reaches a pilot resident until its row reads `approved` or `approved-with-edits`.
+
+An in-app faculty review portal is available at `/admin/review` and renders directly from `CONTENT_REVIEW.md`.
 
 ---
 
 ## Contributing
 
-1. Each phase's work should be tagged: `phase0a`, `phase0b`, `phase0c`, `phase1`
-2. Read every generated file before committing - this is medical education content; accuracy matters
-3. When updating SPEC.md or DESIGN_SYSTEM.md, note it explicitly so the AI assistant re-reads them
-4. Never ingest licensed textbook content verbatim
-5. All cases must be marked `"verified": false` until a hand surgery attending signs off in the admin UI
+1. Tag commits by phase: `phase0a`, `phase0b`, `phase0c`, etc.
+2. Read every generated file before committing — this is medical education content; accuracy matters.
+3. When you update `SPEC.md`, `DESIGN_SYSTEM.md`, `FILE_STRUCTURE.md`, or `ROADMAP.md`, note it in your PR description so the AI assistant re-reads them before continuing.
+4. Never ingest licensed textbook content verbatim.
+5. All cases must remain `"verified": false` until a hand surgery attending signs off (Phase 0C: in the admin UI; today: in `CONTENT_REVIEW.md`).
+6. Storage keys in `localStorage` retain the legacy `surgicraft:*` namespace by design — to preserve existing learner data through the rebrand. Do not rename them without a migration plan.
 
+---
 
+## Acknowledgments
 
+ORION Surgery is being built as a pilot in collaboration with Mayo Clinic faculty. Specific contributors will be acknowledged in `/about` as content is reviewed and approved.

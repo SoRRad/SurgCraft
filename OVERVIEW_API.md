@@ -2,7 +2,7 @@
 
 > Historical overview, updated to match the current architecture. For canonical sequencing, use `ROADMAP.md`.
 
-Phase 0B made SurgiCraft : Handcraft a chat-first prototype. The app still runs with no API key in mock mode, but it can also stream from a live provider through the server-side provider layer.
+Phase 0B made ORION · Hand a chat-first prototype. The app still runs with no API key in mock mode, but it can also stream from a live provider through the server-side provider layer.
 
 ---
 

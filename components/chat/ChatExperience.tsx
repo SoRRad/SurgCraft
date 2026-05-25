@@ -17,6 +17,8 @@ import { InlineMistakeCard } from "./tool-results/InlineMistakeCard"
 import { DoNotMissCard } from "./tool-results/DoNotMissCard"
 import { QuizStarter } from "./tool-results/QuizStarter"
 import { FollowupChips } from "./tool-results/FollowupChips"
+import { TodaysPearl } from "./TodaysPearl"
+import { SlashPalette } from "./SlashPalette"
 import {
   createConversation, appendMessage, updateMessage, updateConversationTitle,
   getConversation, removePearlByMessageId, savePearl, uiMessageToChatMessageInput, type ChatMessage,
@@ -455,9 +457,10 @@ interface EmptyStateProps {
   onInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   onSubmit: (e: React.FormEvent) => void
   onSuggestedPrompt: (prompt: string) => void
+  onSlashSelect: (expanded: string) => void
 }
 
-function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSuggestedPrompt }: EmptyStateProps) {
+function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSuggestedPrompt, onSlashSelect }: EmptyStateProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -479,7 +482,7 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
       <div className="w-full max-w-[820px] space-y-7">
         <div className="text-center">
           <p className="text-micro font-semibold uppercase tracking-[0.22em] text-ink-faint">
-            SurgiCraft | Handcraft
+            ORION · Hand
           </p>
           <h1 className="mt-3 font-fraunces text-h1 leading-tight text-ink">
             What are we working on today,{" "}
@@ -494,32 +497,35 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">
-          <div className={cn(
-            "relative rounded-2xl border border-rule/70 bg-bg-elevated shadow-medium transition-all duration-300 ease-standard",
-            "focus-within:border-electric/50 focus-within:ring-4 focus-within:ring-electric/10"
-          )}>
-            <textarea
-              ref={textareaRef}
-              value={input}
-              onChange={onInputChange}
-              onKeyDown={handleKeyDown}
-              placeholder="Ask about fight bites, mallet finger, flexor tendon zones..."
-              rows={3}
-              aria-label="Chat input"
-              className="w-full resize-none overflow-hidden bg-transparent px-5 pb-14 pt-5 text-body text-ink placeholder:text-ink-muted focus:outline-none"
-            />
-            <div className="absolute bottom-3 right-3">
-              <button
-                type="submit"
-                disabled={!input.trim() || isLoading}
-                className={cn(
-                  "rounded-xl px-4 py-2 text-small font-semibold transition-all duration-300 ease-standard",
-                  "bg-electric text-bg shadow-soft hover:-translate-y-0.5 hover:shadow-medium disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
-                )}
-              >
-                {isLoading ? "Sending" : "Ask"}
-              </button>
+          <div className="relative">
+            <SlashPalette input={input} onSelect={onSlashSelect} />
+            <div className={cn(
+              "relative rounded-2xl border border-rule/70 bg-bg-elevated shadow-medium transition-all duration-300 ease-standard",
+              "focus-within:border-electric/50 focus-within:ring-4 focus-within:ring-electric/10"
+            )}>
+              <textarea
+                ref={textareaRef}
+                value={input}
+                onChange={onInputChange}
+                onKeyDown={handleKeyDown}
+                placeholder="Ask anything — or type / for commands"
+                rows={3}
+                aria-label="Chat input"
+                className="w-full resize-none overflow-hidden bg-transparent px-5 pb-14 pt-5 text-body text-ink placeholder:text-ink-muted focus:outline-none"
+              />
+              <div className="absolute bottom-3 right-3">
+                <button
+                  type="submit"
+                  disabled={!input.trim() || isLoading}
+                  className={cn(
+                    "rounded-xl px-4 py-2 text-small font-semibold transition-all duration-300 ease-standard",
+                    "bg-electric text-bg shadow-soft hover:-translate-y-0.5 hover:shadow-medium disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
+                  )}
+                >
+                  {isLoading ? "Sending" : "Ask"}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -556,13 +562,15 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
               </button>
             ))}
             <a
-              href="/case"
+              href="/topics"
               className="rounded-full border border-rule/70 bg-bg-elevated px-3 py-1.5 text-micro text-ink-muted transition-colors duration-300 ease-standard hover:border-electric/40 hover:text-electric focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
             >
-              Browse learning library
+              Browse topic index
             </a>
           </div>
         </form>
+
+        <TodaysPearl />
       </div>
     </div>
   )
@@ -575,9 +583,10 @@ interface ConversationInputProps {
   isLoading: boolean
   onInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   onSubmit: (e: React.FormEvent) => void
+  onSlashSelect: (expanded: string) => void
 }
 
-function ConversationInput({ input, isLoading, onInputChange, onSubmit }: ConversationInputProps) {
+function ConversationInput({ input, isLoading, onInputChange, onSubmit, onSlashSelect }: ConversationInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -601,20 +610,23 @@ function ConversationInput({ input, isLoading, onInputChange, onSubmit }: Conver
           Educational only. No PHI: do not enter names, MRNs, DOBs, images, or patient identifiers.
         </p>
         <form onSubmit={onSubmit} className="flex items-end gap-2">
-          <div className={cn(
-            "relative flex-1 rounded-2xl border border-rule/70 bg-bg-elevated shadow-soft transition-all duration-300 ease-standard",
-            "focus-within:border-electric/50 focus-within:ring-4 focus-within:ring-electric/10"
-          )}>
-            <textarea
-              ref={textareaRef}
-              value={input}
-              onChange={onInputChange}
-              onKeyDown={handleKeyDown}
-              placeholder="Ask a follow-up, request a case, or quiz yourself..."
-              rows={1}
-              aria-label="Chat input"
-              className="w-full resize-none overflow-hidden bg-transparent px-4 py-3 text-body text-ink placeholder:text-ink-muted focus:outline-none"
-            />
+          <div className="relative flex-1">
+            <SlashPalette input={input} onSelect={onSlashSelect} />
+            <div className={cn(
+              "relative rounded-2xl border border-rule/70 bg-bg-elevated shadow-soft transition-all duration-300 ease-standard",
+              "focus-within:border-electric/50 focus-within:ring-4 focus-within:ring-electric/10"
+            )}>
+              <textarea
+                ref={textareaRef}
+                value={input}
+                onChange={onInputChange}
+                onKeyDown={handleKeyDown}
+                placeholder="Type / for commands, or ask a follow-up"
+                rows={1}
+                aria-label="Chat input"
+                className="w-full resize-none overflow-hidden bg-transparent px-4 py-3 text-body text-ink placeholder:text-ink-muted focus:outline-none"
+              />
+            </div>
           </div>
           <button
             type="submit"
@@ -839,7 +851,7 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
 
       if (!conversationId) router.replace(`/c/${currentConvId}`)
     } catch (error) {
-      console.error("[surgicraft] Failed to send chat message", error)
+      console.error("[orion] Failed to send chat message", error)
       setMessages((currentMessages) =>
         currentMessages.filter((message) => messageIdsBeforeSend.has(message.id))
       )
@@ -859,6 +871,11 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
   async function handleSendMessage(text: string) {
     setInput("")
     await doSend(text)
+  }
+
+  function handleSlashSelect(expanded: string) {
+    setInput("")
+    void doSend(expanded)
   }
 
   function handleQuizBegin(topic: string, intensity: string) {
@@ -904,6 +921,7 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
           onInputChange={(e) => setInput(e.target.value)}
           onSubmit={handleSubmit}
           onSuggestedPrompt={(p) => { setInput(""); void doSend(p) }}
+          onSlashSelect={handleSlashSelect}
         />
       ) : (
         <div className="relative flex flex-col flex-1 overflow-hidden">
@@ -929,7 +947,7 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
                     H
                   </div>
                   <div className="rounded-2xl rounded-tl-md border border-rule/70 bg-bg-elevated px-4 py-3 text-body text-ink-muted shadow-soft">
-                    <span>Handcraft is thinking</span>
+                    <span>ORION is thinking</span>
                     <span className="ml-1 inline-flex gap-0.5 align-middle" aria-hidden="true">
                       <span className="h-1 w-1 animate-pulse rounded-full bg-ink-faint" />
                       <span className="h-1 w-1 animate-pulse rounded-full bg-ink-faint [animation-delay:120ms]" />
@@ -963,6 +981,7 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
             isLoading={isLoading}
             onInputChange={(e) => setInput(e.target.value)}
             onSubmit={handleSubmit}
+            onSlashSelect={handleSlashSelect}
           />
         </div>
       )}

@@ -1,8 +1,8 @@
-# SurgiCraft : Handcraft Specification
+# ORION · Hand Specification
 
 > Current product spec for the Phase 0B chat-first prototype. `ROADMAP.md` is the canonical phase plan.
 
-SurgiCraft is an interactive surgical education platform. Handcraft is module 01, focused on hand surgery for medical students, residents, and fellows.
+ORION Surgery is an interactive surgical education platform. Hand is module 01, focused on hand surgery for medical students, residents, and fellows.
 
 The app is educational only. It must not request PHI, and must never guide care for a real patient.
 
@@ -10,9 +10,9 @@ The app is educational only. It must not request PHI, and must never guide care 
 
 ## 1. Vision
 
-SurgiCraft : Handcraft helps learners practice hand surgery reasoning through conversation. The chat can answer educational questions, launch synthetic cases, quiz the learner, surface common mistakes, and point to do-not-miss red flags. The product should feel like a thoughtful senior resident who reads widely: warm, direct, concise, and honest about uncertainty.
+ORION · Hand helps learners practice hand surgery reasoning through conversation. The chat can answer educational questions, launch synthetic cases, quiz the learner, surface common mistakes, and point to do-not-miss red flags. The product should feel like a thoughtful senior resident who reads widely: warm, direct, concise, and honest about uncertainty.
 
-Handcraft is the first module. The platform name matters because later SurgiCraft modules can reuse the same shell, provider layer, content governance, and faculty review workflows.
+Hand is the first module. The platform name matters because later ORION Surgery modules can reuse the same shell, provider layer, content governance, and faculty review workflows.
 
 **Non-goals:**
 - Clinical decision support for real patients

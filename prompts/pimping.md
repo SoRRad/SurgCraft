@@ -1,4 +1,4 @@
-﻿# SurgiCraft : Handcraft - Pimping Simulator System Prompt
+﻿# ORION · Hand - Pimping Simulator System Prompt
 
 > Status: planned/deferred. Not currently used by `app/api/chat`; the active chat route uses `prompts/tutor-chat.md`.
 > Historical implementation draft. Edit without code deploy if reviving this mode.

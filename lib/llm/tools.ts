@@ -1,4 +1,4 @@
-﻿// Vercel AI SDK v6 tool definitions for the SurgiCraft : Handcraft tutor.
+﻿// Vercel AI SDK v6 tool definitions for the ORION · Hand tutor.
 // All tools have server-side execute functions that return structured data.
 // The client renders rich UI based on the tool name and result.
 

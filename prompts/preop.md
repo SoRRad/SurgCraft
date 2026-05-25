@@ -1,4 +1,4 @@
-﻿# SurgiCraft : Handcraft - Pre-Op Prep System Prompt
+﻿# ORION · Hand - Pre-Op Prep System Prompt
 
 > Status: planned/deferred. Not currently used by `app/api/chat`; the active chat route uses `prompts/tutor-chat.md`.
 > Historical implementation draft.

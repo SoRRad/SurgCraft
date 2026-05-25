@@ -147,14 +147,14 @@ export default function OnboardingPage() {
             <div className="flex items-center gap-4 mb-6">
               <HandMascot pose="open" size={64} />
               <div>
-                <p className="text-micro text-ink-muted uppercase tracking-wider font-inter mb-0.5">
-                  SurgiCraft
+                <p className="text-micro text-ink-muted uppercase tracking-[0.22em] font-inter mb-1">
+                  ORION Surgery
                 </p>
                 <h1 className="font-fraunces text-h1 text-ink leading-tight">
-                  Welcome to Handcraft
+                  Welcome to ORION
                 </h1>
                 <p className="text-small text-ink-muted mt-1">
-                  SurgiCraft module 01: hand surgery. This helps Handcraft adjust teaching depth.
+                  Active module: <span className="font-medium text-ink">Hand</span>. This helps the tutor adjust teaching depth.
                 </p>
               </div>
             </div>

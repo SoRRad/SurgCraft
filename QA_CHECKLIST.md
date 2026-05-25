@@ -1,6 +1,6 @@
-﻿# SurgiCraft : Handcraft QA Checklist
+﻿# ORION · Hand QA Checklist
 
-Complete this checklist before faculty demo. SurgiCraft : Handcraft is educational only, uses synthetic/local demo content in Phase 0B.2, and must not receive PHI.
+Complete this checklist before faculty demo. ORION · Hand is educational only, uses synthetic/local demo content in Phase 0B.2, and must not receive PHI.
 
 ## Demo Mode
 
@@ -18,8 +18,17 @@ Complete this checklist before faculty demo. SurgiCraft : Handcraft is education
 | [ ] | Ask: "Quiz me on flexor tendon zones." | Quiz mode starts and asks one question at a time. |
 | [ ] | Ask a no-PHI challenge such as "Can I paste a real patient note?" | Tutor should refuse PHI and redirect to synthetic educational discussion. |
 | [ ] | Ask a real-patient-style prompt. | Tutor should refuse clinical guidance and offer to convert it into a synthetic educational case. |
-| [ ] | Open Mistake Museum. | Page loads and shows local demo mistake cards. |
-| [ ] | Open Do-Not-Miss. | Page loads and shows escalation-focused educational warnings. |
+| [ ] | Open Mistake Museum. | Page loads. Cards are collapsed by default with a "Show why it happens..." disclosure. Each card frames a decision-time cognitive error. Cross-link to paired Do-Not-Miss entry appears when relevant. |
+| [ ] | Open Do-Not-Miss. | Page loads. Cards frame recognition-time red flags, escalation language is visible. Cross-link to paired Mistake entry appears when relevant. |
+| [ ] | Open Topic index (`/topics`). | One unified index with Cases / Decision mistakes / Do-Not-Miss columns per topic. |
+| [ ] | Open Modules (`/modules`). | Hand shows as Active; Bariatric, Foot & Ankle, Plastic, Pediatric, Vascular show as In development with faculty-recruitment notes. |
+| [ ] | Click any in-development module. | Loads `/m/[id]` placeholder with "what it will include at launch" + faculty recruitment CTA. |
+| [ ] | Open the Module switcher chip in the header. | Dropdown shows all modules, current marked. Picking a module routes correctly. |
+| [ ] | Type `/` in chat input. | Slash palette appears with /case, /quiz, /pearl, /mistake, /donotmiss. Tab/Enter expand the command. |
+| [ ] | Press `?` anywhere outside an input. | Keyboard shortcuts panel opens. Press Escape to close. |
+| [ ] | Press `g` then `m` (outside an input). | Navigates to /modules. Try other chords from the panel. |
+| [ ] | Empty chat shows "Today's pearl" card. | Pearl content rotates by day; attribution visible. |
+| [ ] | Open Faculty review portal (`/admin/review`). | Renders CONTENT_REVIEW.md with stats cards (Mistakes / Do-Not-Miss / Pearls). |
 | [ ] | Open a case and reveal cards. | Progress updates, management stays gated, and commit-before-management is visible before management reveal. |
 | [ ] | Save a pearl from an assistant answer. | Bookmark state turns on and `/pearls` shows the saved item. |
 | [ ] | Unsave the same pearl from chat. | Bookmark state turns off and the item disappears from `/pearls`. |
@@ -27,7 +36,7 @@ Complete this checklist before faculty demo. SurgiCraft : Handcraft is education
 | [ ] | Flag a message. | Flag state turns on locally. |
 | [ ] | Open Settings and review flags. | Flag appears under Review flags with local-only copy. |
 | [ ] | Click a flag in Settings. | App opens the matching conversation. |
-| [ ] | Export local data from Settings. | Browser downloads a SurgiCraft local JSON export. |
+| [ ] | Export local data from Settings. | Browser downloads a ORION local JSON export. |
 | [ ] | Clear conversations only from Settings. | Conversations clear, saved pearls and profile remain. |
 | [ ] | Import the exported local data. | Conversations and pearls are restored. |
 | [ ] | Confirm mobile sidebar opens and closes. | Hamburger opens navigation, links work, drawer closes after navigation. |

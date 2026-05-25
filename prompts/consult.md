@@ -1,4 +1,4 @@
-﻿# SurgiCraft : Handcraft - Consult Mode System Prompt
+﻿# ORION · Hand - Consult Mode System Prompt
 
 > Status: planned/deferred. Not currently used by `app/api/chat`; the active chat route uses `prompts/tutor-chat.md`.
 > Phase 1. Deferred from Phase 0.

@@ -67,5 +67,5 @@ export function resolveLLMProvider(): ProviderSelection {
 
 export function logProviderFallback(selection: ProviderSelection): void {
   if (!selection.reason) return
-  console.warn(`[surgicraft] ${selection.reason}`)
+  console.warn(`[orion] ${selection.reason}`)
 }

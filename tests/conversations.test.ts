@@ -112,7 +112,7 @@ describe("local conversation and pearl helpers", () => {
   })
 
   it("rejects malformed imports cleanly", () => {
-    expect(() => importLocalData(null)).toThrow("Expected a SurgiCraft local data export object.")
+    expect(() => importLocalData(null)).toThrow("Expected an ORION local data export object.")
   })
 
   it("converts AI SDK user messages into local persisted messages", () => {

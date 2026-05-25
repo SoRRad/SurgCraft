@@ -1,4 +1,4 @@
--- Handcraft — initial schema
+-- ORION Surgery (Hand module) — initial schema
 -- Run via: supabase db push
 -- DO NOT run manually; apply through Supabase CLI migrations.
 
@@ -46,7 +46,7 @@ create table if not exists cases (
   cards_jsonb jsonb not null default '{}',
   difficulty  text not null default 'intermediate' check (difficulty in ('intro', 'intermediate', 'advanced')),
   tags        text[] not null default '{}',
-  author      text not null default 'Handcraft seed',
+  author      text not null default 'ORION Hand seed',
   verified    boolean not null default false,
   created_at  timestamptz not null default now()
 );

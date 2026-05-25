@@ -1,10 +1,13 @@
 "use client"
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Menu, ShieldCheck } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { getProviderStatusLabel, useProviderStatus } from "./useProviderStatus"
+import { ModuleSwitcher } from "./ModuleSwitcher"
+import { MODULES } from "@/lib/orion/modules"
 
 interface HeaderProps {
   className?: string
@@ -14,6 +17,14 @@ interface HeaderProps {
 export function Header({ className, onMenuClick }: HeaderProps) {
   const { status } = useProviderStatus()
   const providerLabel = getProviderStatusLabel(status)
+  const pathname = usePathname()
+
+  // Derive current module from the URL: /m/[id]/* → that module; otherwise default.
+  const moduleMatch = pathname.match(/^\/m\/([^/]+)/)
+  const currentModuleId =
+    moduleMatch && MODULES.some((m) => m.id === moduleMatch[1])
+      ? moduleMatch[1]
+      : "hand"
 
   return (
     <header className={cn("sticky top-0 z-40 flex-shrink-0 border-b border-rule/70 bg-bg/95 backdrop-blur", className)}>
@@ -30,21 +41,37 @@ export function Header({ className, onMenuClick }: HeaderProps) {
         <Link
           href="/c"
           className="group flex min-w-0 flex-shrink-0 items-baseline gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
-          aria-label="SurgiCraft: Handcraft, go to chat"
+          aria-label="ORION Surgery, go to chat"
+          title="ORION Surgery — Operative Reasoning and Interactive Online Navigator"
         >
-          <span className="font-fraunces text-h3 font-semibold leading-none text-ink transition-colors duration-300 ease-standard group-hover:text-terracotta sm:text-h2">
-            SurgiCraft
+          <span className="font-fraunces text-h3 font-semibold uppercase leading-none tracking-[0.14em] text-ink transition-colors duration-300 ease-standard group-hover:text-terracotta sm:text-h2">
+            ORION
           </span>
-          <span className="hidden rounded-full bg-surface-subtle px-2 py-0.5 text-micro font-semibold uppercase tracking-[0.16em] text-ink-muted sm:inline-flex">
-            Handcraft
-          </span>
+          <span className="font-fraunces text-ink-faint sm:text-h3" aria-hidden="true">·</span>
         </Link>
+
+        <ModuleSwitcher currentModuleId={currentModuleId} variant="header" />
 
         <div className="flex-1" />
 
-        <div className="hidden items-center gap-2 rounded-full bg-surface-subtle px-3 py-1.5 text-micro font-medium text-ink-muted md:flex">
-          <ShieldCheck size={13} className="text-correct" />
-          Educational only | No PHI
+        <div
+          className="group/phi relative hidden md:flex"
+        >
+          <button
+            type="button"
+            className="flex items-center gap-2 rounded-full bg-surface-subtle px-3 py-1.5 text-micro font-medium text-ink-muted transition-colors duration-200 ease-standard hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
+            aria-describedby="phi-tooltip"
+          >
+            <ShieldCheck size={13} className="text-correct" />
+            Educational only · No PHI
+          </button>
+          <span
+            id="phi-tooltip"
+            role="tooltip"
+            className="pointer-events-none absolute right-0 top-full z-50 mt-2 hidden w-[280px] rounded-xl border border-rule/70 bg-ink px-3 py-2 text-micro leading-snug text-bg shadow-floating group-hover/phi:block group-focus-within/phi:block"
+          >
+            ORION is an educational platform. Do not enter PHI (names, MRNs, DOBs, images, or any patient identifiers). Not for clinical decision-making.
+          </span>
         </div>
 
         <Badge

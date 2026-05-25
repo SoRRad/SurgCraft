@@ -1,4 +1,4 @@
-# SurgiCraft : Handcraft Build Order
+# ORION · Hand Build Order
 
 > Current implementation sequence. `ROADMAP.md` is the canonical phase plan.
 
@@ -10,7 +10,7 @@ The old calendar-based dashboard plan has been superseded by the chat-first Phas
 
 Status: completed.
 
-- [x] Rebrand to `SurgiCraft : Handcraft`
+- [x] Rebrand to `ORION · Hand`
 - [x] Run locally with no required API keys
 - [x] Keep Supabase files as future infrastructure only
 - [x] Add provider-agnostic LLM interface

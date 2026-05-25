@@ -1,8 +1,8 @@
-# SurgiCraft : Handcraft Roadmap
+# ORION · Hand Roadmap
 
 > Canonical project roadmap. If another markdown file disagrees with this one, treat this file as current and update the older document.
 
-SurgiCraft is the parent surgical education platform. Handcraft is module 01, focused on hand surgery. The current product is a Phase 0B chat-first prototype: users enter through `/c`, learn through streaming conversation, and launch cases, quizzes, pearls, mistakes, and do-not-miss content inline through chat tools.
+ORION Surgery is the parent surgical education platform. Hand is module 01, focused on hand surgery. The current product is a Phase 0B chat-first prototype: users enter through `/c`, learn through streaming conversation, and launch cases, quizzes, pearls, mistakes, and do-not-miss content inline through chat tools.
 
 The app remains educational only. It must not guide real patient care, must not request PHI, and uses synthetic/local demo content until faculty review and Phase 0C governance are in place.
 
@@ -25,7 +25,7 @@ The dashboard route has been removed. Chat is the primary surface at `/c`, with 
 
 Phase 0A proved the local educational experience without external APIs.
 
-- Rebrand from Handcraft-only to `SurgiCraft : Handcraft`
+- Rebrand from Hand-only to `ORION · Hand`
 - Local-only mock LLM provider and provider interface
 - Onboarding with local demo user profile
 - Static tutor demo content for high-yield hand surgery topics
@@ -191,7 +191,7 @@ Success metrics:
 
 ## Later
 
-- Additional SurgiCraft modules beyond Handcraft
+- Additional ORION Surgery modules beyond Hand
 - Multi-institution architecture
 - Mayo-approved internal model or self-hosted vLLM
 - Voice mode

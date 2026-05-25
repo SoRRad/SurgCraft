@@ -25,5 +25,5 @@ Six dorsal compartments contain the extensor tendons at the wrist, held in place
 ## Lister's Tubercle
 The EPL wraps around Lister's tubercle - a mechanical pulley. Attrition rupture of the EPL can occur weeks after a minimally displaced distal radius fracture (watch for "dropped thumb" at PPT).
 
-*Source: SurgiCraft : Handcraft seed content. Not yet faculty verified.*
+*Source: ORION · Hand seed content. Not yet faculty verified.*
 

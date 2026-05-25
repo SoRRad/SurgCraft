@@ -3,7 +3,7 @@ import { ChatExperience } from "@/components/chat/ChatExperience"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "SurgiCraft : Handcraft",
+  title: "Chat",
 }
 
 export default function ConversationPage({

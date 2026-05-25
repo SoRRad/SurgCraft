@@ -9,10 +9,14 @@ import {
   Bookmark,
   ChevronDown,
   ChevronUp,
+  Compass,
   Eye,
   Info,
+  Keyboard,
+  Layers,
   MessageSquare,
   MessageSquarePlus,
+  ShieldCheck,
   Settings,
   Trash2,
 } from "lucide-react"
@@ -37,10 +41,16 @@ const LIBRARY_LINKS = [
   { href: "/case", label: "Cases", icon: BookOpen },
   { href: "/mistakes", label: "Mistake Museum", icon: AlertTriangle },
   { href: "/donotmiss", label: "Do-Not-Miss", icon: Eye },
+  { href: "/topics", label: "Topic index", icon: Compass },
 ]
 
 const SAVED_LINKS = [
   { href: "/pearls", label: "Saved pearls", icon: Bookmark },
+]
+
+const PLATFORM_LINKS = [
+  { href: "/modules", label: "Modules", icon: Layers },
+  { href: "/admin/review", label: "Faculty review", icon: ShieldCheck },
 ]
 
 interface SidebarInnerProps {
@@ -224,6 +234,34 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
               )
             })}
           </ul>
+
+          <details className="group/platform mt-1">
+            <summary className="flex cursor-pointer list-none items-center justify-between px-4 pb-2 pt-4 text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">
+              <span>Platform</span>
+              <ChevronDown size={12} className="transition-transform duration-300 ease-standard group-open/platform:rotate-180" />
+            </summary>
+            <ul className="space-y-1">
+              {PLATFORM_LINKS.map(({ href, label, icon: Icon }) => {
+                const isActive = pathname === href
+                return (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      onClick={handleLinkClick}
+                      className={cn(
+                        "flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-small transition-all duration-300 ease-standard",
+                        "hover:bg-surface-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric",
+                        isActive ? "bg-electric-soft font-medium text-ink" : "text-ink-muted hover:text-ink"
+                      )}
+                    >
+                      <Icon size={15} className={isActive ? "text-electric" : "text-ink-faint"} />
+                      {label}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </details>
         </div>
 
         <div className="border-t border-rule/70 px-4 py-3">
@@ -247,6 +285,18 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
             >
               <Settings size={12} />
               Settings
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                window.dispatchEvent(new KeyboardEvent("keydown", { key: "?", bubbles: true }))
+              }}
+              className="ml-auto flex items-center gap-1.5 rounded-lg px-1 py-1 text-micro text-ink-muted transition-colors duration-200 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
+              aria-label="Show keyboard shortcuts"
+              title="Show keyboard shortcuts (press ?)"
+            >
+              <Keyboard size={12} />
+              <span className="hidden font-mono lg:inline">?</span>
             </button>
           </div>
         </div>

@@ -92,7 +92,7 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
     const url = URL.createObjectURL(blob)
     const link = document.createElement("a")
     link.href = url
-    link.download = `surgicraft-local-export-${new Date().toISOString().slice(0, 10)}.json`
+    link.download = `orion-local-export-${new Date().toISOString().slice(0, 10)}.json`
     link.click()
     URL.revokeObjectURL(url)
     setDataNotice(
@@ -112,7 +112,7 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
         `Imported ${result.conversationsImported} conversations and ${result.pearlsImported} pearls.`
       )
     } catch {
-      setDataNotice("Import failed. Choose a SurgiCraft local JSON export.")
+      setDataNotice("Import failed. Choose an ORION local JSON export.")
     } finally {
       e.currentTarget.value = ""
     }

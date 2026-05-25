@@ -1,4 +1,4 @@
-﻿# SurgiCraft : Handcraft - Seed Cases
+﻿# ORION · Hand - Seed Cases
 
 Three synthetic cases for module 01. Format mirrors `content/cases/*.json`. Faculty should review/edit before pilot.
 
@@ -17,7 +17,7 @@ Three synthetic cases for module 01. Format mirrors `content/cases/*.json`. Facu
   "tags": ["trauma", "infection", "metacarpal", "MCP"],
   "specialties": ["hand", "plastics", "ortho", "EM"],
   "estimatedMinutes": 12,
-  "author": "Handcraft seed",
+  "author": "ORION Hand seed",
   "verified": false,
   "stem": "A 24-year-old right-hand-dominant male presents to the ED with a small wound over the dorsum of his right 5th MCP joint, sustained 'a couple nights ago' during what he reluctantly admits was a bar fight. He says it's gotten more swollen since yesterday.",
   "cards": {
@@ -89,7 +89,7 @@ Three synthetic cases for module 01. Format mirrors `content/cases/*.json`. Facu
   "tags": ["trauma", "extensor", "DIP", "tendon"],
   "specialties": ["hand", "plastics", "ortho", "EM", "sports"],
   "estimatedMinutes": 8,
-  "author": "Handcraft seed",
+  "author": "ORION Hand seed",
   "verified": false,
   "stem": "A 32-year-old recreational basketball player jammed his right middle finger catching a pass three days ago. He kept playing, but now can't straighten the tip of the finger.",
   "cards": {
@@ -156,7 +156,7 @@ Three synthetic cases for module 01. Format mirrors `content/cases/*.json`. Facu
   "tags": ["trauma", "distal-radius", "fracture", "wrist"],
   "specialties": ["hand", "plastics", "ortho", "EM"],
   "estimatedMinutes": 14,
-  "author": "Handcraft seed",
+  "author": "ORION Hand seed",
   "verified": false,
   "stem": "A 58-year-old woman slipped on icy steps this morning and fell onto her outstretched left hand. She presents to the ED with wrist pain and an obvious deformity.",
   "cards": {
@@ -218,6 +218,6 @@ Three synthetic cases for module 01. Format mirrors `content/cases/*.json`. Facu
 - `unlockKeywords` are matched semantically (via embedding similarity) at runtime, not literal string match. The list seeds intent recognition.
 - `isReveal: true` cards are gated until the user has either explicitly asked for management OR uncovered >=3 other cards.
 - `verified: true` only after a faculty hand surgeon signs off in the admin UI.
-- Faculty pearls written into cases earn the `attribution` field; `Handcraft seed` is the current placeholder author value in `content/cases/*.json` until reviewed.
+- Faculty pearls written into cases earn the `attribution` field; `ORION Hand seed` is the current placeholder author value in `content/cases/*.json` until reviewed.
 
 

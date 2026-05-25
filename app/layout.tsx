@@ -35,11 +35,11 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "SurgiCraft: Handcraft",
-    template: "%s | SurgiCraft: Handcraft",
+    default: "ORION Surgery · Hand",
+    template: "%s · ORION Surgery",
   },
   description:
-    "Interactive surgical education platform. First module: hand surgery for medical students, residents, and fellows. Educational use only.",
+    "ORION Surgery — Operative Reasoning and Interactive Online Navigator. Interactive surgical education for medical students, residents, and fellows. Active module: Hand. Educational use only.",
   robots: { index: false, follow: false },
 }
 

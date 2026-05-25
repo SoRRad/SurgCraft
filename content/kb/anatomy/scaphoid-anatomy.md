@@ -30,5 +30,5 @@ The scaphoid is the most commonly fractured carpal bone. Its blood supply is the
 - Anatomical snuffbox tenderness = scaphoid until proven otherwise
 - DISI deformity on lateral x-ray suggests ligamentous instability
 
-*Source: SurgiCraft : Handcraft seed content. Not yet faculty verified.*
+*Source: ORION · Hand seed content. Not yet faculty verified.*
 

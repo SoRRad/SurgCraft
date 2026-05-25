@@ -143,6 +143,12 @@ export const PEARLS: PearlEntry[] = [
 ]
 
 // -- Mistake Museum ------------------------------------------------------------
+//
+// SCOPE: decision-time cognitive errors. A "mistake" here is a wrong
+// management decision made after the diagnosis was visible. If the issue is
+// failing to recognize a red flag at first contact, it belongs in DO_NOT_MISS
+// instead. Each entry that has a recognition-side counterpart links to it via
+// `relatedDoNotMissId` so the two libraries stay coherent.
 
 export type MistakeEntry = {
   id: string
@@ -154,6 +160,8 @@ export type MistakeEntry = {
   howToAvoidIt: string
   bestCorrectionOneLiner: string
   tags: string[]
+  /** Optional cross-link to a paired DO_NOT_MISS entry covering the recognition side. */
+  relatedDoNotMissId?: string
 }
 
 export const MISTAKE_MUSEUM: MistakeEntry[] = [
@@ -167,6 +175,7 @@ export const MISTAKE_MUSEUM: MistakeEntry[] = [
     howToAvoidIt: "Any wound over the dorsal MCP in a young adult = fight bite until proven otherwise. Never close primarily. Explore, irrigate, leave open. Admit for IV ampicillin-sulbactam and hand surgery consult for OR washout.",
     bestCorrectionOneLiner: "The mechanism matters more than the wound size - that's a fight bite, and it's going to the OR.",
     tags: ["infection", "trauma", "MCP", "fight-bite"],
+    relatedDoNotMissId: "fight-bite-joint",
   },
   {
     id: "pip-splinted",
@@ -189,6 +198,7 @@ export const MISTAKE_MUSEUM: MistakeEntry[] = [
     howToAvoidIt: "Examine the median nerve before and after reduction, document both findings, and compare. Symptoms that resolve after reduction -> observe. Symptoms that persist or worsen -> urgent carpal tunnel release. Never watch persistent nerve deficit in this context.",
     bestCorrectionOneLiner: "Persistent median nerve symptoms after reduction mean acute CTS - this is going to the OR tonight.",
     tags: ["distal-radius", "median-nerve", "carpal-tunnel", "acute-CTS"],
+    relatedDoNotMissId: "acute-cts-distal-radius",
   },
   {
     id: "tenosynovitis-cellulitis",
@@ -200,6 +210,7 @@ export const MISTAKE_MUSEUM: MistakeEntry[] = [
     howToAvoidIt: "For any diffusely swollen finger: check all four Kanavel's signs deliberately. Pain with passive extension is the most sensitive sign and should prompt immediate hand surgery consult. When in doubt, it's a consult, not a prescription.",
     bestCorrectionOneLiner: "That's Kanavel's signs - this is pyogenic tenosynovitis, not cellulitis, and it needs the OR tonight.",
     tags: ["infection", "tenosynovitis", "kanavel", "cellulitis"],
+    relatedDoNotMissId: "pyogenic-tenosynovitis",
   },
   {
     id: "cascade-not-checked",
@@ -211,6 +222,7 @@ export const MISTAKE_MUSEUM: MistakeEntry[] = [
     howToAvoidIt: "Examine the cascade before and after repair. Test FDS and FDP independently for each finger. Test EPL, EIP, and intrinsics. Any tendon that is partially cut >50% should be repaired. Document explicitly that each tendon was assessed.",
     bestCorrectionOneLiner: "Always check the cascade and test each tendon individually - motion at a glance is not a tendon exam.",
     tags: ["tendon", "laceration", "flexor", "cascade", "exam"],
+    relatedDoNotMissId: "tendon-laceration-abnormal-cascade",
   },
   {
     id: "scaphoid-normal-xray",
@@ -222,10 +234,17 @@ export const MISTAKE_MUSEUM: MistakeEntry[] = [
     howToAvoidIt: "Anatomical snuffbox tenderness or pain with axial load on the thumb in a young patient with wrist injury = scaphoid fracture until proven otherwise. Immobilize in a thumb spica splint and obtain MRI within 72 hours if x-ray is negative. Do not send home with 'sprain' if snuffbox tenderness is present.",
     bestCorrectionOneLiner: "Snuffbox tenderness with a negative x-ray means scaphoid fracture until MRI proves otherwise - not a sprain.",
     tags: ["scaphoid", "fracture", "x-ray", "AVN", "diagnosis"],
+    relatedDoNotMissId: "scaphoid-occult",
   },
 ]
 
 // -- Do-Not-Miss ---------------------------------------------------------------
+//
+// SCOPE: recognition-time red flags. Each entry teaches the clue, the
+// catastrophic outcome if missed, and the educational point that drives
+// the escalation reflex. The treatment / management of the underlying
+// condition belongs in MISTAKE_MUSEUM. `relatedMistakeId` cross-links the
+// pair so learners can move between recognition and management framing.
 
 export type DoNotMissEntry = {
   id: string
@@ -234,6 +253,8 @@ export type DoNotMissEntry = {
   badOutcome: string
   educationalPoint: string
   tags: string[]
+  /** Optional cross-link to a paired MISTAKE_MUSEUM entry covering the decision side. */
+  relatedMistakeId?: string
 }
 
 export const DO_NOT_MISS: DoNotMissEntry[] = [
@@ -244,6 +265,7 @@ export const DO_NOT_MISS: DoNotMissEntry[] = [
     badOutcome: "Primary closure or inadequate treatment -> septic arthritis -> joint cartilage destruction -> permanent MCP stiffness and loss of grip.",
     educationalPoint: "The wound was inflicted with the fist clenched. When the hand opens, the skin wound 'closes' over the violated joint capsule, sealing oral flora inside. The wound size is always smaller than the depth of contamination.",
     tags: ["infection", "trauma", "fight-bite", "MCP", "emergency"],
+    relatedMistakeId: "fight-bite-closed",
   },
   {
     id: "acute-cts-distal-radius",
@@ -252,6 +274,7 @@ export const DO_NOT_MISS: DoNotMissEntry[] = [
     badOutcome: "Untreated acute CTS -> permanent median nerve injury, thenar muscle wasting, loss of pinch strength.",
     educationalPoint: "Examine the median nerve before and after reduction and document both. Resolution after reduction is reassuring. Persistence or worsening after reduction is a surgical emergency: urgent carpal tunnel release, not observation.",
     tags: ["distal-radius", "nerve", "emergency", "median-nerve", "acute-CTS"],
+    relatedMistakeId: "median-nerve-watched",
   },
   {
     id: "pyogenic-tenosynovitis",
@@ -260,6 +283,7 @@ export const DO_NOT_MISS: DoNotMissEntry[] = [
     badOutcome: "Missed or delayed diagnosis -> tendon necrosis within 48 hours -> permanent loss of active digit flexion.",
     educationalPoint: "This is a closed synovial space infection. Oral antibiotics cannot adequately penetrate the sheath. Surgical drainage is always required. Any one Kanavel sign warrants immediate hand surgery consult.",
     tags: ["infection", "emergency", "kanavel", "tenosynovitis", "tendon"],
+    relatedMistakeId: "tenosynovitis-cellulitis",
   },
   {
     id: "compartment-syndrome",
@@ -276,6 +300,7 @@ export const DO_NOT_MISS: DoNotMissEntry[] = [
     badOutcome: "Missed and untreated -> scaphoid nonunion -> avascular necrosis of the proximal pole -> SNAC wrist (scaphoid nonunion advanced collapse) -> wrist arthritis.",
     educationalPoint: "Plain films miss ~20% of acute scaphoid fractures, especially in the first 72 hours. Snuffbox tenderness = scaphoid until MRI proves otherwise. Immobilize in thumb spica and obtain MRI within 72 hours. Never send home as 'wrist sprain' without excluding scaphoid fracture.",
     tags: ["scaphoid", "fracture", "x-ray", "AVN", "diagnosis"],
+    relatedMistakeId: "scaphoid-normal-xray",
   },
   {
     id: "dysvascular-digit",
@@ -300,6 +325,107 @@ export const DO_NOT_MISS: DoNotMissEntry[] = [
     badOutcome: "Missed partial or complete tendon laceration -> delays primary repair -> secondary repair in a scarred field -> worse functional outcome or need for staged reconstruction.",
     educationalPoint: "Look at the resting cascade before you evaluate individual tendon function. A finger that rests more extended than its neighbors suggests a flexor tendon laceration. Test FDS and FDP independently for each finger. Active motion at a glance is not a tendon exam - a partial laceration retains some function until >50% cut.",
     tags: ["tendon", "laceration", "cascade", "flexor", "exam"],
+    relatedMistakeId: "cascade-not-checked",
+  },
+]
+
+// -- Topic index ---------------------------------------------------------------
+
+export type TopicCrossRef = {
+  topic: string
+  tags: string[]
+  mistakeIds: string[]
+  doNotMissIds: string[]
+  caseIds: string[]
+  tutorAnswerIds: string[]
+}
+
+/**
+ * Curated topic index used by /topics. Each topic groups the relevant
+ * Mistake Museum entries, Do-Not-Miss entries, seed cases, and tutor
+ * answers for a single clinical concept. Use this for cross-content
+ * navigation rather than scattering links inside each component.
+ */
+export const TOPIC_INDEX: TopicCrossRef[] = [
+  {
+    topic: "Fight bite (clenched-fist injury)",
+    tags: ["fight-bite", "infection", "MCP", "trauma"],
+    mistakeIds: ["fight-bite-closed"],
+    doNotMissIds: ["fight-bite-joint"],
+    caseIds: ["001-fight-bite"],
+    tutorAnswerIds: ["fight-bite"],
+  },
+  {
+    topic: "Mallet finger",
+    tags: ["mallet", "extensor", "DIP", "splinting"],
+    mistakeIds: ["pip-splinted"],
+    doNotMissIds: [],
+    caseIds: ["002-mallet-finger"],
+    tutorAnswerIds: ["mallet-finger"],
+  },
+  {
+    topic: "Distal radius fracture · acute carpal tunnel",
+    tags: ["distal-radius", "median-nerve", "acute-CTS", "wrist"],
+    mistakeIds: ["median-nerve-watched"],
+    doNotMissIds: ["acute-cts-distal-radius"],
+    caseIds: ["003-distal-radius"],
+    tutorAnswerIds: ["distal-radius"],
+  },
+  {
+    topic: "Flexor tendon zones",
+    tags: ["flexor", "tendon", "zone-II", "anatomy"],
+    mistakeIds: [],
+    doNotMissIds: [],
+    caseIds: [],
+    tutorAnswerIds: ["flexor-tendon-zones"],
+  },
+  {
+    topic: "Kanavel signs · pyogenic flexor tenosynovitis",
+    tags: ["kanavel", "tenosynovitis", "infection", "emergency"],
+    mistakeIds: ["tenosynovitis-cellulitis"],
+    doNotMissIds: ["pyogenic-tenosynovitis"],
+    caseIds: [],
+    tutorAnswerIds: ["kanavel"],
+  },
+  {
+    topic: "Occult scaphoid fracture",
+    tags: ["scaphoid", "snuffbox", "fracture", "AVN"],
+    mistakeIds: ["scaphoid-normal-xray"],
+    doNotMissIds: ["scaphoid-occult"],
+    caseIds: [],
+    tutorAnswerIds: [],
+  },
+  {
+    topic: "Compartment syndrome (upper extremity)",
+    tags: ["compartment-syndrome", "emergency", "ischemia"],
+    mistakeIds: [],
+    doNotMissIds: ["compartment-syndrome"],
+    caseIds: [],
+    tutorAnswerIds: [],
+  },
+  {
+    topic: "Dysvascular digit",
+    tags: ["vascular", "ischemia", "digit", "emergency"],
+    mistakeIds: [],
+    doNotMissIds: ["dysvascular-digit"],
+    caseIds: [],
+    tutorAnswerIds: [],
+  },
+  {
+    topic: "Open fracture recognition",
+    tags: ["fracture", "open-fracture", "debridement"],
+    mistakeIds: [],
+    doNotMissIds: ["open-fracture"],
+    caseIds: [],
+    tutorAnswerIds: [],
+  },
+  {
+    topic: "Tendon laceration · resting cascade",
+    tags: ["tendon", "laceration", "cascade", "exam"],
+    mistakeIds: ["cascade-not-checked"],
+    doNotMissIds: ["tendon-laceration-abnormal-cascade"],
+    caseIds: [],
+    tutorAnswerIds: [],
   },
 ]
 

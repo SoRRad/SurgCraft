@@ -321,15 +321,23 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
                   </ol>
                 </section>
 
-                {/* Pearls */}
+                {/* Pearls — collapsed by default with count */}
                 {caseData.pearls.length > 0 && (
                   <section>
-                    <SectionMarker number="05" label="Faculty Pearls" className="mb-4" />
-                    <div className="space-y-3">
-                      {caseData.pearls.map((pearl) => (
-                        <PearlCard key={pearl.id} pearl={pearl} />
-                      ))}
-                    </div>
+                    <SectionMarker number="05" label="Faculty Pearls" className="mb-3" />
+                    <details className="group/pearls overflow-hidden rounded-2xl border border-terracotta-soft/60 bg-bg-elevated shadow-soft" open={caseData.pearls.length <= 2}>
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-small font-medium text-ink transition-colors duration-200 ease-standard hover:bg-terracotta-soft/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-inset">
+                        <span>
+                          Show {caseData.pearls.length} pearl{caseData.pearls.length === 1 ? "" : "s"}
+                        </span>
+                        <span className="text-ink-faint transition-transform duration-300 ease-standard group-open/pearls:rotate-180">▾</span>
+                      </summary>
+                      <div className="space-y-3 border-t border-terracotta-soft/60 p-3">
+                        {caseData.pearls.map((pearl) => (
+                          <PearlCard key={pearl.id} pearl={pearl} />
+                        ))}
+                      </div>
+                    </details>
                   </section>
                 )}
 

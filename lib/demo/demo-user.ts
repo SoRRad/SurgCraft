@@ -47,7 +47,7 @@ export function isDemoUserSaved(): boolean {
   return localStorage.getItem(KEY) !== null
 }
 
-// Migration helper: carry over data saved under the legacy Handcraft key.
+// Migration helper: carry over data saved under the legacy hand-era key.
 export function migrateFromWeek1Key(): void {
   if (typeof window === "undefined") return
   const old = localStorage.getItem("handcraft_user")

@@ -1,6 +1,6 @@
-﻿# SurgiCraft : Handcraft - Design System
+﻿# ORION · Hand - Design System
 
-> Current visual system for module 01 of SurgiCraft. The active app is chat-first: `/c` is the primary surface, with library views available from the sidebar.
+> Current visual system for module 01 of ORION Surgery. The active app is chat-first: `/c` is the primary surface, with library views available from the sidebar.
 
 Playful-academic. Editorial typography, asymmetric layouts, hand-drawn anatomical motifs. Warm, not clinical. Confident, not corporate.
 
@@ -86,7 +86,7 @@ Headlines use generous tracking on Fraunces' display optical size. Body Inter at
 ### Standard (shadcn/ui)
 `Button`, `Card`, `Dialog`, `Sheet`, `Tabs`, `Toast`, `Tooltip`, `Slider`, `Input`, `Textarea`, `Select`, `Switch`, `Avatar`, `Badge`, `Progress`.
 
-### Custom (SurgiCraft : Handcraft-specific)
+### Custom (ORION · Hand-specific)
 ```
 <ChatLayout />           // Chat-first shell with sidebar + main area
 <Sidebar />              // Conversations, library links, settings/about
