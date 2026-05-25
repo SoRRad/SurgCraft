@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
+import type { UIMessage } from "ai"
 import {
   appendMessage,
   clearAllData,
@@ -9,6 +10,7 @@ import {
   listPearls,
   removePearlByMessageId,
   savePearl,
+  uiMessageToChatMessageInput,
 } from "@/lib/demo/conversations"
 
 class MemoryStorage {
@@ -111,5 +113,37 @@ describe("local conversation and pearl helpers", () => {
 
   it("rejects malformed imports cleanly", () => {
     expect(() => importLocalData(null)).toThrow("Expected a SurgiCraft local data export object.")
+  })
+
+  it("converts AI SDK user messages into local persisted messages", () => {
+    const stored = uiMessageToChatMessageInput({
+      id: "sdk-user-1",
+      role: "user",
+      parts: [{ type: "text", text: "How do I manage a fight bite?" }],
+    } as UIMessage)
+
+    expect(stored).toMatchObject({
+      id: "sdk-user-1",
+      role: "user",
+      content: "How do I manage a fight bite?",
+    })
+  })
+
+  it("keeps useful tool result summaries when persisting assistant messages", () => {
+    const stored = uiMessageToChatMessageInput({
+      id: "sdk-assistant-1",
+      role: "assistant",
+      parts: [
+        { type: "text", text: "Here is the case." },
+        {
+          type: "tool-launch_case",
+          state: "output-available",
+          output: { id: "001-fight-bite", title: "The bar fight" },
+        },
+      ],
+    } as unknown as UIMessage)
+
+    expect(stored?.content).toContain("Here is the case.")
+    expect(stored?.content).toContain('Tool result: launched case "The bar fight" (001-fight-bite).')
   })
 })

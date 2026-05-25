@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
@@ -20,8 +20,9 @@ export default function Home() {
   return (
     <div className="flex min-h-dvh items-center justify-center bg-bg">
       <p className="font-inter text-small text-ink-muted animate-pulse">
-        Loading…
+        Loading...
       </p>
     </div>
   )
 }
+

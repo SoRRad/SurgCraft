@@ -1,4 +1,4 @@
-// Anthropic implementation of LLMProvider — server-only.
+﻿// Anthropic implementation of LLMProvider - server-only.
 // Uses Vercel AI SDK + @ai-sdk/anthropic with claude-sonnet-4-5.
 
 if (typeof window !== "undefined") {
@@ -92,3 +92,4 @@ export class AnthropicProvider implements LLMProvider {
     return _mock.summarizeDebrief(input)
   }
 }
+

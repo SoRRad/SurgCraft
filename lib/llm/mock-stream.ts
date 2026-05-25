@@ -1,4 +1,4 @@
-// Mock streaming helper — simulates tool calls from the LLM using keyword detection.
+﻿// Mock streaming helper - simulates tool calls from the LLM using keyword detection.
 // Used when LLM_PROVIDER resolves to mock or a live provider is missing credentials.
 
 import { createUIMessageStream, createUIMessageStreamResponse, generateId } from "ai"
@@ -201,3 +201,4 @@ export function createMockUIMessageStreamResponse(userMessage: string) {
 
   return createUIMessageStreamResponse({ stream })
 }
+

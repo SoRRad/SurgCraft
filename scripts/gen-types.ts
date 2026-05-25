@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+﻿#!/usr/bin/env tsx
 // Generate Supabase TypeScript types from the database schema
 //
 // Usage: npx tsx scripts/gen-types.ts
@@ -21,7 +21,8 @@ try {
     `npx supabase gen types typescript --project-id ${projectId} > lib/supabase/types.ts`,
     { stdio: "inherit" }
   )
-  console.log("Types generated → lib/supabase/types.ts")
+  console.log("Types generated -> lib/supabase/types.ts")
 } catch {
   console.error("Type generation failed. Is supabase CLI installed?")
 }
+

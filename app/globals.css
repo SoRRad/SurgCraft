@@ -4,55 +4,61 @@
 
 @layer base {
   :root {
-    /* ── Handcraft design tokens ─────────────────────────────────── */
-    --bg:               #FAF7F2;
-    --bg-elevated:      #FFFFFF;
-    --ink:              #1A1A1A;
-    --ink-muted:        #5C5C5C;
-    --rule:             #E8E2D7;
+    /* SurgiCraft design tokens */
+    --bg:               #FBF8F3;
+    --bg-elevated:      #FFFDF8;
+    --surface-subtle:   #F4EEE4;
+    --surface-raised:   #FFFFFF;
+    --ink:              #20201E;
+    --ink-muted:        #686259;
+    --ink-faint:        #93897D;
+    --rule:             #E7DED0;
 
-    --terracotta:       #C0593D;
-    --terracotta-soft:  #F2D9CF;
+    --terracotta:       #B95E45;
+    --terracotta-soft:  #F1DDD3;
 
-    --electric:         #5B5CFF;
-    --electric-soft:    #E0E0FF;
+    --electric:         #315F86;
+    --electric-soft:    #DCEAF2;
 
-    --correct:          #2E7D5B;
-    --correct-soft:     #D4E8DC;
-    --warn:             #B8821A;
-    --warn-soft:        #F2E5C4;
-    --wrong:            #A8324A;
-    --wrong-soft:       #F2D4DA;
+    --correct:          #35785D;
+    --correct-soft:     #DDEBE2;
+    --warn:             #9D7423;
+    --warn-soft:        #F2E6C8;
+    --wrong:            #A34B55;
+    --wrong-soft:       #F1DADD;
 
     --bg-dark:          #1C1815;
     --ink-dark:         #F0EBE3;
 
-    /* ── Motion curves ───────────────────────────────────────────── */
+    --shadow-soft:      0 1px 2px rgba(32, 32, 30, 0.04), 0 10px 30px rgba(32, 32, 30, 0.06);
+    --shadow-medium:    0 2px 8px rgba(32, 32, 30, 0.06), 0 18px 48px rgba(32, 32, 30, 0.10);
+    --shadow-floating:  0 8px 24px rgba(32, 32, 30, 0.10), 0 28px 80px rgba(32, 32, 30, 0.14);
+
     --ease-standard:    cubic-bezier(0.22, 0.61, 0.36, 1);
     --ease-reveal:      cubic-bezier(0.16, 1, 0.3, 1);
     --ease-micro:       cubic-bezier(0.4, 0, 0.2, 1);
 
-    /* ── shadcn/ui HSL tokens (mapped to design system) ─────────── */
-    --background:             38 44% 96%;   /* ≈ #FAF7F2 */
-    --foreground:              0  0% 10%;   /* ≈ #1A1A1A */
-    --card:                    0  0% 100%;
-    --card-foreground:         0  0% 10%;
-    --popover:                 0  0% 100%;
-    --popover-foreground:      0  0% 10%;
-    --primary:               240 100% 68%;  /* ≈ #5B5CFF */
-    --primary-foreground:      0   0% 100%;
-    --secondary:              39  27% 88%;  /* ≈ #E8E2D7 */
-    --secondary-foreground:    0   0% 10%;
-    --muted:                  39  27% 88%;
-    --muted-foreground:        0   0% 36%;  /* ≈ #5C5C5C */
-    --accent:                 39  27% 88%;
-    --accent-foreground:       0   0% 10%;
-    --destructive:           347  56% 43%;  /* ≈ #A8324A */
-    --destructive-foreground:  0   0% 100%;
-    --border:                 39  27% 88%;  /* ≈ #E8E2D7 */
-    --input:                  39  27% 88%;
-    --ring:                  240 100% 68%;  /* electric for focus rings */
-    --radius:                 0.5rem;
+    /* shadcn/ui HSL tokens */
+    --background:             36 50% 97%;
+    --foreground:             60  3% 12%;
+    --card:                   42 100% 99%;
+    --card-foreground:        60  3% 12%;
+    --popover:                42 100% 99%;
+    --popover-foreground:     60  3% 12%;
+    --primary:               205  46% 36%;
+    --primary-foreground:     42 100% 98%;
+    --secondary:              35  36% 89%;
+    --secondary-foreground:   60   3% 12%;
+    --muted:                  35  36% 89%;
+    --muted-foreground:       36   8% 38%;
+    --accent:                 35  36% 89%;
+    --accent-foreground:      60   3% 12%;
+    --destructive:           354  37% 47%;
+    --destructive-foreground: 42 100% 98%;
+    --border:                 35  34% 86%;
+    --input:                  35  34% 86%;
+    --ring:                  205  46% 36%;
+    --radius:                 0.75rem;
   }
 
   * {
@@ -69,29 +75,34 @@
   }
 
   body {
-    background-color: var(--bg);
+    min-height: 100dvh;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(185, 94, 69, 0.05), transparent 30rem),
+      var(--bg);
     color: var(--ink);
     font-size: 16px;
     line-height: 1.6;
-    min-height: 100dvh;
   }
 
-  /* Focus rings use electric at 2px offset (per DESIGN_SYSTEM.md §8) */
   :focus-visible {
     outline: 2px solid var(--electric);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: 6px;
   }
 
-  /* Respect prefers-reduced-motion (per DESIGN_SYSTEM.md §5 + §8) */
+  ::selection {
+    background: var(--electric-soft);
+    color: var(--ink);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
     }
   }
 }

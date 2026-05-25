@@ -10,12 +10,14 @@ Use this 5-minute path for a Phase 0B.2 faculty demo. Run in mock/demo mode unle
 2. Complete onboarding as a PGY-2 or M4 using a synthetic learner profile.
 3. Show the chat empty state.
    - Point out the educational-only and no-PHI warning.
+   - Use the quick-start cards to show the chat-first navigation model.
 4. Ask: "How do I manage a fight bite?"
    - Emphasize that this is educational only, not real patient guidance.
 5. Ask: "Walk me through a fight bite case."
    - Show the inline case launcher if it appears.
 6. Launch or open the fight bite case.
    - Reveal the case cards step by step.
+   - Show the progress indicator and commit-before-management checkpoint.
 7. Show Reasoning Autopsy.
    - Explain that the aim is to teach reasoning, not just the final answer.
 8. Ask: "Common mistakes in mallet finger."

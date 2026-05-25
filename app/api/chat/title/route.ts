@@ -1,4 +1,4 @@
-import { generateText } from "ai"
+﻿import { generateText } from "ai"
 import { getStreamingProviderConfig } from "@/lib/llm/streaming-provider"
 
 function mockTitle(firstUserMessage: string): string {
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     try {
       const { text } = await generateText({
         model: providerConfig.model,
-        prompt: `Summarize this medical learning question into a 4–7 word title. Respond with only the title. No quotes, no period.\n\nQuestion: ${firstUserMessage}`,
+        prompt: `Summarize this medical learning question into a 4-7 word title. Respond with only the title. No quotes, no period.\n\nQuestion: ${firstUserMessage}`,
         maxOutputTokens: 20,
       })
       return Response.json({ title: text.trim() })
@@ -29,3 +29,4 @@ export async function POST(req: Request) {
 
   return Response.json({ title: mockTitle(firstUserMessage) })
 }
+

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 
-// ── Handle generator ──────────────────────────────────────────────────────────
+// -- Handle generator ----------------------------------------------------------
 const HANDLE_PREFIXES = [
   "DistalRadius", "ScaphoidFlex", "TendonZone", "MedianNerve",
   "KanavelSign", "MalletFinger", "FightBite", "ListerTubercle",
@@ -31,7 +31,7 @@ function generateHandle(): string {
   return `${prefix}${suffix}`
 }
 
-// ── Comfort categories ────────────────────────────────────────────────────────
+// -- Comfort categories --------------------------------------------------------
 const COMFORT_FIELDS = [
   { key: "anatomy",        label: "Anatomy" },
   { key: "trauma",         label: "Trauma" },
@@ -51,41 +51,41 @@ const defaultComfort: ComfortMap = {
   microsurgery: 1,
 }
 
-// ── Privacy contract ──────────────────────────────────────────────────────────
+// -- Privacy contract ----------------------------------------------------------
 function PrivacyContract({ onAccept }: { onAccept: () => void }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 backdrop-blur-sm p-4">
-      <div className="w-full max-w-md rounded-lg border border-rule bg-bg-elevated p-8 animate-scale-in">
+      <div className="w-full max-w-md animate-scale-in rounded-2xl border border-rule/70 bg-bg-elevated p-8 shadow-floating">
         <SectionMarker number="00" label="Before we begin" className="mb-4" />
         <h1 className="font-fraunces text-h2 text-ink mb-3">Privacy contract</h1>
         <p className="text-body text-ink-muted mb-6 leading-relaxed">
           Your individual responses are private. Faculty and program directors{" "}
           <strong className="text-ink font-medium">cannot see how you score.</strong>{" "}
-          Aggregate anonymized data helps us improve the platform.
+          Phase 0B.2 stores this demo profile locally in your browser.
         </p>
         <ul className="space-y-2 text-small text-ink-muted mb-8">
           <li className="flex gap-2">
-            <span className="text-correct mt-0.5">✓</span>
+            <span className="text-correct mt-0.5">Yes</span>
             <span>Your answers belong to you</span>
           </li>
           <li className="flex gap-2">
-            <span className="text-correct mt-0.5">✓</span>
-            <span>No ranking visible to attendings or PDs</span>
+            <span className="text-correct mt-0.5">Yes</span>
+            <span>Use an anonymous handle</span>
           </li>
           <li className="flex gap-2">
-            <span className="text-correct mt-0.5">✓</span>
-            <span>Educational use only — not clinical advice</span>
+            <span className="text-correct mt-0.5">Yes</span>
+            <span>No PHI and no real patient identifiers</span>
           </li>
         </ul>
         <Button className="w-full" onClick={onAccept}>
-          I understand &mdash; let&apos;s start
+          Continue
         </Button>
       </div>
     </div>
   )
 }
 
-// ── Main onboarding page ──────────────────────────────────────────────────────
+// -- Main onboarding page ------------------------------------------------------
 export default function OnboardingPage() {
   const router = useRouter()
   const [showPrivacy, setShowPrivacy] = useState(true)
@@ -151,11 +151,10 @@ export default function OnboardingPage() {
                   SurgiCraft
                 </p>
                 <h1 className="font-fraunces text-h1 text-ink leading-tight">
-                  Welcome to SurgiCraft
+                  Welcome to Handcraft
                 </h1>
                 <p className="text-small text-ink-muted mt-1">
-                  Today&apos;s module: <span className="text-ink font-medium">Handcraft</span> — hand surgery.
-                  Six quick questions to adapt everything to you.
+                  SurgiCraft module 01: hand surgery. This helps Handcraft adjust teaching depth.
                 </p>
               </div>
             </div>
@@ -163,7 +162,7 @@ export default function OnboardingPage() {
 
           <form onSubmit={handleSubmit} noValidate className="space-y-10">
 
-            {/* Q1 — Role */}
+            {/* Q1 - Role */}
             <fieldset>
               <SectionMarker number={1} label="Your role" className="mb-3" />
               <Label htmlFor="role-select" className="sr-only">
@@ -171,7 +170,7 @@ export default function OnboardingPage() {
               </Label>
               <Select value={role} onValueChange={setRole}>
                 <SelectTrigger id="role-select" aria-required="true">
-                  <SelectValue placeholder="Select your training level…" />
+                  <SelectValue placeholder="Select your training level..." />
                 </SelectTrigger>
                 <SelectContent>
                   {["M3", "M4", "Intern", "PGY-2", "PGY-3", "PGY-4", "PGY-5", "Fellow", "Attending"].map(
@@ -190,7 +189,7 @@ export default function OnboardingPage() {
               )}
             </fieldset>
 
-            {/* Q2 — Specialty */}
+            {/* Q2 - Specialty */}
             <fieldset>
               <SectionMarker number={2} label="Your specialty" className="mb-3" />
               <Label htmlFor="specialty-select" className="sr-only">
@@ -198,7 +197,7 @@ export default function OnboardingPage() {
               </Label>
               <Select value={specialty} onValueChange={setSpecialty}>
                 <SelectTrigger id="specialty-select" aria-required="true">
-                  <SelectValue placeholder="Select your specialty…" />
+                  <SelectValue placeholder="Select your specialty..." />
                 </SelectTrigger>
                 <SelectContent>
                   {[
@@ -220,7 +219,7 @@ export default function OnboardingPage() {
               )}
             </fieldset>
 
-            {/* Q3 — Current rotation */}
+            {/* Q3 - Current rotation */}
             <fieldset>
               <SectionMarker number={3} label="Current rotation" className="mb-3" />
               <div className="flex items-center gap-3">
@@ -235,7 +234,7 @@ export default function OnboardingPage() {
               </div>
             </fieldset>
 
-            {/* Q4 — Primary goal */}
+            {/* Q4 - Primary goal */}
             <fieldset>
               <SectionMarker number={4} label="Goal for this session" className="mb-3" />
               <Label htmlFor="goal-select" className="sr-only">
@@ -266,11 +265,11 @@ export default function OnboardingPage() {
               )}
             </fieldset>
 
-            {/* Q5 — Comfort ratings */}
+            {/* Q5 - Comfort ratings */}
             <fieldset>
               <SectionMarker number={5} label="Self-rated comfort" className="mb-3" />
               <p className="text-small text-ink-muted mb-5">
-                1 = total beginner · 5 = comfortably teaching it
+                1 = total beginner | 5 = comfortably teaching it
               </p>
               <div className="space-y-5">
                 {COMFORT_FIELDS.map(({ key, label }) => (
@@ -301,11 +300,11 @@ export default function OnboardingPage() {
               </div>
             </fieldset>
 
-            {/* Q6 — Handle */}
+            {/* Q6 - Handle */}
             <fieldset>
               <SectionMarker number={6} label="Your handle" className="mb-3" />
               <p className="text-small text-ink-muted mb-3">
-                Anonymous — visible on opt-in leaderboards only. Not tied to your name.
+                Use an anonymous handle. Do not enter your real name, MRN, DOB, or other PHI.
               </p>
               <div className="flex gap-2">
                 <Input
@@ -336,10 +335,10 @@ export default function OnboardingPage() {
             {/* Submit */}
             <div className="pt-4 border-t border-rule">
               <Button type="submit" size="lg" className="w-full">
-                Start learning →
+                Start learning
               </Button>
               <p className="mt-3 text-center text-micro text-ink-muted">
-                Educational use only — not for clinical decision-making.
+                Educational use only - not for clinical decision-making.
               </p>
             </div>
 
@@ -349,3 +348,4 @@ export default function OnboardingPage() {
     </>
   )
 }
+

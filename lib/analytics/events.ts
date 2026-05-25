@@ -1,4 +1,4 @@
-// PostHog event taxonomy — Phase 1
+﻿// PostHog event taxonomy - Phase 1
 // Self-hosted option available for HIPAA-adjacent compliance
 export const events = {
   ONBOARDING_COMPLETE: "onboarding_complete",
@@ -10,3 +10,4 @@ export const events = {
   FLAG_SUBMIT: "flag_submit",
   CONFIDENCE_SUBMIT: "confidence_submit",
 } as const
+

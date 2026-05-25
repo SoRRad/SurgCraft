@@ -1,3 +1,4 @@
+import { Brain, CheckCircle, HelpCircle, Lightbulb, MessageSquareQuote, TriangleAlert } from "lucide-react"
 import { SectionMarker } from "@/components/shell/SectionMarker"
 
 export type ReasoningAutopsyData = {
@@ -9,13 +10,17 @@ export type ReasoningAutopsyData = {
   onePearlToRemember: string
 }
 
-const FIELDS: Array<{ key: keyof ReasoningAutopsyData; label: string }> = [
-  { key: "shouldHaveNoticedEarly", label: "What you should have noticed early" },
-  { key: "whatChangesManagement", label: "What changes management" },
-  { key: "attendingMayAskNext", label: "What the attending may ask next" },
-  { key: "bestRoundsOneLiner", label: "Best rounds one-liner" },
-  { key: "commonMistake", label: "Common mistake" },
-  { key: "onePearlToRemember", label: "One pearl to remember" },
+const FIELDS: Array<{
+  key: keyof ReasoningAutopsyData
+  label: string
+  icon: typeof Brain
+}> = [
+  { key: "shouldHaveNoticedEarly", label: "What you should have noticed early", icon: Brain },
+  { key: "whatChangesManagement", label: "What changes management", icon: CheckCircle },
+  { key: "attendingMayAskNext", label: "Attending may ask next", icon: HelpCircle },
+  { key: "bestRoundsOneLiner", label: "Best rounds one-liner", icon: MessageSquareQuote },
+  { key: "commonMistake", label: "Common mistake", icon: TriangleAlert },
+  { key: "onePearlToRemember", label: "One pearl to remember", icon: Lightbulb },
 ]
 
 interface ReasoningAutopsyProps {
@@ -25,23 +30,38 @@ interface ReasoningAutopsyProps {
 export function ReasoningAutopsy({ data }: ReasoningAutopsyProps) {
   return (
     <section aria-labelledby="autopsy-heading" className="mt-10">
-      <SectionMarker number="06" label="Reasoning Autopsy" className="mb-5" />
-      <p className="text-small text-ink-muted mb-6">
-        What a senior resident would notice, how they would frame it on rounds, and where learners typically get tripped up.
-      </p>
-      <div className="space-y-5">
-        {FIELDS.map(({ key, label }) => (
-          <div key={key} className="border border-rule rounded-lg p-4 bg-bg-elevated">
-            <p className="text-micro font-semibold uppercase tracking-wider text-terracotta mb-2">
-              {label}
+      <div className="rounded-2xl border border-rule/70 bg-bg-elevated p-5 shadow-medium">
+        <SectionMarker number="06" label="Reasoning Autopsy" className="mb-4" />
+        <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h2 id="autopsy-heading" className="font-fraunces text-h2 text-ink">
+              How the case turns
+            </h2>
+            <p className="mt-2 max-w-2xl text-small text-ink-muted">
+              The senior-resident version: what mattered early, what changes management, and how to say it on rounds.
             </p>
-            <p className="text-body text-ink leading-relaxed">{data[key]}</p>
           </div>
-        ))}
+          <span className="rounded-full bg-surface-subtle px-3 py-1 text-micro text-ink-muted">
+            Demo mode | needs faculty verification
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          {FIELDS.map(({ key, label, icon: Icon }) => (
+            <div key={key} className="rounded-xl border border-rule/70 bg-bg p-4">
+              <div className="mb-3 flex items-center gap-2">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-terracotta-soft text-terracotta">
+                  <Icon size={15} />
+                </span>
+                <p className="text-micro font-semibold uppercase tracking-[0.16em] text-ink-faint">
+                  {label}
+                </p>
+              </div>
+              <p className="text-body leading-relaxed text-ink">{data[key]}</p>
+            </div>
+          ))}
+        </div>
       </div>
-      <p className="mt-4 text-micro text-ink-muted italic">
-        Local demo content · needs faculty verification before pilot use.
-      </p>
     </section>
   )
 }

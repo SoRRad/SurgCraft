@@ -58,6 +58,11 @@ export type LocalDataImportResult = {
   pearlsImported: number
 }
 
+type ChatMessageInput = Omit<ChatMessage, "id" | "createdAt"> & {
+  id?: string
+  createdAt?: string
+}
+
 const CONV_KEY = "surgicraft:conversations"
 const PEARLS_KEY = "surgicraft:saved-pearls"
 const MAX_CONVERSATIONS = 50
@@ -80,6 +85,91 @@ function asString(value: unknown, fallback = ""): string {
 function asDateString(value: unknown, fallback: string): string {
   if (typeof value !== "string") return fallback
   return Number.isNaN(new Date(value).getTime()) ? fallback : value
+}
+
+function getUIMessageText(message: UIMessage): string {
+  return (message.parts ?? [])
+    .filter((part): part is { type: "text"; text: string } => part.type === "text")
+    .map((part) => part.text)
+    .join("")
+}
+
+function getRecordText(value: unknown, key: string): string {
+  if (typeof value !== "object" || value === null || !(key in value)) return ""
+  const field = (value as Record<string, unknown>)[key]
+  return typeof field === "string" ? field : ""
+}
+
+function getToolPartSummary(part: UIMessage["parts"][number]): string | null {
+  if (!part.type.startsWith("tool-")) return null
+
+  const toolName = part.type.slice(5)
+  const toolPart = part as unknown as { state?: string; output?: unknown }
+  if (toolPart.state !== "output-available") return null
+
+  const output = toolPart.output
+  switch (toolName) {
+    case "launch_case": {
+      const title = getRecordText(output, "title")
+      const id = getRecordText(output, "id")
+      return title ? `Tool result: launched case "${title}"${id ? ` (${id})` : ""}.` : null
+    }
+    case "show_pearl": {
+      const topic = getRecordText(output, "topic")
+      const content = getRecordText(output, "text") || getRecordText(output, "content")
+      return content ? `Tool result: pearl${topic ? ` on ${topic}` : ""}: ${content}` : null
+    }
+    case "show_mistake": {
+      const title = getRecordText(output, "title")
+      const mistake = getRecordText(output, "mistake")
+      return title || mistake ? `Tool result: common mistake${title ? `, ${title}` : ""}${mistake ? `: ${mistake}` : "."}` : null
+    }
+    case "show_donotmiss": {
+      const diagnosis = getRecordText(output, "diagnosis")
+      const clue = getRecordText(output, "clue")
+      return diagnosis || clue ? `Tool result: do-not-miss${diagnosis ? `, ${diagnosis}` : ""}${clue ? `: ${clue}` : "."}` : null
+    }
+    case "start_quiz": {
+      const topic = getRecordText(output, "topic")
+      const intensity = getRecordText(output, "intensity")
+      return topic ? `Tool result: quiz ready on ${topic}${intensity ? ` (${intensity})` : ""}.` : null
+    }
+    case "suggest_followups": {
+      if (typeof output !== "object" || output === null) return null
+      const chips = (output as Record<string, unknown>).chips
+      return Array.isArray(chips) && chips.length > 0
+        ? `Tool result: suggested follow-ups: ${chips.filter((chip): chip is string => typeof chip === "string").join("; ")}`
+        : null
+    }
+    default:
+      return null
+  }
+}
+
+function getUIMessageContentForStorage(message: UIMessage): string {
+  const text = getUIMessageText(message).trim()
+  const toolSummaries = (message.parts ?? [])
+    .map(getToolPartSummary)
+    .filter((summary): summary is string => Boolean(summary))
+
+  return [text, ...toolSummaries].filter(Boolean).join("\n\n")
+}
+
+export function uiMessageToChatMessageInput(message: UIMessage): ChatMessageInput | null {
+  if (message.role !== "user" && message.role !== "assistant" && message.role !== "system") {
+    return null
+  }
+
+  const content = getUIMessageContentForStorage(message)
+  const parts = message.parts ?? []
+  if (!content && parts.length === 0) return null
+
+  return {
+    id: message.id,
+    role: message.role,
+    content: content || `${message.role} message`,
+    parts,
+  }
 }
 
 function readAll(): Conversation[] {
@@ -151,7 +241,7 @@ export function updateConversationTitle(id: string, title: string): void {
 
 export function appendMessage(
   conversationId: string,
-  message: Omit<ChatMessage, "id" | "createdAt"> & { id?: string; createdAt?: string }
+  message: ChatMessageInput
 ): ChatMessage {
   const full: ChatMessage = {
     id: message.id ?? generateId(),

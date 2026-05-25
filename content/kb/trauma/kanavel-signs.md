@@ -1,4 +1,4 @@
----
+﻿---
 id: kanavel-signs
 source_type: faculty_note
 verified: false
@@ -7,7 +7,7 @@ tags: [infection, flexor-tendon, pyogenic-tenosynovitis]
 
 # Kanavel's Signs of Pyogenic Flexor Tenosynovitis
 
-> Placeholder — replace with faculty-reviewed content before pilot.
+> Placeholder - replace with faculty-reviewed content before pilot.
 
 Allen Kanavel described four cardinal signs that distinguish flexor tenosynovitis from superficial hand infections. All four together = high specificity; **any one present = hand surgery consult emergently.**
 
@@ -19,12 +19,14 @@ Allen Kanavel described four cardinal signs that distinguish flexor tenosynoviti
 4. **Pain with passive extension** of the finger (the most sensitive sign)
 
 ## Key Points
-- Pyogenic tenosynovitis is a surgical emergency — delays of 24–48 hours significantly worsen outcomes
+- Pyogenic tenosynovitis is a surgical emergency - delays of 24-48 hours significantly worsen outcomes
 - Common organisms: *S. aureus* (most common), GAS, *Eikenella corrodens* (fight bite), *Pasteurella* (animal bite)
 - Treatment: IV antibiotics + OR irrigation of the tendon sheath
 - Prognosis is directly tied to time to washout
 
 ## Vs. Fight Bite
-Fight bite → MCP joint. Pyogenic tenosynovitis → runs the length of the flexor sheath. Both are hand surgery emergencies. Know the difference.
+Fight bite -> MCP joint. Pyogenic tenosynovitis -> runs the length of the flexor sheath. Both are hand surgery emergencies. Know the difference.
 
 *Source: SurgiCraft : Handcraft seed content. Not yet faculty verified.*
+
+

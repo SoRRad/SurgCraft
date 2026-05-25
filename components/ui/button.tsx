@@ -4,20 +4,20 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-300 ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "bg-electric text-white hover:bg-electric/90",
+          "bg-electric text-bg shadow-soft hover:-translate-y-0.5 hover:shadow-medium active:translate-y-0",
         destructive:
-          "bg-wrong text-white hover:bg-wrong/90",
+          "bg-wrong text-bg shadow-soft hover:bg-wrong/90 hover:shadow-medium",
         outline:
-          "border border-rule bg-transparent text-ink hover:bg-rule/30",
+          "border border-rule bg-bg-elevated text-ink shadow-[0_1px_1px_rgba(32,32,30,0.03)] hover:border-electric/40 hover:bg-electric-soft/35",
         secondary:
-          "bg-rule text-ink hover:bg-rule/80",
+          "bg-surface-subtle text-ink hover:bg-rule/80",
         ghost:
-          "text-ink hover:bg-rule/30",
+          "text-ink hover:bg-surface-subtle",
         link:
           "text-electric underline-offset-4 hover:underline",
       },

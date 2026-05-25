@@ -1,4 +1,4 @@
-// Week 4: Brier score per topic — confidence calibration tracking
+﻿// Week 4: Brier score per topic - confidence calibration tracking
 // Brier score: mean squared error between predicted probability and outcome (0 or 1)
 // Lower is better; 0 = perfect calibration, 1 = perfectly wrong
 export function brierScore(
@@ -17,3 +17,4 @@ export type CalibrationRecord = {
   score: number
   timestamp: string
 }
+

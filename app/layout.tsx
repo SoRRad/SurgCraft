@@ -36,7 +36,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: {
     default: "SurgiCraft: Handcraft",
-    template: "%s · SurgiCraft: Handcraft",
+    template: "%s | SurgiCraft: Handcraft",
   },
   description:
     "Interactive surgical education platform. First module: hand surgery for medical students, residents, and fellows. Educational use only.",

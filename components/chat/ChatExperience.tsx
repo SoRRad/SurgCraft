@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport } from "ai"
@@ -7,7 +7,8 @@ import { useEffect, useRef, useState, useMemo, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import ReactMarkdown from "react-markdown"
 import {
-  ThumbsUp, ThumbsDown, Flag, Bookmark, Copy, Check, X,
+  AlertTriangle, ArrowDown, Bookmark, BookOpen, Check, ClipboardList, Copy,
+  Eye, Flag, Sparkles, ThumbsDown, ThumbsUp, X,
 } from "lucide-react"
 import { CitationChip } from "./CitationChip"
 import { CaseLauncher } from "./tool-results/CaseLauncher"
@@ -18,21 +19,62 @@ import { QuizStarter } from "./tool-results/QuizStarter"
 import { FollowupChips } from "./tool-results/FollowupChips"
 import {
   createConversation, appendMessage, updateMessage, updateConversationTitle,
-  getConversation, removePearlByMessageId, savePearl, type ChatMessage,
+  getConversation, removePearlByMessageId, savePearl, uiMessageToChatMessageInput, type ChatMessage,
 } from "@/lib/demo/conversations"
 import { getDemoUser, migrateFromWeek1Key } from "@/lib/demo/demo-user"
 import { cn } from "@/lib/utils"
 
-// ── Suggested prompts ─────────────────────────────────────────────────────────
+// -- Suggested prompts ---------------------------------------------------------
 
 const SUGGESTED_PROMPTS = [
-  "Walk me through a fight bite case",
+  "Manage a fight bite",
+  "Walk me through a case",
   "Quiz me on flexor tendon zones",
-  "Common mistakes in mallet finger",
-  "What is acute carpal tunnel syndrome?",
+  "Show common mistakes",
+  "Do-not-miss diagnoses",
+  "Prepare me for rounds",
 ]
 
-// ── UIMessage helpers ─────────────────────────────────────────────────────────
+const QUICK_STARTS = [
+  {
+    label: "Manage a fight bite",
+    prompt: "How do I manage a fight bite?",
+    helper: "High-yield infection framing",
+    icon: Sparkles,
+  },
+  {
+    label: "Walk me through a case",
+    prompt: "Walk me through a fight bite case.",
+    helper: "Progressive reveal",
+    icon: BookOpen,
+  },
+  {
+    label: "Quiz me",
+    prompt: "Quiz me on flexor tendon zones.",
+    helper: "One question at a time",
+    icon: ClipboardList,
+  },
+  {
+    label: "Common mistakes",
+    prompt: "Common mistakes in mallet finger.",
+    helper: "Error patterns",
+    icon: AlertTriangle,
+  },
+  {
+    label: "Do-not-miss",
+    prompt: "Walk me through do-not-miss diagnoses in hand surgery.",
+    helper: "Recognition clues",
+    icon: Eye,
+  },
+  {
+    label: "Prepare for rounds",
+    prompt: "Prepare me for hand surgery rounds on fight bites.",
+    helper: "One-liners and follow-ups",
+    icon: Sparkles,
+  },
+]
+
+// -- UIMessage helpers ---------------------------------------------------------
 
 function toUIMessage(msg: ChatMessage): UIMessage {
   return {
@@ -49,67 +91,6 @@ function getMessageText(message: UIMessage): string {
     .join("")
 }
 
-function getRecordText(value: unknown, key: string): string {
-  if (typeof value !== "object" || value === null || !(key in value)) return ""
-  const field = (value as Record<string, unknown>)[key]
-  return typeof field === "string" ? field : ""
-}
-
-function getToolPartSummary(part: UIMessage["parts"][number]): string | null {
-  if (!part.type.startsWith("tool-")) return null
-
-  const toolName = part.type.slice(5)
-  const toolPart = part as unknown as { state?: string; output?: unknown }
-  if (toolPart.state !== "output-available") return null
-
-  const output = toolPart.output
-  switch (toolName) {
-    case "launch_case": {
-      const title = getRecordText(output, "title")
-      const id = getRecordText(output, "id")
-      return title ? `Tool result: launched case "${title}"${id ? ` (${id})` : ""}.` : null
-    }
-    case "show_pearl": {
-      const topic = getRecordText(output, "topic")
-      const content = getRecordText(output, "text") || getRecordText(output, "content")
-      return content ? `Tool result: pearl${topic ? ` on ${topic}` : ""}: ${content}` : null
-    }
-    case "show_mistake": {
-      const title = getRecordText(output, "title")
-      const mistake = getRecordText(output, "mistake")
-      return title || mistake ? `Tool result: common mistake${title ? `, ${title}` : ""}${mistake ? `: ${mistake}` : "."}` : null
-    }
-    case "show_donotmiss": {
-      const diagnosis = getRecordText(output, "diagnosis")
-      const clue = getRecordText(output, "clue")
-      return diagnosis || clue ? `Tool result: do-not-miss${diagnosis ? `, ${diagnosis}` : ""}${clue ? `: ${clue}` : "."}` : null
-    }
-    case "start_quiz": {
-      const topic = getRecordText(output, "topic")
-      const intensity = getRecordText(output, "intensity")
-      return topic ? `Tool result: quiz ready on ${topic}${intensity ? ` (${intensity})` : ""}.` : null
-    }
-    case "suggest_followups": {
-      if (typeof output !== "object" || output === null) return null
-      const chips = (output as Record<string, unknown>).chips
-      return Array.isArray(chips) && chips.length > 0
-        ? `Tool result: suggested follow-ups: ${chips.filter((chip): chip is string => typeof chip === "string").join("; ")}`
-        : null
-    }
-    default:
-      return null
-  }
-}
-
-function getMessageContentForStorage(message: UIMessage): string {
-  const text = getMessageText(message).trim()
-  const toolSummaries = (message.parts ?? [])
-    .map(getToolPartSummary)
-    .filter((summary): summary is string => Boolean(summary))
-
-  return [text, ...toolSummaries].filter(Boolean).join("\n\n")
-}
-
 function getMessageSnapshot(message: UIMessage): string {
   return JSON.stringify({
     id: message.id,
@@ -118,7 +99,7 @@ function getMessageSnapshot(message: UIMessage): string {
   })
 }
 
-// ── Markdown + citation renderer ──────────────────────────────────────────────
+// -- Markdown + citation renderer ----------------------------------------------
 
 function MarkdownMessage({ text }: { text: string }) {
   // Convert [Source, Year] to markdown link syntax so react-markdown's <a> component can catch them
@@ -158,7 +139,7 @@ function MarkdownMessage({ text }: { text: string }) {
   )
 }
 
-// ── Tool part rendering ───────────────────────────────────────────────────────
+// -- Tool part rendering -------------------------------------------------------
 
 interface ToolPartRenderProps {
   toolName: string
@@ -177,7 +158,7 @@ function ToolPartRender({
   conversationId, conversationTitle, onCaseComplete,
 }: ToolPartRenderProps) {
   if (state !== "output-available") {
-    return <p className="text-micro text-ink-muted italic">Loading {toolName}…</p>
+    return <p className="text-micro text-ink-muted italic">Loading {toolName}...</p>
   }
 
   switch (toolName) {
@@ -215,7 +196,7 @@ function ToolPartRender({
   }
 }
 
-// ── Message action row ────────────────────────────────────────────────────────
+// -- Message action row --------------------------------------------------------
 
 interface ActionButtonProps {
   icon: React.ReactNode
@@ -233,8 +214,8 @@ function ActionButton({ icon, label, active, onClick, activeColor = "text-electr
       title={label}
       aria-label={label}
       className={cn(
-        "p-1 rounded transition-colors duration-100",
-        "hover:bg-bg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-electric",
+        "rounded-md p-1.5 transition-all duration-200 ease-standard",
+        "hover:bg-surface-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric",
         active ? activeColor : "text-ink-muted hover:text-ink"
       )}
     >
@@ -295,14 +276,14 @@ function MessageActions({
 
   if (role === "user") {
     return (
-      <div className="flex gap-1 mt-1 justify-end opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-100">
+      <div className="mt-1 flex justify-end gap-1 opacity-0 transition-opacity duration-200 ease-standard group-hover:opacity-100 group-focus-within:opacity-100">
         <ActionButton icon={copied ? <Check size={13} /> : <Copy size={13} />} label="Copy" onClick={handleCopy} />
       </div>
     )
   }
 
   return (
-    <div className="flex gap-1 mt-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-100">
+    <div className="mt-2 flex gap-1 opacity-0 transition-opacity duration-200 ease-standard group-hover:opacity-100 group-focus-within:opacity-100">
       <ActionButton
         icon={<ThumbsUp size={13} className={feedback === "up" ? "fill-current" : ""} />}
         label="Good response"
@@ -324,7 +305,7 @@ function MessageActions({
       />
       <ActionButton
         icon={<Bookmark size={13} className={savedAsPearl ? "fill-current" : ""} />}
-        label="Save to pearls"
+        label={savedAsPearl ? "Remove from saved pearls" : "Save to pearls"}
         active={savedAsPearl}
         onClick={handleSavePearl}
       />
@@ -337,7 +318,7 @@ function MessageActions({
   )
 }
 
-// ── Message bubble ────────────────────────────────────────────────────────────
+// -- Message bubble ------------------------------------------------------------
 
 interface MessageBubbleProps {
   message: UIMessage
@@ -364,34 +345,38 @@ function MessageBubble({
 
   return (
     <div className={cn("group flex flex-col gap-0.5", isUser && "items-end")}>
-      <div className={cn("flex gap-3 w-full", isUser && "flex-row-reverse")}>
+      <div className={cn("flex w-full gap-3", isUser && "flex-row-reverse")}>
         {/* Avatar */}
         <div className={cn(
-          "w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center mt-0.5",
+          "mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full shadow-[inset_0_0_0_1px_rgba(32,32,30,0.05)]",
           isUser ? "bg-electric-soft text-electric" : "bg-terracotta-soft text-terracotta",
-          "text-micro font-semibold flex-shrink-0"
+          "text-micro font-semibold"
         )}>
           {isUser ? "U" : "H"}
         </div>
 
         {/* Content column */}
-        <div className={cn("flex flex-col gap-2 min-w-0", isUser ? "items-end max-w-[85%]" : "flex-1")}>
+        <div className={cn("flex min-w-0 flex-col gap-2", isUser ? "max-w-[85%] items-end" : "flex-1")}>
           {/* Text bubble */}
           {textContent && (
             <div className={cn(
-              "rounded-lg px-4 py-3 text-body leading-relaxed",
+              "rounded-2xl px-4 py-3 text-body leading-relaxed shadow-soft",
               isUser
-                ? "bg-electric-soft text-ink rounded-tr-none"
-                : "bg-bg-elevated border border-rule text-ink rounded-tl-none"
+                ? "rounded-tr-md bg-electric-soft text-ink"
+                : "rounded-tl-md border border-rule/70 bg-bg-elevated text-ink"
             )}>
               <MarkdownMessage text={textContent} />
               {isStreaming && !hasToolParts && (
-                <span className="inline-block w-1.5 h-4 bg-terracotta ml-0.5 animate-pulse align-middle" />
+                <span className="ml-1 inline-flex h-4 items-end gap-0.5 align-middle" aria-hidden="true">
+                  <span className="h-1 w-1 animate-pulse rounded-full bg-terracotta" />
+                  <span className="h-1 w-1 animate-pulse rounded-full bg-terracotta [animation-delay:120ms]" />
+                  <span className="h-1 w-1 animate-pulse rounded-full bg-terracotta [animation-delay:240ms]" />
+                </span>
               )}
             </div>
           )}
 
-          {/* Tool results — rendered outside the bubble for full width */}
+          {/* Tool results - rendered outside the bubble for full width */}
           {!isUser && parts.map((part, i) => {
             if (!part.type.startsWith("tool-")) return null
             const toolName = part.type.slice(5) // remove 'tool-' prefix
@@ -435,7 +420,7 @@ function MessageBubble({
   )
 }
 
-// ── Quiz banner ───────────────────────────────────────────────────────────────
+// -- Quiz banner ---------------------------------------------------------------
 
 interface QuizBannerProps {
   topic: string
@@ -445,14 +430,14 @@ interface QuizBannerProps {
 
 function QuizBanner({ topic, questionsAsked, onEnd }: QuizBannerProps) {
   return (
-    <div className="flex items-center gap-3 px-4 py-2 bg-electric-soft/30 border-b border-electric-soft flex-shrink-0">
-      <span className="text-small font-medium text-electric flex-1 truncate">
-        Quiz: {topic} · {questionsAsked}/5
+    <div className="flex flex-shrink-0 items-center gap-3 border-b border-electric-soft bg-electric-soft/35 px-4 py-2">
+      <span className="flex-1 truncate text-small font-medium text-electric">
+        Quiz: {topic} | {questionsAsked}/5
       </span>
       <button
         type="button"
         onClick={onEnd}
-        className="flex items-center gap-1 text-micro text-ink-muted hover:text-ink flex-shrink-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-electric rounded"
+        className="flex flex-shrink-0 items-center gap-1 rounded text-micro text-ink-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
       >
         <X size={12} />
         End quiz
@@ -461,7 +446,7 @@ function QuizBanner({ topic, questionsAsked, onEnd }: QuizBannerProps) {
   )
 }
 
-// ── Empty state ───────────────────────────────────────────────────────────────
+// -- Empty state ---------------------------------------------------------------
 
 interface EmptyStateProps {
   handle: string
@@ -490,68 +475,92 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
   }
 
   return (
-    <div className="flex flex-1 items-center justify-center px-4 py-12">
-      <div className="w-full max-w-[720px] space-y-8">
-        <div className="text-center space-y-2">
-          <p className="text-micro text-ink-muted uppercase tracking-widest font-inter">
-            § SurgiCraft · Handcraft
+    <div className="flex flex-1 items-center justify-center overflow-y-auto px-4 py-10">
+      <div className="w-full max-w-[820px] space-y-7">
+        <div className="text-center">
+          <p className="text-micro font-semibold uppercase tracking-[0.22em] text-ink-faint">
+            SurgiCraft | Handcraft
           </p>
-          <h1 className="font-fraunces text-h1 text-ink leading-tight">
+          <h1 className="mt-3 font-fraunces text-h1 leading-tight text-ink">
             What are we working on today,{" "}
             <span className="text-terracotta">{handle}</span>?
           </h1>
-          <p className="text-body text-ink-muted">
-            Ask a question, work through a case, or quiz yourself.
+          <p className="mx-auto mt-3 max-w-xl text-body text-ink-muted">
+            Ask a question, work through a case, quiz yourself, or review high-yield mistakes.
           </p>
-          <p className="text-small text-ink-muted">
+          <p className="mx-auto mt-3 max-w-xl rounded-full bg-surface-subtle px-4 py-2 text-small text-ink-muted">
             Educational only. No PHI: do not enter names, MRNs, DOBs, images, or patient identifiers.
           </p>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">
           <div className={cn(
-            "relative border rounded-lg bg-bg-elevated transition-shadow duration-150",
-            "border-rule focus-within:border-electric focus-within:ring-2 focus-within:ring-electric/20"
+            "relative rounded-2xl border border-rule/70 bg-bg-elevated shadow-medium transition-all duration-300 ease-standard",
+            "focus-within:border-electric/50 focus-within:ring-4 focus-within:ring-electric/10"
           )}>
             <textarea
               ref={textareaRef}
               value={input}
               onChange={onInputChange}
               onKeyDown={handleKeyDown}
-              placeholder="Ask a hand surgery question…"
+              placeholder="Ask about fight bites, mallet finger, flexor tendon zones..."
               rows={3}
               aria-label="Chat input"
-              className="w-full resize-none bg-transparent px-4 pt-4 pb-12 text-body text-ink placeholder:text-ink-muted focus:outline-none overflow-hidden"
+              className="w-full resize-none overflow-hidden bg-transparent px-5 pb-14 pt-5 text-body text-ink placeholder:text-ink-muted focus:outline-none"
             />
             <div className="absolute bottom-3 right-3">
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
                 className={cn(
-                  "px-4 py-1.5 rounded-md text-small font-medium transition-colors duration-150",
-                  "bg-electric text-bg disabled:opacity-40 disabled:cursor-not-allowed",
+                  "rounded-xl px-4 py-2 text-small font-semibold transition-all duration-300 ease-standard",
+                  "bg-electric text-bg shadow-soft hover:-translate-y-0.5 hover:shadow-medium disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
                 )}
               >
-                {isLoading ? "Sending" : "Ask →"}
+                {isLoading ? "Sending" : "Ask"}
               </button>
             </div>
           </div>
-          <div className="flex flex-wrap gap-2 justify-center">
-            {SUGGESTED_PROMPTS.map((p) => (
+
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {QUICK_STARTS.map(({ label, prompt, helper, icon: Icon }) => (
+              <button
+                key={label}
+                type="button"
+                onClick={() => onSuggestedPrompt(prompt)}
+                className={cn(
+                  "group rounded-2xl border border-rule/70 bg-bg-elevated p-4 text-left shadow-soft",
+                  "transition-all duration-300 ease-standard hover:-translate-y-0.5 hover:border-electric/40 hover:shadow-medium",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
+                )}
+              >
+                <span className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-surface-subtle text-electric transition-colors duration-300 group-hover:bg-electric-soft">
+                  <Icon size={16} />
+                </span>
+                <span className="block text-small font-semibold text-ink">{label}</span>
+                <span className="mt-1 block text-micro text-ink-muted">{helper}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {SUGGESTED_PROMPTS.slice(0, 3).map((p) => (
               <button
                 key={p}
                 type="button"
                 onClick={() => onSuggestedPrompt(p)}
-                className={cn(
-                  "px-4 py-2 rounded-full border border-rule bg-bg-elevated text-small text-ink-muted",
-                  "hover:border-electric hover:text-electric transition-colors duration-150",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
-                )}
+                className="rounded-full border border-rule/70 bg-bg-elevated px-3 py-1.5 text-micro text-ink-muted transition-colors duration-300 ease-standard hover:border-electric/40 hover:text-electric focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
               >
                 {p}
               </button>
             ))}
+            <a
+              href="/case"
+              className="rounded-full border border-rule/70 bg-bg-elevated px-3 py-1.5 text-micro text-ink-muted transition-colors duration-300 ease-standard hover:border-electric/40 hover:text-electric focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
+            >
+              Browse learning library
+            </a>
           </div>
         </form>
       </div>
@@ -559,7 +568,7 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
   )
 }
 
-// ── Conversation input bar ────────────────────────────────────────────────────
+// -- Conversation input bar ----------------------------------------------------
 
 interface ConversationInputProps {
   input: string
@@ -586,25 +595,25 @@ function ConversationInput({ input, isLoading, onInputChange, onSubmit }: Conver
   }
 
   return (
-    <div className="border-t border-rule bg-bg px-4 py-3 flex-shrink-0">
-      <div className="mx-auto max-w-2xl">
+    <div className="flex-shrink-0 border-t border-rule/70 bg-bg/95 px-4 py-3 backdrop-blur">
+      <div className="mx-auto max-w-3xl">
         <p className="mb-2 text-micro text-ink-muted">
           Educational only. No PHI: do not enter names, MRNs, DOBs, images, or patient identifiers.
         </p>
-        <form onSubmit={onSubmit} className="flex gap-2 items-end">
+        <form onSubmit={onSubmit} className="flex items-end gap-2">
           <div className={cn(
-            "flex-1 relative border rounded-lg bg-bg-elevated transition-shadow duration-150",
-            "border-rule focus-within:border-electric focus-within:ring-2 focus-within:ring-electric/20"
+            "relative flex-1 rounded-2xl border border-rule/70 bg-bg-elevated shadow-soft transition-all duration-300 ease-standard",
+            "focus-within:border-electric/50 focus-within:ring-4 focus-within:ring-electric/10"
           )}>
             <textarea
               ref={textareaRef}
               value={input}
               onChange={onInputChange}
               onKeyDown={handleKeyDown}
-              placeholder="Follow up…"
+              placeholder="Ask a follow-up, request a case, or quiz yourself..."
               rows={1}
               aria-label="Chat input"
-              className="w-full resize-none bg-transparent px-3 py-2.5 text-body text-ink placeholder:text-ink-muted focus:outline-none overflow-hidden"
+              className="w-full resize-none overflow-hidden bg-transparent px-4 py-3 text-body text-ink placeholder:text-ink-muted focus:outline-none"
             />
           </div>
           <button
@@ -612,8 +621,8 @@ function ConversationInput({ input, isLoading, onInputChange, onSubmit }: Conver
             disabled={!input.trim() || isLoading}
             aria-label="Send message"
             className={cn(
-              "px-4 py-2.5 rounded-lg text-small font-medium transition-colors duration-150 flex-shrink-0",
-              "bg-electric text-bg disabled:opacity-40 disabled:cursor-not-allowed",
+              "flex-shrink-0 rounded-2xl px-4 py-3 text-small font-semibold transition-all duration-300 ease-standard",
+              "bg-electric text-bg shadow-soft hover:-translate-y-0.5 hover:shadow-medium disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
             )}
           >
@@ -625,7 +634,7 @@ function ConversationInput({ input, isLoading, onInputChange, onSubmit }: Conver
   )
 }
 
-// ── Privacy banner ────────────────────────────────────────────────────────────
+// -- Privacy banner ------------------------------------------------------------
 
 function PrivacyBanner() {
   const [show, setShow] = useState(false)
@@ -635,14 +644,14 @@ function PrivacyBanner() {
   }, [])
   if (!show) return null
   return (
-    <div className="flex items-center gap-3 px-4 py-2.5 bg-bg border-b border-rule text-small text-ink-muted flex-shrink-0">
+    <div className="flex flex-shrink-0 items-center gap-3 border-b border-rule/70 bg-surface-subtle/70 px-4 py-2.5 text-small text-ink-muted">
       <span className="flex-1">
         Educational use only. Not for clinical decision-making. No PHI. Conversations are stored locally and never shared with faculty.
       </span>
       <button
         type="button"
         onClick={() => { localStorage.setItem("surgicraft:privacy-acknowledged", "1"); setShow(false) }}
-        className="text-electric hover:underline flex-shrink-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-electric rounded"
+        className="flex-shrink-0 rounded text-electric hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
       >
         Got it
       </button>
@@ -650,7 +659,7 @@ function PrivacyBanner() {
   )
 }
 
-// ── Main ChatExperience ───────────────────────────────────────────────────────
+// -- Main ChatExperience -------------------------------------------------------
 
 interface ChatExperienceProps {
   conversationId?: string
@@ -685,18 +694,19 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
     [convId, quizState?.topic, quizState?.intensity, quizState?.questionsAsked]
   )
 
-  const { messages, sendMessage, status, setMessages } = useChat({ transport })
+  const { messages, sendMessage, status, setMessages, clearError } = useChat({ transport })
 
   const [input, setInput] = useState("")
   const [handle, setHandle] = useState("doctor")
   const [msgMeta, setMsgMeta] = useState<Record<string, LocalMeta>>({})
+  const [sendError, setSendError] = useState<string | null>(null)
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [showScrollButton, setShowScrollButton] = useState(false)
   const prevStatusRef = useRef(status)
   const lastAssistantMsgIdRef = useRef<string | null>(null)
-  const lastAssistantSnapshotRef = useRef<string | null>(null)
+  const persistedMessageSnapshotsRef = useRef<Map<string, string>>(new Map())
 
   const isLoading = status === "submitted" || status === "streaming"
 
@@ -721,7 +731,13 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
       setMessages(restoredMessages)
       const lastAssistant = [...restoredMessages].reverse().find((m) => m.role === "assistant")
       lastAssistantMsgIdRef.current = lastAssistant?.id ?? null
-      lastAssistantSnapshotRef.current = lastAssistant ? getMessageSnapshot(lastAssistant) : null
+      persistedMessageSnapshotsRef.current = new Map(
+        restoredMessages.map((message) => [message.id, getMessageSnapshot(message)])
+      )
+    } else {
+      setMessages([])
+      persistedMessageSnapshotsRef.current = new Map()
+      lastAssistantMsgIdRef.current = null
     }
   }, [conversationId, setMessages])
 
@@ -740,29 +756,35 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
     if (nearBottom || isLoading) messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages, isLoading])
 
-  // Persist assistant message to localStorage when streaming settles.
+  // Persist AI SDK-owned UI messages into localStorage. User and assistant IDs
+  // come from the SDK, while appendMessage upserts and preserves local flags.
   useEffect(() => {
-    if (status === "ready" && convId) {
-      const lastMsg = [...messages].reverse().find((m) => m.role === "assistant")
-      if (lastMsg) {
-        const snapshot = getMessageSnapshot(lastMsg)
-        if (snapshot !== lastAssistantSnapshotRef.current) {
-          lastAssistantSnapshotRef.current = snapshot
-          const content = getMessageContentForStorage(lastMsg)
-          appendMessage(convId, {
-            id: lastMsg.id,
-            role: "assistant",
-            content: content || "Assistant response",
-            parts: lastMsg.parts,
-          })
-        }
+    if (!convId) return
 
-        if (lastMsg.id !== lastAssistantMsgIdRef.current) {
-          lastAssistantMsgIdRef.current = lastMsg.id
-          // Increment quiz questions asked once per completed assistant turn.
-          if (prevStatusRef.current === "streaming" && quizState) {
-            setQuizState((prev) => prev ? { ...prev, questionsAsked: prev.questionsAsked + 1 } : null)
-          }
+    const canPersistUserMessages = status === "streaming" || status === "ready"
+
+    for (const message of messages) {
+      if (message.role === "user" && !canPersistUserMessages) continue
+      if (message.role === "assistant" && status === "submitted") continue
+
+      const snapshot = getMessageSnapshot(message)
+      if (persistedMessageSnapshotsRef.current.get(message.id) === snapshot) continue
+
+      const storedMessage = uiMessageToChatMessageInput(message)
+      if (!storedMessage) continue
+
+      appendMessage(convId, storedMessage)
+      persistedMessageSnapshotsRef.current.set(message.id, snapshot)
+    }
+  }, [messages, convId, status])
+
+  useEffect(() => {
+    if (status === "ready") {
+      const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant")
+      if (lastAssistant && lastAssistant.id !== lastAssistantMsgIdRef.current) {
+        lastAssistantMsgIdRef.current = lastAssistant.id
+        if (prevStatusRef.current === "streaming" && quizState) {
+          setQuizState((prev) => prev ? { ...prev, questionsAsked: prev.questionsAsked + 1 } : null)
         }
       }
     }
@@ -781,6 +803,10 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
 
   async function doSend(text: string, requestQuizState: QuizState | null = quizState) {
     let currentConvId = convId
+    const messageIdsBeforeSend = new Set(messages.map((message) => message.id))
+
+    setSendError(null)
+    clearError()
 
     if (!currentConvId) {
       const conv = createConversation(text)
@@ -800,24 +826,26 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
         .catch(() => {})
     }
 
-    const savedUserMsg = appendMessage(currentConvId, {
-      role: "user",
-      content: text,
-      parts: [{ type: "text" as const, text }],
-    })
-    setMsgMeta((prev) => ({ ...prev, [savedUserMsg.id]: {} }))
+    try {
+      await sendMessage(
+        { text },
+        {
+          body: {
+            conversationId: currentConvId,
+            ...(requestQuizState ? { quizMode: requestQuizState } : {}),
+          },
+        }
+      )
 
-    await sendMessage(
-      { text, messageId: savedUserMsg.id },
-      {
-        body: {
-          conversationId: currentConvId,
-          ...(requestQuizState ? { quizMode: requestQuizState } : {}),
-        },
-      }
-    )
-
-    if (!conversationId) router.replace(`/c/${currentConvId}`)
+      if (!conversationId) router.replace(`/c/${currentConvId}`)
+    } catch (error) {
+      console.error("[surgicraft] Failed to send chat message", error)
+      setMessages((currentMessages) =>
+        currentMessages.filter((message) => messageIdsBeforeSend.has(message.id))
+      )
+      setInput(text)
+      setSendError("Message could not be sent. Check the connection and try again.")
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -836,16 +864,16 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
   function handleQuizBegin(topic: string, intensity: string) {
     const nextQuizState = { topic, intensity, questionsAsked: 0 }
     setQuizState(nextQuizState)
-    doSend(`Begin the quiz on "${topic}" at ${intensity} intensity.`, nextQuizState)
+    void doSend(`Begin the quiz on "${topic}" at ${intensity} intensity.`, nextQuizState)
   }
 
   function handleQuizEnd() {
     setQuizState(null)
-    doSend("End the quiz now and give me a summary of how I did.", null)
+    void doSend("End the quiz now and give me a summary of how I did.", null)
   }
 
   function handleCaseComplete(caseId: string, caseTitle: string) {
-    doSend(`I just completed the "${caseTitle}" case (${caseId}). What's the key teaching point I should take away?`)
+    void doSend(`I just completed the "${caseTitle}" case (${caseId}). What's the key teaching point I should take away?`)
   }
 
   const hasMessages = messages.length > 0
@@ -862,6 +890,12 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
         />
       )}
 
+      {sendError && (
+        <div className="mx-4 mt-3 rounded-xl border border-wrong-soft bg-wrong-soft px-4 py-2 text-small text-ink shadow-soft" role="alert">
+          {sendError}
+        </div>
+      )}
+
       {!hasMessages ? (
         <EmptyState
           handle={handle}
@@ -869,12 +903,12 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
           isLoading={isLoading}
           onInputChange={(e) => setInput(e.target.value)}
           onSubmit={handleSubmit}
-          onSuggestedPrompt={(p) => { setInput(""); doSend(p) }}
+          onSuggestedPrompt={(p) => { setInput(""); void doSend(p) }}
         />
       ) : (
         <div className="relative flex flex-col flex-1 overflow-hidden">
           <div ref={scrollContainerRef} onScroll={handleScroll} className="flex-1 overflow-y-auto">
-            <div className="mx-auto max-w-2xl px-4 py-6 space-y-6 pb-4">
+            <div className="mx-auto max-w-3xl space-y-6 px-4 py-6 pb-4">
               {messages.map((m, i) => (
                 <MessageBubble
                   key={m.id}
@@ -891,11 +925,16 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
               ))}
               {status === "submitted" && (
                 <div className="flex gap-3" role="status" aria-live="polite">
-                  <div className="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center mt-0.5 bg-terracotta-soft text-terracotta text-micro font-semibold">
+                  <div className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-terracotta-soft text-micro font-semibold text-terracotta">
                     H
                   </div>
-                  <div className="rounded-lg rounded-tl-none px-4 py-3 text-body bg-bg-elevated border border-rule text-ink-muted">
-                    Tutor is responding.
+                  <div className="rounded-2xl rounded-tl-md border border-rule/70 bg-bg-elevated px-4 py-3 text-body text-ink-muted shadow-soft">
+                    <span>Handcraft is thinking</span>
+                    <span className="ml-1 inline-flex gap-0.5 align-middle" aria-hidden="true">
+                      <span className="h-1 w-1 animate-pulse rounded-full bg-ink-faint" />
+                      <span className="h-1 w-1 animate-pulse rounded-full bg-ink-faint [animation-delay:120ms]" />
+                      <span className="h-1 w-1 animate-pulse rounded-full bg-ink-faint [animation-delay:240ms]" />
+                    </span>
                   </div>
                 </div>
               )}
@@ -909,14 +948,13 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
               onClick={() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })}
               className={cn(
                 "absolute bottom-20 right-4 md:right-8 z-10",
-                "w-8 h-8 rounded-full border border-rule bg-bg-elevated shadow-sm",
-                "text-ink-muted hover:text-ink flex items-center justify-center",
-                "transition-colors duration-150",
+                "flex h-9 w-9 items-center justify-center rounded-full border border-rule/70 bg-bg-elevated shadow-medium",
+                "text-ink-muted transition-all duration-300 ease-standard hover:-translate-y-0.5 hover:text-ink",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
               )}
               aria-label="Scroll to bottom"
             >
-              ↓
+              <ArrowDown size={14} />
             </button>
           )}
 
@@ -931,3 +969,4 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
     </div>
   )
 }
+

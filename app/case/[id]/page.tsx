@@ -1,8 +1,9 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { ArrowLeft, CheckCircle, Lock, MessageSquare } from "lucide-react"
 import { ChatLayout } from "@/components/chat/ChatLayout"
 import { SectionMarker } from "@/components/shell/SectionMarker"
 import { Button } from "@/components/ui/button"
@@ -10,12 +11,12 @@ import { Badge } from "@/components/ui/badge"
 import { ReasoningAutopsy, type ReasoningAutopsyData } from "@/components/case/ReasoningAutopsy"
 import { cn } from "@/lib/utils"
 
-// ── Static case imports ────────────────────────────────────────────────────────
+// -- Static case imports --------------------------------------------------------
 import case001 from "@/content/cases/001-fight-bite.json"
 import case002 from "@/content/cases/002-mallet-finger.json"
 import case003 from "@/content/cases/003-distal-radius.json"
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// -- Types ---------------------------------------------------------------------
 
 type CardData = {
   label: string
@@ -51,18 +52,18 @@ const CARD_ORDER = ["chief_complaint", "history", "exam", "imaging", "labs", "ma
 // Summary sentence per card key (first sentence of each card's content)
 function firstSentence(text: string): string {
   const m = text.match(/^[^.!?]+[.!?]/)
-  return m ? m[0] : text.slice(0, 80) + "…"
+  return m ? m[0] : text.slice(0, 80) + "..."
 }
 
-// ── Revealable card ───────────────────────────────────────────────────────────
+// -- Revealable card -----------------------------------------------------------
 
 function CaseCardRevealed({ card }: { card: CardData }) {
   return (
     <div
-      className="border border-rule rounded-lg bg-bg-elevated overflow-hidden animate-fade-up"
+      className="animate-fade-up overflow-hidden rounded-2xl border border-rule/70 bg-bg-elevated shadow-soft"
       style={{ animationDuration: "420ms", animationTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)" }}
     >
-      <div className="px-5 py-3 border-b border-rule bg-bg">
+      <div className="border-b border-rule/70 bg-surface-subtle/60 px-5 py-3">
         <p className="font-fraunces text-h3 text-ink">{card.label}</p>
       </div>
       <div className="px-5 py-4">
@@ -72,21 +73,21 @@ function CaseCardRevealed({ card }: { card: CardData }) {
   )
 }
 
-// ── Pearl card ────────────────────────────────────────────────────────────────
+// -- Pearl card ----------------------------------------------------------------
 
 function PearlCard({ pearl }: { pearl: { id: string; text: string; attribution: string } }) {
   return (
-    <div className="border border-terracotta-soft bg-terracotta-soft/30 rounded-lg p-4">
+    <div className="rounded-2xl border border-terracotta-soft bg-terracotta-soft/35 p-4 shadow-soft">
       <p className="text-body text-ink leading-relaxed mb-2">{pearl.text}</p>
       <p className="text-micro text-terracotta font-medium">{pearl.attribution}</p>
       <p className="text-micro text-ink-muted mt-2">
-        Local demo content · needs faculty verification
+        Local demo content | needs faculty verification
       </p>
     </div>
   )
 }
 
-// ── Main page ─────────────────────────────────────────────────────────────────
+// -- Main page -----------------------------------------------------------------
 
 export default function CaseCanvasPage({ params }: { params: { id: string } }) {
   const caseData = CASES[params.id]
@@ -101,10 +102,15 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
   const [summaryLines, setSummaryLines] = useState<string[]>([
     firstSentence(caseData.cards["chief_complaint"]?.content ?? ""),
   ])
+  const [commitment, setCommitment] = useState("")
 
   const managementRevealed = revealed.includes("management")
   const nonManagementRevealed = revealed.filter((k) => k !== "chief_complaint" && k !== "management")
   const managementUnlocked = nonManagementRevealed.length >= 3 || managementOverride
+  const commitmentReady = commitment.trim().length >= 8
+  const informationGathered = 1 + nonManagementRevealed.length
+  const informationTotal = 1 + revealableCards.length
+  const progressPercent = Math.round((informationGathered / Math.max(informationTotal, 1)) * 100)
 
   function revealCard(cardKey: string) {
     if (revealed.includes(cardKey)) return
@@ -117,7 +123,7 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
 
   function getRevealButtonLabel(cardKey: string): string {
     const card = caseData.cards[cardKey]
-    if (revealed.includes(cardKey)) return `${card?.label ?? cardKey} ✓`
+    if (revealed.includes(cardKey)) return `${card?.label ?? cardKey} revealed`
     return `Reveal ${card?.label ?? cardKey}`
   }
 
@@ -127,19 +133,28 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
       <div className="mx-auto max-w-5xl px-6 py-8">
 
         {/* Breadcrumb + meta */}
-        <div className="flex items-center gap-3 mb-6">
-          <Link href="/case" className="text-small text-ink-muted hover:text-ink transition-colors">
-            ← Cases
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          <Link href="/case" className="inline-flex items-center gap-2 rounded-lg text-small text-ink-muted transition-colors hover:text-electric focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric">
+            <ArrowLeft size={14} />
+            Cases
           </Link>
-          <span className="text-rule">·</span>
           <Badge variant="secondary" className="text-micro">{caseData.difficulty}</Badge>
           <span className="text-micro text-ink-muted">~{caseData.estimatedMinutes} min</span>
+          <span className="rounded-full bg-surface-subtle px-2 py-0.5 text-micro text-ink-muted">
+            Demo mode | faculty verification needed
+          </span>
+          <Button asChild variant="outline" size="sm" className="ml-auto">
+            <Link href={`/c?prefill=${encodeURIComponent(`Walk me through the ${caseData.title} case.`)}`}>
+              <MessageSquare size={14} />
+              Use this in chat
+            </Link>
+          </Button>
         </div>
 
         {/* Two-pane layout */}
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8">
 
-          {/* LEFT — main case area */}
+          {/* LEFT - main case area */}
           <div className="space-y-6">
 
             {/* Case stem */}
@@ -154,7 +169,38 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
               </p>
             </section>
 
-            {/* Chief complaint — always visible */}
+            <section className="rounded-2xl border border-rule/70 bg-bg-elevated p-4 shadow-soft" aria-label="Case progress">
+              <div className="mb-2 flex items-center justify-between gap-3">
+                <p className="text-small font-semibold text-ink">Reasoning checkpoint</p>
+                <p className="text-micro text-ink-muted">
+                  Information gathered: {informationGathered}/{informationTotal}
+                </p>
+              </div>
+              <div className="h-2 overflow-hidden rounded-full bg-surface-subtle">
+                <div
+                  className="h-full rounded-full bg-electric transition-all duration-500 ease-reveal"
+                  style={{ width: `${managementRevealed ? 100 : progressPercent}%` }}
+                />
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="rounded-full bg-surface-subtle px-2 py-0.5 text-micro text-ink-muted">
+                  Cards revealed: {informationGathered}/{informationTotal}
+                </span>
+                <span className={cn(
+                  "rounded-full px-2 py-0.5 text-micro",
+                  managementUnlocked ? "bg-correct-soft text-correct" : "bg-surface-subtle text-ink-muted"
+                )}>
+                  {managementUnlocked ? "Management unlocked" : "Management locked"}
+                </span>
+                {managementRevealed && (
+                  <span className="rounded-full bg-correct-soft px-2 py-0.5 text-micro text-correct">
+                    Case complete
+                  </span>
+                )}
+              </div>
+            </section>
+
+            {/* Chief complaint - always visible */}
             {caseData.cards.chief_complaint && (
               <CaseCardRevealed card={caseData.cards.chief_complaint} />
             )}
@@ -180,24 +226,39 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
                 ))}
 
                 {hasManagement && (
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <Button
                       variant={managementRevealed ? "secondary" : "default"}
                       size="sm"
                       onClick={() => revealCard("management")}
-                      disabled={!managementUnlocked || managementRevealed}
-                      title={!managementUnlocked ? "Reveal at least 3 cards first" : undefined}
+                      disabled={!managementUnlocked || !commitmentReady || managementRevealed}
+                      title={
+                        !managementUnlocked
+                          ? "Reveal at least 3 cards first"
+                          : !commitmentReady
+                            ? "Commit to a diagnosis and plan first"
+                            : undefined
+                      }
                     >
-                      {managementRevealed
-                        ? "Management ✓"
-                        : managementUnlocked
-                        ? "Reveal Management"
-                        : `🔒 Management (${nonManagementRevealed.length}/3)`}
+                      {managementRevealed ? (
+                        <>
+                          <CheckCircle size={14} />
+                          Management revealed
+                        </>
+                      ) : managementUnlocked ? (
+                        "Reveal management"
+                      ) : (
+                        <>
+                          <Lock size={14} />
+                          Management ({nonManagementRevealed.length}/3)
+                        </>
+                      )}
                     </Button>
                     {!managementUnlocked && !managementRevealed && (
                       <button
+                        type="button"
                         onClick={() => { setManagementOverride(true) }}
-                        className="text-small text-ink-muted hover:text-ink underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric rounded"
+                        className="rounded text-small text-ink-muted underline underline-offset-2 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
                       >
                         Reveal anyway
                       </button>
@@ -205,6 +266,25 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
                   </div>
                 )}
               </div>
+
+              {hasManagement && managementUnlocked && !managementRevealed && (
+                <div className="mt-4 rounded-2xl border border-rule/70 bg-bg-elevated p-4 shadow-soft">
+                  <label htmlFor="case-commitment" className="text-small font-semibold text-ink">
+                    Commit before revealing management
+                  </label>
+                  <p className="mt-1 text-small text-ink-muted">
+                    Write your diagnosis and plan. This stays local and is not graded in Phase 0B.2.
+                  </p>
+                  <textarea
+                    id="case-commitment"
+                    value={commitment}
+                    onChange={(event) => setCommitment(event.target.value)}
+                    rows={3}
+                    className="mt-3 w-full resize-none rounded-xl border border-rule/70 bg-bg px-3 py-2 text-body text-ink shadow-[inset_0_1px_1px_rgba(32,32,30,0.03)] placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-electric"
+                    placeholder="Diagnosis, urgent concerns, and next management step..."
+                  />
+                </div>
+              )}
             </section>
 
             {/* Revealed cards (excluding chief complaint, shown above) */}
@@ -218,7 +298,13 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
 
             {/* End-of-case content */}
             {managementRevealed && (
-              <div className="animate-fade-up space-y-8 pt-4 border-t border-rule">
+              <div className="animate-fade-up space-y-8 border-t border-rule/70 pt-5">
+                <div className="rounded-2xl border border-correct-soft bg-correct-soft/35 p-4 shadow-soft">
+                  <p className="text-small font-semibold text-correct">Management unlocked</p>
+                  <p className="mt-1 text-small text-ink-muted">
+                    Compare the revealed plan with your commitment. This is a reasoning exercise, not a grade.
+                  </p>
+                </div>
 
                 {/* Teaching points */}
                 <section>
@@ -261,14 +347,14 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
                     ))}
                   </ul>
                   <p className="mt-3 text-micro text-ink-muted italic">
-                    Synthetic case · Local demo content · Needs faculty verification
+                    Synthetic case | Local demo content | Needs faculty verification
                   </p>
                 </section>
 
                 {/* Nav */}
                 <div className="flex gap-3 pt-4 border-t border-rule">
                   <Button asChild variant="outline">
-                    <Link href="/case">← Back to cases</Link>
+                    <Link href="/case">Back to cases</Link>
                   </Button>
                   <Button asChild>
                     <Link href="/c">Back to chat</Link>
@@ -278,17 +364,29 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
             )}
           </div>
 
-          {/* RIGHT — running summary (sticky desktop, collapsible mobile) */}
+          {/* RIGHT - running summary (sticky desktop, collapsible mobile) */}
           <aside className="lg:sticky lg:top-24 lg:h-fit">
             <details open className="lg:open">
               <summary className="lg:hidden flex items-center justify-between cursor-pointer mb-3 text-small font-medium text-ink">
                 What we know so far
-                <span className="text-ink-muted">▾</span>
+                <span className="text-ink-muted">v</span>
               </summary>
-              <div className="border border-rule rounded-lg bg-bg-elevated p-4">
+              <div className="rounded-2xl border border-rule/70 bg-bg-elevated p-4 shadow-soft">
                 <p className="hidden lg:block font-fraunces text-h3 text-ink mb-3">
                   What we know
                 </p>
+                <div className="mb-4">
+                  <div className="mb-1 flex items-center justify-between text-micro text-ink-muted">
+                    <span>Progress</span>
+                    <span>{managementRevealed ? 100 : progressPercent}%</span>
+                  </div>
+                  <div className="h-2 overflow-hidden rounded-full bg-surface-subtle">
+                    <div
+                      className="h-full rounded-full bg-electric transition-all duration-500 ease-reveal"
+                      style={{ width: `${managementRevealed ? 100 : progressPercent}%` }}
+                    />
+                  </div>
+                </div>
                 {summaryLines.length === 0 ? (
                   <p className="text-small text-ink-muted italic">
                     Nothing yet. Start by revealing history or exam.
@@ -297,7 +395,7 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
                   <ul className="space-y-2">
                     {summaryLines.map((line, i) => (
                       <li key={i} className="text-small text-ink leading-relaxed flex gap-2">
-                        <span className="text-rule flex-shrink-0 mt-1">—</span>
+                        <span className="text-rule flex-shrink-0 mt-1">-</span>
                         <span>{line}</span>
                       </li>
                     ))}
@@ -323,3 +421,5 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
     </ChatLayout>
   )
 }
+
+

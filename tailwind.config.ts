@@ -17,11 +17,13 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // ── Handcraft design tokens (hex, used directly in classes) ──
         bg: "var(--bg)",
         "bg-elevated": "var(--bg-elevated)",
+        "surface-subtle": "var(--surface-subtle)",
+        "surface-raised": "var(--surface-raised)",
         ink: "var(--ink)",
         "ink-muted": "var(--ink-muted)",
+        "ink-faint": "var(--ink-faint)",
         rule: "var(--rule)",
         terracotta: "var(--terracotta)",
         "terracotta-soft": "var(--terracotta-soft)",
@@ -33,7 +35,6 @@ const config: Config = {
         "warn-soft": "var(--warn-soft)",
         wrong: "var(--wrong)",
         "wrong-soft": "var(--wrong-soft)",
-        // ── shadcn/ui HSL tokens ──
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -85,9 +86,21 @@ const config: Config = {
         micro: ["12px", { lineHeight: "1.4" }],
       },
       borderRadius: {
+        "2xl": "1rem",
+        xl: "0.875rem",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        soft: "var(--shadow-soft)",
+        medium: "var(--shadow-medium)",
+        floating: "var(--shadow-floating)",
+      },
+      transitionTimingFunction: {
+        standard: "var(--ease-standard)",
+        reveal: "var(--ease-reveal)",
+        micro: "var(--ease-micro)",
       },
       keyframes: {
         "accordion-down": {

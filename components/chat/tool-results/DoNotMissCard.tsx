@@ -19,31 +19,31 @@ export function DoNotMissCard({ entry }: DoNotMissCardProps) {
   if (!entry) return null
 
   return (
-    <div className="border border-wrong-soft rounded-lg overflow-hidden my-2">
-      <div className="px-4 py-3 border-b border-wrong-soft bg-wrong-soft/40 flex items-center gap-2">
-        <Eye size={14} className="text-wrong flex-shrink-0" />
-        <p className="text-micro text-wrong font-semibold uppercase tracking-wider">
+    <div className="my-2 overflow-hidden rounded-2xl border border-wrong-soft bg-bg-elevated shadow-soft">
+      <div className="flex items-center gap-2 border-b border-wrong-soft bg-wrong-soft/40 px-4 py-3">
+        <Eye size={14} className="flex-shrink-0 text-wrong" />
+        <p className="text-micro font-semibold uppercase tracking-[0.16em] text-wrong">
           Do not miss
         </p>
       </div>
-      <div className="px-4 py-3 space-y-3 bg-bg-elevated">
-        <p className="font-fraunces text-h3 text-terracotta">{entry.diagnosis}</p>
+      <div className="space-y-3 px-4 py-3">
+        <p className="font-fraunces text-h3 text-ink">{entry.diagnosis}</p>
         <div>
-          <p className="text-micro text-ink-muted uppercase tracking-wider mb-1">The clue</p>
-          <p className="text-small text-ink leading-relaxed">{entry.clue}</p>
+          <p className="mb-1 text-micro uppercase tracking-wider text-ink-muted">The clue</p>
+          <p className="text-small leading-relaxed text-ink">{entry.clue}</p>
         </div>
         <div>
-          <p className="text-micro text-ink-muted uppercase tracking-wider mb-1">If missed</p>
-          <p className="text-small text-ink leading-relaxed">{entry.badOutcome}</p>
+          <p className="mb-1 text-micro uppercase tracking-wider text-ink-muted">If missed</p>
+          <p className="text-small leading-relaxed text-ink">{entry.badOutcome}</p>
         </div>
-        <div className="border border-wrong-soft bg-wrong-soft/30 rounded px-3 py-2">
-          <p className="text-small text-ink-muted italic">
+        <div className="rounded-xl border border-wrong-soft bg-wrong-soft/35 px-3 py-2">
+          <p className="text-small italic text-ink-muted">
             In a real clinical scenario, escalate immediately to your senior and hand surgery. Never rely on this app for clinical decisions.
           </p>
         </div>
         {!entry.verified && (
           <p className="text-micro text-ink-muted">
-            Local demo content · needs faculty verification
+            Local demo content | needs faculty verification
           </p>
         )}
       </div>

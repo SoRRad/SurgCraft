@@ -1,4 +1,4 @@
-# SurgiCraft : Handcraft — Design System
+﻿# SurgiCraft : Handcraft - Design System
 
 > Current visual system for module 01 of SurgiCraft. The active app is chat-first: `/c` is the primary surface, with library views available from the sidebar.
 
@@ -19,7 +19,7 @@ Off-white grounds, deep ink for text, anatomical accent, electric pop for intera
 --rule:         #E8E2D7;  /* borders, dividers */
 
 /* Anatomical accent */
---terracotta:       #C0593D;  /* primary accent — anatomy, headlines */
+--terracotta:       #C0593D;  /* primary accent - anatomy, headlines */
 --terracotta-soft:  #F2D9CF;  /* backgrounds, highlights */
 
 /* Electric pop (interaction) */
@@ -41,19 +41,19 @@ Off-white grounds, deep ink for text, anatomical accent, electric pop for intera
 
 **Usage rules:**
 - Background is always `--bg`, never pure white. The warmth matters.
-- Terracotta is for emphasis: section markers, key headlines, anatomical accent shapes. Never use it for "danger" — that's `--wrong`.
+- Terracotta is for emphasis: section markers, key headlines, anatomical accent shapes. Never use it for "danger" - that's `--wrong`.
 - Electric is for *anything the user can click or that's currently active*. Sparingly.
-- No drop shadows on cards. Use 1px `--rule` borders + generous padding. The aesthetic is print, not iOS.
+- Use soft layered shadows on elevated cards, drawers, and message bubbles. Keep borders quiet and use them as structure, not decoration.
 
 ---
 
 ## 2. Typography
 
 ```
-Display / Headlines:  "Fraunces" (variable, opsz 9..144)  — serif, editorial, distinctive
-Body / UI:            "Inter"   (variable)                 — clean grotesque
-Case stems:           "Instrument Serif"                   — large, dramatic, textbook-feel
-Mono / data:          "JetBrains Mono"                     — citations, IDs, code
+Display / Headlines:  "Fraunces" (variable, opsz 9..144)  - serif, editorial, distinctive
+Body / UI:            "Inter"   (variable)                 - clean grotesque
+Case stems:           "Instrument Serif"                   - large, dramatic, textbook-feel
+Mono / data:          "JetBrains Mono"                     - citations, IDs, code
 ```
 
 **Type scale:**
@@ -68,16 +68,16 @@ Mono / data:          "JetBrains Mono"                     — citations, IDs, c
 | `text-small` | 14px | 1.5 | Captions, metadata |
 | `text-micro` | 12px | 1.4 | Labels, tags |
 
-Headlines use generous tracking on Fraunces' display optical size. Body Inter at standard tracking. Case stems in Instrument Serif at `text-stem` with extra leading — they should feel like an exam question.
+Headlines use generous tracking on Fraunces' display optical size. Body Inter at standard tracking. Case stems in Instrument Serif at `text-stem` with extra leading - they should feel like an exam question.
 
 ---
 
 ## 3. Layout
 
-- **Grid:** 12-column, but break it on purpose. Many sections use a 7+5 split (text + sidebar), or text aligned to columns 2–8 with imagery in 9–12.
+- **Grid:** 12-column, but break it on purpose. Many sections use a 7+5 split (text + sidebar), or text aligned to columns 2-8 with imagery in 9-12.
 - **Margins:** Desktop = 64px outer minimum. Mobile = 20px.
 - **Vertical rhythm:** 8px base unit. Section gaps = 96px desktop, 48px mobile.
-- **Asymmetry:** Numbered section markers ("§ 02 — Anatomy") aligned left while content slightly indents. Pearls hang off the right margin.
+- **Asymmetry:** Numbered section markers ("Section 02 - Anatomy") aligned left while content slightly indents. Pearls hang off the right margin.
 
 ---
 
@@ -93,7 +93,7 @@ Headlines use generous tracking on Fraunces' display optical size. Body Inter at
 <ChatExperience />       // Streaming conversation surface
 <CaseCanvas />          // Two-pane case mode with progressive cards
 <CaseCard />            // Single revealable card (CC, History, Exam, etc.)
-<ConfidenceSlider />    // Pre-answer 0–100% with delayed reveal
+<ConfidenceSlider />    // Pre-answer 0-100% with delayed reveal
 <PearlCard />           // Faculty pearl with attribution
 <StreakRings />         // 3-ring daily goal display
 <AnatomySVG />          // Interactive labeled hand diagram
@@ -108,7 +108,7 @@ Headlines use generous tracking on Fraunces' display optical size. Body Inter at
 <FollowupChips />       // Tool-rendered quick reply chips
 <PimpingTimer />        // Calming countdown bar
 <RunningSummary />      // Right-rail case summary
-<SectionMarker />       // "§ 02 — Anatomy" header style
+<SectionMarker />       // "Section 02 - Anatomy" header style
 <HandMascot />          // SVG mascot, varied poses
 <EmptyState />          // Illustrated empty states
 ```
@@ -120,13 +120,13 @@ Headlines use generous tracking on Fraunces' display optical size. Body Inter at
 Subtle, considered. Things settle. No bounce.
 
 ```
-Standard:  cubic-bezier(0.22, 0.61, 0.36, 1)  — 280ms
-Reveal:    cubic-bezier(0.16, 1, 0.3, 1)      — 420ms (cards, pearls)
-Micro:     cubic-bezier(0.4, 0, 0.2, 1)       — 160ms (hover, focus)
+Standard:  cubic-bezier(0.22, 0.61, 0.36, 1)  - 280ms
+Reveal:    cubic-bezier(0.16, 1, 0.3, 1)      - 420ms (cards, pearls)
+Micro:     cubic-bezier(0.4, 0, 0.2, 1)       - 160ms (hover, focus)
 ```
 
 - Card reveals: slide-up 12px + fade in.
-- Pearl unlocks: slight scale (0.96→1) + fade, plus a one-time terracotta glow that decays.
+- Pearl unlocks: slight scale (0.96->1) + fade, plus a one-time terracotta glow that decays.
 - Pimping timer: continuous linear, color shifts from `--electric` toward `--warn` only in the final 20%.
 - Anatomy SVG hover: structures gain a 1.5px terracotta stroke with 160ms ease.
 - Streak ring close: a single celebratory pulse, then quiet.
@@ -148,16 +148,19 @@ Micro:     cubic-bezier(0.4, 0, 0.2, 1)       — 160ms (hover, focus)
 
 - A **stylized hand line drawing** is the recurring visual motif. Different poses (open palm, OK sign, pointing, fist) for different states (loading, empty, success, error). Single-weight line, terracotta.
 - **Anatomical engravings** (public-domain reference, redrawn in-house) as section dividers. Used sparingly.
-- **Numbered section markers** ("§ 02") in Fraunces small caps — a recurring print-design motif.
+- **Numbered section markers** ("Section 02") in Fraunces small caps - a recurring print-design motif.
 
-For v1, commission/draw 4–6 hand-pose SVGs and 2 anatomical engraving-style SVGs. Until then, ship with placeholders that match the line-art aesthetic.
+For v1, commission/draw 4-6 hand-pose SVGs and 2 anatomical engraving-style SVGs. Until then, ship with placeholders that match the line-art aesthetic.
 
 ---
 
 ## 8. Accessibility
 
-- Color contrast: all text ≥4.5:1 against its background (verified).
+- Color contrast: all text >=4.5:1 against its background (verified).
 - Keyboard navigation: full coverage; focus rings use `--electric` at 2px offset.
 - Reduced motion: respect `prefers-reduced-motion`; replace reveals with instant fades.
 - Screen readers: case cards announce as headings; confidence slider has accessible label and current value; anatomy SVG structures are labeled `role="button"` with `aria-label`.
 - All interactive anatomy structures must have a text-only fallback list view.
+
+
+

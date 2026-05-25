@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
@@ -40,7 +40,7 @@ const CARD_ORDER = ["chief_complaint", "history", "exam", "imaging", "labs", "ma
 
 function firstSentence(text: string): string {
   const m = text.match(/^[^.!?]+[.!?]/)
-  return m ? m[0] : text.slice(0, 80) + "…"
+  return m ? m[0] : text.slice(0, 80) + "..."
 }
 
 interface CaseCanvasProps {
@@ -112,7 +112,7 @@ export function CaseCanvas({ caseId, embedded = false, onComplete, onBack }: Cas
             onClick={onBack}
             className="text-small text-ink-muted hover:text-ink transition-colors"
           >
-            ← Back
+            Back
           </button>
         )}
       </div>
@@ -125,10 +125,10 @@ export function CaseCanvas({ caseId, embedded = false, onComplete, onBack }: Cas
         {caseData.stem}
       </p>
 
-      {/* Chief complaint — always visible */}
+      {/* Chief complaint - always visible */}
       {caseData.cards.chief_complaint && (
-        <div className="border border-rule rounded-lg bg-bg-elevated overflow-hidden">
-          <div className="px-4 py-2 border-b border-rule bg-bg">
+        <div className="overflow-hidden rounded-2xl border border-rule/70 bg-bg-elevated shadow-soft">
+          <div className="border-b border-rule/70 bg-surface-subtle/60 px-4 py-2">
             <p className="font-fraunces text-small text-ink">{caseData.cards.chief_complaint.label}</p>
           </div>
           <div className="px-4 py-3">
@@ -139,7 +139,18 @@ export function CaseCanvas({ caseId, embedded = false, onComplete, onBack }: Cas
 
       {/* Reveal buttons */}
       <div>
-        <p className="text-micro text-ink-muted uppercase tracking-wider mb-2">Explore the case</p>
+        <div className="mb-3">
+          <div className="mb-1 flex items-center justify-between text-micro text-ink-muted">
+            <span className="uppercase tracking-wider">Explore the case</span>
+            <span>{nonManagementRevealed.length}/{revealableCards.length} cards</span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-surface-subtle">
+            <div
+              className="h-full rounded-full bg-electric transition-all duration-500 ease-reveal"
+              style={{ width: `${managementRevealed ? 100 : Math.round((nonManagementRevealed.length / Math.max(revealableCards.length, 1)) * 100)}%` }}
+            />
+          </div>
+        </div>
         <div className="flex flex-wrap gap-2">
           {revealableCards.map((cardKey) => (
             <Button
@@ -150,7 +161,7 @@ export function CaseCanvas({ caseId, embedded = false, onComplete, onBack }: Cas
               disabled={revealed.includes(cardKey)}
               className={cn(revealed.includes(cardKey) && "opacity-60 cursor-default")}
             >
-              {revealed.includes(cardKey) ? `${caseData.cards[cardKey]?.label} ✓` : `Reveal ${caseData.cards[cardKey]?.label}`}
+              {revealed.includes(cardKey) ? `${caseData.cards[cardKey]?.label} revealed` : `Reveal ${caseData.cards[cardKey]?.label}`}
             </Button>
           ))}
 
@@ -164,10 +175,10 @@ export function CaseCanvas({ caseId, embedded = false, onComplete, onBack }: Cas
                 title={!managementUnlocked ? "Reveal at least 3 cards first" : undefined}
               >
                 {managementRevealed
-                  ? "Management ✓"
+                  ? "Management revealed"
                   : managementUnlocked
                   ? "Reveal Management"
-                  : `🔒 Management (${nonManagementRevealed.length}/3)`}
+                  : `Management locked (${nonManagementRevealed.length}/3)`}
               </Button>
               {!managementUnlocked && !managementRevealed && (
                 <button
@@ -190,10 +201,10 @@ export function CaseCanvas({ caseId, embedded = false, onComplete, onBack }: Cas
           .map((cardKey) => (
             <div
               key={cardKey}
-              className="border border-rule rounded-lg bg-bg-elevated overflow-hidden animate-fade-up"
+              className="animate-fade-up overflow-hidden rounded-2xl border border-rule/70 bg-bg-elevated shadow-soft"
               style={{ animationDuration: "300ms" }}
             >
-              <div className="px-4 py-2 border-b border-rule bg-bg">
+              <div className="border-b border-rule/70 bg-surface-subtle/60 px-4 py-2">
                 <p className="font-fraunces text-small text-ink">{caseData.cards[cardKey].label}</p>
               </div>
               <div className="px-4 py-3">
@@ -231,7 +242,7 @@ export function CaseCanvas({ caseId, embedded = false, onComplete, onBack }: Cas
                     <p className="text-body text-ink leading-relaxed mb-1.5">{pearl.text}</p>
                     <p className="text-micro text-terracotta font-medium">{pearl.attribution}</p>
                     <p className="text-micro text-ink-muted mt-2">
-                      Local demo content · needs faculty verification
+                      Local demo content | needs faculty verification
                     </p>
                   </div>
                 ))}
@@ -251,7 +262,7 @@ export function CaseCanvas({ caseId, embedded = false, onComplete, onBack }: Cas
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-correct focus-visible:ring-offset-2"
                 )}
               >
-                Case complete — return to chat →
+                Case complete - return to chat
               </button>
             </div>
           )}
@@ -262,9 +273,11 @@ export function CaseCanvas({ caseId, embedded = false, onComplete, onBack }: Cas
       {!managementRevealed && (
         <p className="text-micro text-ink-muted">
           {nonManagementRevealed.length}/{revealableCards.length} cards revealed
-          {!managementUnlocked && ` · ${3 - nonManagementRevealed.length} more to unlock management`}
+          {!managementUnlocked && ` | ${3 - nonManagementRevealed.length} more to unlock management`}
         </p>
       )}
     </div>
   )
 }
+
+

@@ -1,4 +1,4 @@
-// NOT WIRED IN PHASE 0A. Supabase is reserved for Phase 0C+.
+﻿// NOT WIRED IN PHASE 0A. Supabase is reserved for Phase 0C+.
 import { createBrowserClient } from "@supabase/ssr"
 import type { Database } from "./types"
 
@@ -10,7 +10,7 @@ export function createClient() {
     if (typeof window !== "undefined") {
       console.warn(
         "[Supabase] NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY not set. " +
-        "Running in Phase 0A demo mode — Supabase client is unavailable."
+        "Running in Phase 0A demo mode - Supabase client is unavailable."
       )
     }
     return null
@@ -18,3 +18,4 @@ export function createClient() {
 
   return createBrowserClient<Database>(url, key)
 }
+

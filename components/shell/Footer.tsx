@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"
+﻿import { cn } from "@/lib/utils"
 
 interface FooterProps {
   className?: string
@@ -18,9 +18,10 @@ export function Footer({ className }: FooterProps) {
           Educational use only. Not for clinical decision-making.
         </p>
         <p className="text-micro text-ink-muted">
-          SurgiCraft : Handcraft · Mayo Clinic Pilot
+          SurgiCraft : Handcraft | Mayo Clinic Pilot
         </p>
       </div>
     </footer>
   )
 }
+

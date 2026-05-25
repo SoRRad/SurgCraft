@@ -1,4 +1,4 @@
-{
+﻿{
   "id": "003-distal-radius",
   "title": "FOOSH on the ice",
   "difficulty": "intermediate",
@@ -27,12 +27,12 @@
     "imaging": {
       "label": "Imaging",
       "unlockKeywords": ["X-ray", "xray", "imaging", "radiograph", "CT"],
-      "content": "PA and lateral wrist radiographs: extra-articular distal radius fracture with 25° dorsal angulation, 6mm radial shortening, and 18° radial inclination loss. No intra-articular extension. No DRUJ widening. Concurrent ulnar styloid fracture (non-displaced)."
+      "content": "PA and lateral wrist radiographs: extra-articular distal radius fracture with 25 deg dorsal angulation, 6mm radial shortening, and 18 deg radial inclination loss. No intra-articular extension. No DRUJ widening. Concurrent ulnar styloid fracture (non-displaced)."
     },
     "management": {
       "label": "Management",
       "isReveal": true,
-      "content": "Diagnosis: Closed distal radius fracture (extra-articular, dorsally displaced) with acute median nerve symptoms — concerning for acute carpal tunnel syndrome. Initial plan: Hematoma block + closed reduction in ED, sugar-tong splint. Re-examine median nerve post-reduction — if symptoms resolve, observe; if persistent, urgent carpal tunnel release. Repeat radiographs to confirm acceptable alignment. Hand/ortho follow-up within 1 week. Definitive management likely operative (volar locked plate) given displacement, age, functional demand, and incomplete restoration with reduction is common in this pattern. Discuss osteoporosis workup."
+      "content": "Diagnosis: Closed distal radius fracture (extra-articular, dorsally displaced) with acute median nerve symptoms - concerning for acute carpal tunnel syndrome. Initial plan: Hematoma block + closed reduction in ED, sugar-tong splint. Re-examine median nerve post-reduction - if symptoms resolve, observe; if persistent, urgent carpal tunnel release. Repeat radiographs to confirm acceptable alignment. Hand/ortho follow-up within 1 week. Definitive management likely operative (volar locked plate) given displacement, age, functional demand, and incomplete restoration with reduction is common in this pattern. Discuss osteoporosis workup."
     }
   },
   "pearls": [
@@ -43,26 +43,28 @@
     },
     {
       "id": "distal-radius-not-just-a-wrist-fracture",
-      "text": "A distal radius fracture in a 58-year-old woman is a sentinel event. Recommend DEXA and consider osteoporosis workup — the next fracture is often the hip.",
+      "text": "A distal radius fracture in a 58-year-old woman is a sentinel event. Recommend DEXA and consider osteoporosis workup - the next fracture is often the hip.",
       "attribution": "Hand service"
     }
   ],
   "teachingPoints": [
-    "Acceptable closed reduction parameters (general): <5° dorsal angulation, <5mm radial shortening, articular step-off <2mm. These tighten with younger, higher-demand patients.",
-    "DRUJ instability changes the surgical plan — always assess.",
+    "Acceptable closed reduction parameters (general): <5 deg dorsal angulation, <5mm radial shortening, articular step-off <2mm. These tighten with younger, higher-demand patients.",
+    "DRUJ instability changes the surgical plan - always assess.",
     "Median nerve symptoms before reduction may resolve with reduction; symptoms that persist or develop after reduction are an emergency.",
     "Volar locked plating is the most common contemporary fixation for displaced extra-articular fractures requiring surgery."
   ],
   "references": [
     "AAOS Clinical Practice Guideline on Distal Radius Fractures",
-    "Wolfe et al., Green's Operative Hand Surgery — distal radius chapter"
+    "Wolfe et al., Green's Operative Hand Surgery - distal radius chapter"
   ],
   "reasoningAutopsy": {
     "shouldHaveNoticedEarly": "Two things require your attention before reduction: the median nerve exam (document baseline) and the DRUJ (assess stability). Both are commonly missed in the urgency to reduce and splint. Document both before and after reduction.",
     "whatChangesManagement": "Persistent or worsening median nerve symptoms after reduction = urgent carpal tunnel release. DRUJ instability discovered intraoperatively changes fixation strategy. Intra-articular extension (not present here) changes surgical approach. Patient age and functional demand both tighten the acceptable reduction thresholds.",
     "attendingMayAskNext": "What are the acceptable post-reduction parameters on PA and lateral? How do you assess DRUJ stability? When does an older patient's distal radius fracture warrant operative fixation?",
-    "bestRoundsOneLiner": "FOOSH, dinner-fork deformity: reduce, check median nerve after, splint and follow in 1 week — persistent nerve symptoms go to the OR tonight.",
-    "commonMistake": "Watching persistent median nerve symptoms after reduction instead of acting — and failing to assess the DRUJ, which is a companion injury in dorsally displaced distal radius fractures.",
-    "onePearlToRemember": "A distal radius fracture in a 58-year-old woman is a sentinel event for osteoporosis. Recommend DEXA — the next fracture is often the hip."
+    "bestRoundsOneLiner": "FOOSH, dinner-fork deformity: reduce, check median nerve after, splint and follow in 1 week - persistent nerve symptoms go to the OR tonight.",
+    "commonMistake": "Watching persistent median nerve symptoms after reduction instead of acting - and failing to assess the DRUJ, which is a companion injury in dorsally displaced distal radius fractures.",
+    "onePearlToRemember": "A distal radius fracture in a 58-year-old woman is a sentinel event for osteoporosis. Recommend DEXA - the next fracture is often the hip."
   }
 }
+
+

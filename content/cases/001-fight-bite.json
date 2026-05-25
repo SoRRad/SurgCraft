@@ -1,4 +1,4 @@
-{
+﻿{
   "id": "001-fight-bite",
   "title": "The bar fight",
   "difficulty": "intermediate",
@@ -37,18 +37,18 @@
     "management": {
       "label": "Management",
       "isReveal": true,
-      "content": "Diagnosis: Fight bite (clenched-fist injury) with likely MCP joint contamination and developing septic arthritis vs. deep space infection. Plan: Admit. IV antibiotics (e.g., ampicillin-sulbactam covering oral flora including Eikenella corrodens). Tetanus update. Hand surgery consult for OR washout — fight bites over the MCP are presumed to involve the joint until proven otherwise. Do NOT close primarily. Counsel patient that delayed presentation increases risk of stiffness and may require multiple washouts."
+      "content": "Diagnosis: Fight bite (clenched-fist injury) with likely MCP joint contamination and developing septic arthritis vs. deep space infection. Plan: Admit. IV antibiotics (e.g., ampicillin-sulbactam covering oral flora including Eikenella corrodens). Tetanus update. Hand surgery consult for OR washout - fight bites over the MCP are presumed to involve the joint until proven otherwise. Do NOT close primarily. Counsel patient that delayed presentation increases risk of stiffness and may require multiple washouts."
     }
   },
   "pearls": [
     {
       "id": "fight-bite-mcp",
-      "text": "Any wound over the dorsal MCP in a young adult is a fight bite until proven otherwise — and the joint is involved until proven otherwise.",
+      "text": "Any wound over the dorsal MCP in a young adult is a fight bite until proven otherwise - and the joint is involved until proven otherwise.",
       "attribution": "Hand service"
     },
     {
       "id": "eikenella",
-      "text": "Eikenella corrodens is the bug you don't want to miss — and the reason ampicillin-sulbactam beats cephalexin here.",
+      "text": "Eikenella corrodens is the bug you don't want to miss - and the reason ampicillin-sulbactam beats cephalexin here.",
       "attribution": "Hand service"
     }
   ],
@@ -56,18 +56,19 @@
     "Mechanism dictates suspicion: clenched-fist injuries drive the tooth into the joint capsule, which then 'closes' as the hand extends, sealing the contamination inside.",
     "Plain films are still useful: look for retained tooth fragments and air in the joint.",
     "Never close a fight bite primarily.",
-    "Patients underreport mechanism — the wound size lies about the depth."
+    "Patients underreport mechanism - the wound size lies about the depth."
   ],
   "references": [
-    "Wolfe et al., Green's Operative Hand Surgery — chapter on hand infections",
+    "Wolfe et al., Green's Operative Hand Surgery - chapter on hand infections",
     "Patzakis MJ et al., Management of human bite injuries of the hand"
   ],
   "reasoningAutopsy": {
     "shouldHaveNoticedEarly": "The mechanism: 'bar fight + knuckle wound + delayed presentation' is a fight bite until proven otherwise. The wound location over the MCP and the 2-day delay should raise alarm before you even examine the hand.",
     "whatChangesManagement": "Immunocompromise, systemic sepsis, or evidence of proximal spread (streaking, lymphangitis) escalates urgency. Joint destruction on imaging or purulence at exploration extends washout requirements. Very early presentation (<6h) may allow formal ED exploration with close follow-up at high-volume hand centers.",
     "attendingMayAskNext": "Name the antibiotic and explain why cephalexin fails here. Describe what you would find at OR exploration. What are the criteria for repeat washout?",
-    "bestRoundsOneLiner": "Fight bite over the MCP: admit, IV ampicillin-sulbactam, OR washout — never close.",
+    "bestRoundsOneLiner": "Fight bite over the MCP: admit, IV ampicillin-sulbactam, OR washout - never close.",
     "commonMistake": "Closing the wound primarily, or discharging on oral cephalexin. Both seal contamination inside a synovial space and set the patient up for septic arthritis within 48 hours.",
     "onePearlToRemember": "The wound size lies about the depth. A 5mm skin wound was a full-thickness joint capsule violation when the fist was clenched."
   }
 }
+

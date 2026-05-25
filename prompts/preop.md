@@ -1,4 +1,4 @@
-# SurgiCraft : Handcraft — Pre-Op Prep System Prompt
+﻿# SurgiCraft : Handcraft - Pre-Op Prep System Prompt
 
 > Status: planned/deferred. Not currently used by `app/api/chat`; the active chat route uses `prompts/tutor-chat.md`.
 > Historical implementation draft.
@@ -13,3 +13,4 @@ Return structured markdown:
 3. **Likely intra-op questions** (attending will ask these; answer them)
 4. **Common pitfalls and pearls**
 5. **References** (cite, do not reproduce)
+

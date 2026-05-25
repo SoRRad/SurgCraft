@@ -1,4 +1,4 @@
-# SurgiCraft : Handcraft
+﻿# SurgiCraft : Handcraft
 
 Interactive surgical education platform. First module: hand surgery.  
 Piloting at Mayo Clinic with medical students, residents, and fellows.
@@ -14,7 +14,7 @@ Piloting at Mayo Clinic with medical students, residents, and fellows.
 
 **SurgiCraft** is a platform for interactive surgical education. It meets learners where they are: a sub-I who doesn't want to embarrass themselves on rounds, a PGY-2 cramming for the in-service, a hand fellow prepping for a tricky case. The Phase 0B prototype is chat-first, local-first, and defaults to a deterministic mock provider.
 
-**Handcraft** is the first module — focused on hand surgery. It includes:
+**Handcraft** is the first module - focused on hand surgery. It includes:
 - **Tutor mode:** free-form Q&A with citations and role-aware depth
 - **Case Unfolds:** progressive clinical case reveal (Socratic, card-by-card)
 - **Pimping Simulator:** attending-voice rapid-fire with graded debrief
@@ -27,11 +27,11 @@ Piloting at Mayo Clinic with medical students, residents, and fellows.
 - Not real-patient care guidance
 - Not a substitute for textbooks, ASPS modules, or attending teaching
 - Not a public ranking system (leaderboards are opt-in, anonymous, cohort-scoped only)
-- Not connected to any real patient data — all cases are entirely synthetic
+- Not connected to any real patient data - all cases are entirely synthetic
 
 ---
 
-## Phase 0B — provider-flexible streaming chat, no database
+## Phase 0B - provider-flexible streaming chat, no database
 
 This is the **chat-first phase**. The app can stream from a local mock provider or from a live
 LLM provider. Anthropic Claude is the first live provider wired for Phase 0B, but the chat route
@@ -75,11 +75,11 @@ npm run dev
 ```
 
 **Recommended:** Set a billing cap in the Anthropic console ($20/month is reasonable for development).
-The app also has a built-in per-session cost guard (default $0.50) — see `lib/llm/cost-guard.ts`.
+The app also has a built-in per-session cost guard (default $0.50) - see `lib/llm/cost-guard.ts`.
 
 ---
 
-## Future API strategy — provider-agnostic from day one
+## Future API strategy - provider-agnostic from day one
 
 The app's LLM layer lives in `lib/llm/`. It exports a single `getProvider()` function that returns an
 `LLMProvider` interface implementation. Streaming chat also uses a provider resolver in
@@ -90,7 +90,7 @@ the next provider.
 
 | Provider | Notes |
 |----------|-------|
-| Anthropic (Claude) | First live provider — Phase 0B |
+| Anthropic (Claude) | First live provider - Phase 0B |
 | OpenAI (GPT-4o, etc.) | Planned alternative provider |
 | Ollama | Local/offline development option for future prototypes |
 | vLLM | Self-hosted/institution-hosted inference option |
@@ -107,14 +107,14 @@ the next provider.
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| **0A** | ✅ Done | Local demo, mock LLM, no external dependencies |
-| **0B** | ✅ Active | Chat-first UI, local conversations, tools, mock + Anthropic provider |
+| **0A** | Done | Local demo, mock LLM, no external dependencies |
+| **0B** | Active | Chat-first UI, local conversations, tools, mock + Anthropic provider |
 | **0B.1** | Done | Stabilization, tests, CI, QA checklist, docs alignment |
-| **0B.2** | Active | Faculty demo polish |
+| **0B.2** | Active | Faculty demo polish, frontend/UI refinement, and demo usability |
 | **0B.3** | Planned | Optional Ollama/local model provider |
 | **0B.4** | Planned | Optional OpenAI provider |
 | **0C** | Planned | Supabase database, pgvector RAG, content governance |
-| **1 (Pilot)** | Future | 10–20 residents at Mayo, all 6 modes, admin UI, opt-in leaderboards |
+| **1 (Pilot)** | Future | 10-20 residents at Mayo, all 6 modes, admin UI, opt-in leaderboards |
 | **2+** | Future | Wider Mayo deployment, second subspecialty module |
 
 ---
@@ -151,7 +151,7 @@ lib/demo/         Local demo state (user, conversations, progress, content)
 lib/supabase/     Supabase clients (not wired until Phase 0C)
 lib/              Other utilities (scoring, analytics, RAG helpers)
 content/          Markdown KB (content/kb/) and seed cases (content/cases/)
-prompts/          System prompts per mode — faculty-editable markdown
+prompts/          System prompts per mode - faculty-editable markdown
 supabase/         SQL migrations (not run until Phase 0C)
 scripts/          Phase 0C placeholder CLI tools for DB seeding and KB ingestion
 public/           Static assets (illustrations, anatomy SVGs)
@@ -185,7 +185,10 @@ See `/about` in the running app for the full content ownership policy.
 ## Contributing
 
 1. Each phase's work should be tagged: `phase0a`, `phase0b`, `phase0c`, `phase1`
-2. Read every generated file before committing — this is medical education content; accuracy matters
+2. Read every generated file before committing - this is medical education content; accuracy matters
 3. When updating SPEC.md or DESIGN_SYSTEM.md, note it explicitly so the AI assistant re-reads them
 4. Never ingest licensed textbook content verbatim
 5. All cases must be marked `"verified": false` until a hand surgery attending signs off in the admin UI
+
+
+

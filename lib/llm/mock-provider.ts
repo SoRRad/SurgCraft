@@ -1,4 +1,4 @@
-// Mock LLM provider — implements LLMProvider using local demo engine only.
+﻿// Mock LLM provider - implements LLMProvider using local demo engine only.
 // No fetch, no SDK, no network calls. Works with zero environment variables.
 
 import type { LLMProvider } from "./provider"
@@ -23,7 +23,7 @@ export class MockProvider implements LLMProvider {
     if (!match) {
       return {
         answer:
-          "I'm not sure based on what I have — that topic may not be in the current demo knowledge base. " +
+          "I'm not sure based on what I have - that topic may not be in the current demo knowledge base. " +
           "Want me to flag this for faculty review? In the full app, this would trigger RAG retrieval across the entire knowledge base.",
         citations: [],
         followUpSuggestions: [
@@ -80,7 +80,7 @@ export class MockProvider implements LLMProvider {
         return {
           cardToReveal: card,
           message: card === "management"
-            ? "You've worked through enough of the case — here's the management approach."
+            ? "You've worked through enough of the case - here's the management approach."
             : `Good call. Here's the ${card}.`,
           shouldRevealManagement: card === "management",
           runningNarrative: this._buildNarrative(input.alreadyRevealedCards, card),
@@ -112,7 +112,7 @@ export class MockProvider implements LLMProvider {
       : hitCount > 0 ? 1
       : 0) as 0 | 1 | 2 | 3
 
-    const gradePrefix = ["Not quite.", "Getting there.", "Good — you're close.", "Excellent."][grade]
+    const gradePrefix = ["Not quite.", "Getting there.", "Good - you're close.", "Excellent."][grade]
 
     return {
       grade,
@@ -130,11 +130,11 @@ export class MockProvider implements LLMProvider {
         anatomyRefresher:
           "The volar surface of the distal radius is accessed through the Henry approach. " +
           "The FCR tendon sheath guides the interval. The pronator quadratus (PQ) covers the distal radius and is elevated off its radial border. " +
-          "Key structures: radial artery (ulnar to FCR — retract radially), FPL tendon (deep and ulnar), palmar cutaneous branch of median nerve (~5cm proximal to wrist crease).",
+          "Key structures: radial artery (ulnar to FCR - retract radially), FPL tendon (deep and ulnar), palmar cutaneous branch of median nerve (~5cm proximal to wrist crease).",
         approachOverview:
           "1. Longitudinal incision over FCR, extended to wrist crease.\n" +
           "2. Enter FCR tendon sheath; divide floor to expose PQ.\n" +
-          "3. Elevate PQ off radial border → subperiosteal exposure of fracture.\n" +
+          "3. Elevate PQ off radial border -> subperiosteal exposure of fracture.\n" +
           "4. Contour plate to volar cortex. Confirm with fluoroscopy.\n" +
           "5. Verify: dorsal cortex clearance, articular surface, radial tilt, height.",
         likelyIntraopQuestions: [
@@ -144,24 +144,24 @@ export class MockProvider implements LLMProvider {
           "What are the fluoroscopic views you need?",
         ],
         pitfallsAndPearls: [
-          "Screw penetration of the dorsal cortex → extensor tendon attrition",
-          "Failure to restore radial height → DRUJ incongruity",
-          "Always check DRUJ stability before closing — address intraoperatively if unstable",
+          "Screw penetration of the dorsal cortex -> extensor tendon attrition",
+          "Failure to restore radial height -> DRUJ incongruity",
+          "Always check DRUJ stability before closing - address intraoperatively if unstable",
           "Skyline view confirms dorsal screw clearance",
         ],
         references: [
           "AAOS Clinical Practice Guideline on Distal Radius Fractures",
-          "Wolfe et al., Green's Operative Hand Surgery — distal radius chapter",
+          "Wolfe et al., Green's Operative Hand Surgery - distal radius chapter",
         ],
       }
     }
 
     return {
       anatomyRefresher:
-        `This is a demo — full pre-op prep for "${input.procedure}" will be available when the LLM is connected in Phase 0B/0C.`,
+        `This is a demo - full pre-op prep for "${input.procedure}" will be available when the LLM is connected in Phase 0B/0C.`,
       approachOverview: "Connect an LLM provider to get real-time procedure prep.",
       likelyIntraopQuestions: ["Phase 0B will include dynamic question generation."],
-      pitfallsAndPearls: ["Canned content for distal radius ORIF is available now — try that procedure."],
+      pitfallsAndPearls: ["Canned content for distal radius ORIF is available now - try that procedure."],
       references: [],
     }
   }
@@ -172,7 +172,7 @@ export class MockProvider implements LLMProvider {
 
     if (!lastUserMessage || history.length < 2) {
       return {
-        reflectiveQuestion: "Walk me through what happened in the OR today — start with the indication.",
+        reflectiveQuestion: "Walk me through what happened in the OR today - start with the indication.",
       }
     }
 
@@ -197,3 +197,4 @@ export class MockProvider implements LLMProvider {
     return `What we've established: ${parts.join(", ")}.`
   }
 }
+

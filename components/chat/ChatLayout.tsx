@@ -1,12 +1,10 @@
 "use client"
 
-import { useState, createContext, useContext } from "react"
+import { createContext, useContext, useState } from "react"
 import { Header } from "@/components/shell/Header"
 import { SidebarInner } from "@/components/chat/Sidebar"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
-
-// ── Sidebar open context (shared with Header hamburger) ───────────────────────
 
 interface SidebarContextValue {
   sidebarOpen: boolean
@@ -22,8 +20,6 @@ export function useSidebar() {
   return useContext(SidebarContext)
 }
 
-// ── ChatLayout ────────────────────────────────────────────────────────────────
-
 interface ChatLayoutProps {
   children: React.ReactNode
 }
@@ -33,34 +29,27 @@ export function ChatLayout({ children }: ChatLayoutProps) {
 
   return (
     <SidebarContext.Provider value={{ sidebarOpen, setSidebarOpen }}>
-      <div className="flex h-dvh bg-bg overflow-hidden">
-
-        {/* Desktop sidebar — hidden on mobile */}
+      <div className="flex h-dvh overflow-hidden bg-bg">
         <aside
           className={cn(
-            "hidden md:flex flex-col w-[280px] flex-shrink-0",
-            "border-r border-rule"
+            "hidden w-[296px] flex-shrink-0 flex-col md:flex",
+            "border-r border-rule/70 bg-bg/80"
           )}
           aria-label="Navigation sidebar"
         >
           <SidebarInner />
         </aside>
 
-        {/* Main area */}
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex flex-1 flex-col overflow-hidden">
           <Header onMenuClick={() => setSidebarOpen(true)} />
-          <main className="flex-1 overflow-hidden flex flex-col">
-            {children}
-          </main>
+          <main className="flex flex-1 flex-col overflow-hidden">{children}</main>
         </div>
-
       </div>
 
-      {/* Mobile sidebar drawer */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
         <SheetContent
           side="left"
-          className="p-0 w-[280px] border-r border-rule bg-bg"
+          className="w-[300px] border-r border-rule/70 bg-bg p-0 shadow-floating"
           aria-label="Navigation drawer"
         >
           <SidebarInner onClose={() => setSidebarOpen(false)} />

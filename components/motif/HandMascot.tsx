@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+﻿import type { ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
 type Pose = "open" | "ok" | "fist" | "pointing"
@@ -10,7 +10,7 @@ interface HandMascotProps {
   "aria-label"?: string
 }
 
-// Placeholder SVG paths per pose — single-weight line art, terracotta
+// Placeholder SVG paths per pose - single-weight line art, terracotta
 const paths: Record<Pose, ReactNode> = {
   open: (
     <>
@@ -37,7 +37,7 @@ const paths: Record<Pose, ReactNode> = {
   ),
   ok: (
     <>
-      {/* Stub — implement in Week 6 polish */}
+      {/* Stub - implement in Week 6 polish */}
       <circle cx="50" cy="60" r="18" />
       <path d="M62 48 Q75 30 78 16" />
       <path d="M68 54 Q82 42 84 28" />
@@ -46,7 +46,7 @@ const paths: Record<Pose, ReactNode> = {
   ),
   fist: (
     <>
-      {/* Stub — implement in Week 6 polish */}
+      {/* Stub - implement in Week 6 polish */}
       <rect x="24" y="42" width="52" height="38" rx="10" />
       <path d="M24 52 Q18 48 18 40 Q18 32 26 30" />
       <path d="M34 42 L34 38" />
@@ -57,7 +57,7 @@ const paths: Record<Pose, ReactNode> = {
   ),
   pointing: (
     <>
-      {/* Stub — implement in Week 6 polish */}
+      {/* Stub - implement in Week 6 polish */}
       <path d="M34 70 Q28 70 24 64 L24 52" />
       <path d="M66 70 Q72 70 76 64 L76 52" />
       <path d="M34 70 Q50 80 66 70" />
@@ -86,7 +86,7 @@ export function HandMascot({
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      aria-label={ariaLabel ?? `Hand illustration — ${pose} pose`}
+      aria-label={ariaLabel ?? `Hand illustration - ${pose} pose`}
       role="img"
       className={cn("select-none", className)}
     >
@@ -94,3 +94,4 @@ export function HandMascot({
     </svg>
   )
 }
+

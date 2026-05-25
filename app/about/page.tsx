@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+﻿import type { ReactNode } from "react"
 import { AppShell } from "@/components/shell/AppShell"
 import { SectionMarker } from "@/components/shell/SectionMarker"
 import type { Metadata } from "next"
@@ -32,11 +32,11 @@ export default function AboutPage() {
           <p className="text-micro text-ink-muted uppercase tracking-wider font-inter mb-1">SurgiCraft platform</p>
           <h1 className="font-fraunces text-h1 text-ink">About</h1>
           <p className="mt-2 text-body text-ink-muted">
-            SurgiCraft : Handcraft · Piloting at Mayo Clinic
+            SurgiCraft : Handcraft | Piloting at Mayo Clinic
           </p>
         </div>
 
-        {/* Disclaimer — prominent */}
+        {/* Disclaimer - prominent */}
         <div className="mb-12 p-5 border border-terracotta-soft bg-terracotta-soft rounded-lg">
           <p className="text-small font-medium text-terracotta uppercase tracking-wide mb-2">
             Educational use only
@@ -51,12 +51,12 @@ export default function AboutPage() {
         {/* Platform vs. Module */}
         <Section number="01" label="SurgiCraft vs. Handcraft">
           <p>
-            <strong>SurgiCraft</strong> is the platform — an interactive surgical education system
+            <strong>SurgiCraft</strong> is the platform - an interactive surgical education system
             built to meet learners where they are. It is designed to host multiple specialty-specific
             modules, each with its own knowledge base, cases, and mode structure.
           </p>
           <p>
-            <strong>Handcraft</strong> is the first module — focused on hand surgery. It adapts its
+            <strong>Handcraft</strong> is the first module - focused on hand surgery. It adapts its
             voice and depth to the learner&apos;s role, organizes curated local learning content, and
             turns passive reading into active reasoning: Socratic dialogue, unfolding cases,
             calibrated confidence, and faculty pearls.
@@ -83,7 +83,7 @@ export default function AboutPage() {
               "Aggregate anonymized data may be used to improve the platform. Individual responses are private.",
             ].map((rule) => (
               <li key={rule} className="flex gap-3 text-body">
-                <span className="text-terracotta mt-0.5 flex-shrink-0">—</span>
+                <span className="text-terracotta mt-0.5 flex-shrink-0">-</span>
                 <span>{rule}</span>
               </li>
             ))}
@@ -103,7 +103,7 @@ export default function AboutPage() {
               },
               {
                 source: "Mayo internal hand curriculum",
-                policy: "Usable in full — Mayo-only deployment. Faculty approval required per section.",
+                policy: "Usable in full - Mayo-only deployment. Faculty approval required per section.",
               },
               {
                 source: "ASPS / PSEN course content",
@@ -211,3 +211,4 @@ export default function AboutPage() {
     </AppShell>
   )
 }
+

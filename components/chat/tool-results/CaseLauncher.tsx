@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -41,16 +41,16 @@ export function CaseLauncher({ caseData, onCaseComplete }: CaseLauncherProps) {
 
   if (mode === "done") {
     return (
-      <div className="border border-correct-soft bg-correct-soft/20 rounded-lg px-4 py-3 my-2 flex items-center justify-between gap-3">
+      <div className="my-2 flex items-center justify-between gap-3 rounded-2xl border border-correct-soft bg-correct-soft/25 px-4 py-3 shadow-soft">
         <div>
-          <p className="text-small font-medium text-correct">Case completed ✓</p>
+          <p className="text-small font-medium text-correct">Case completed</p>
           <p className="text-small text-ink-muted">{caseData.title}</p>
         </div>
         <Link
           href={`/case/${caseData.id}`}
           className="text-micro text-electric hover:underline flex-shrink-0"
         >
-          Review full case →
+          Review full case
         </Link>
       </div>
     )
@@ -66,7 +66,7 @@ export function CaseLauncher({ caseData, onCaseComplete }: CaseLauncherProps) {
               onClick={() => setMode("card")}
               className="text-small text-ink-muted hover:text-ink transition-colors"
             >
-              ← Back to chat
+              Back to chat
             </button>
             <span className="text-small font-medium text-ink truncate">{caseData.title}</span>
           </div>
@@ -84,7 +84,7 @@ export function CaseLauncher({ caseData, onCaseComplete }: CaseLauncherProps) {
               onClick={handleComplete}
               className="text-small text-ink-muted hover:text-ink underline underline-offset-2"
             >
-              Return to chat →
+              Return to chat
             </button>
           </div>
         )}
@@ -93,11 +93,11 @@ export function CaseLauncher({ caseData, onCaseComplete }: CaseLauncherProps) {
   }
 
   // card mode (default)
-  const stemPreview = caseData.stem.length > 120 ? caseData.stem.slice(0, 120) + "…" : caseData.stem
+  const stemPreview = caseData.stem.length > 120 ? caseData.stem.slice(0, 120) + "..." : caseData.stem
 
   return (
-    <div className="border border-rule rounded-lg bg-bg-elevated overflow-hidden my-2">
-      <div className="px-4 py-3 border-b border-rule bg-bg flex items-center gap-2">
+    <div className="my-2 overflow-hidden rounded-2xl border border-rule/70 bg-bg-elevated shadow-soft">
+      <div className="flex items-center gap-2 border-b border-rule/70 bg-surface-subtle/60 px-4 py-3">
         <span className="text-micro text-ink-muted uppercase tracking-wider font-inter">Case Unfolds</span>
       </div>
       <div className="px-4 py-4">
@@ -110,7 +110,7 @@ export function CaseLauncher({ caseData, onCaseComplete }: CaseLauncherProps) {
           </h3>
           <Badge variant="secondary" className="text-micro flex-shrink-0">{caseData.difficulty}</Badge>
         </div>
-        <p className="text-small text-ink-muted mb-1">~{caseData.estimatedMinutes} min · {caseData.tags.join(", ")}</p>
+        <p className="text-small text-ink-muted mb-1">~{caseData.estimatedMinutes} min | {caseData.tags.join(", ")}</p>
         <p className="text-body text-ink leading-relaxed mb-4">{stemPreview}</p>
         {caseData.reason && (
           <p className="text-small text-ink-muted italic mb-4">{caseData.reason}</p>
@@ -120,16 +120,16 @@ export function CaseLauncher({ caseData, onCaseComplete }: CaseLauncherProps) {
             type="button"
             onClick={handleStart}
             className={cn(
-              "px-4 py-2 rounded-lg text-small font-medium",
-              "bg-electric text-bg hover:opacity-90 transition-opacity duration-150",
+              "rounded-xl px-4 py-2 text-small font-semibold",
+              "bg-electric text-bg shadow-soft transition-all duration-300 ease-standard hover:-translate-y-0.5 hover:shadow-medium",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
             )}
           >
-            Start case →
+            Start case
           </button>
           <Link
             href={`/case/${caseData.id}`}
-            className="px-4 py-2 rounded-lg border border-rule text-small text-ink-muted hover:text-ink hover:border-ink-muted transition-colors duration-150"
+            className="rounded-xl border border-rule/70 px-4 py-2 text-small text-ink-muted transition-colors duration-300 ease-standard hover:border-electric/40 hover:text-electric"
           >
             Full page
           </Link>
@@ -138,3 +138,4 @@ export function CaseLauncher({ caseData, onCaseComplete }: CaseLauncherProps) {
     </div>
   )
 }
+

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
@@ -141,14 +141,14 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-full sm:max-w-[430px] p-0 flex flex-col bg-bg border-l border-rule">
-        <SheetHeader className="px-6 pt-6 pb-4 border-b border-rule">
-          <SheetTitle>Settings</SheetTitle>
+      <SheetContent side="right" className="flex w-full flex-col border-l border-rule/70 bg-bg p-0 shadow-floating sm:max-w-[450px]">
+        <SheetHeader className="border-b border-rule/70 px-6 pb-4 pt-6">
+          <SheetTitle className="font-fraunces text-h2">Settings</SheetTitle>
         </SheetHeader>
 
-        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
-          <section>
-            <p className="text-micro text-ink-muted uppercase tracking-wider font-inter mb-3">Profile</p>
+        <div className="flex-1 space-y-5 overflow-y-auto px-6 py-5">
+          <section className="rounded-2xl bg-bg-elevated p-4 shadow-soft">
+            <p className="mb-3 text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">Profile</p>
             <div className="space-y-4">
               <div>
                 <Label htmlFor="settings-handle" className="text-small">Handle</Label>
@@ -180,9 +180,9 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
             </div>
           </section>
 
-          <section>
-            <p className="text-micro text-ink-muted uppercase tracking-wider font-inter mb-3">AI mode</p>
-            <div className="flex items-center gap-2 mb-2">
+          <section className="rounded-2xl bg-bg-elevated p-4 shadow-soft">
+            <p className="mb-3 text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">AI mode</p>
+            <div className="mb-2 flex items-center gap-2">
               <Badge
                 variant="secondary"
                 className={cn(
@@ -205,9 +205,9 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
             </p>
           </section>
 
-          <section>
-            <p className="text-micro text-ink-muted uppercase tracking-wider font-inter mb-3">Privacy</p>
-            <div className="p-4 border border-terracotta-soft bg-terracotta-soft rounded-lg">
+          <section className="rounded-2xl bg-bg-elevated p-4 shadow-soft">
+            <p className="mb-3 text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">Privacy and safety</p>
+            <div className="rounded-xl border border-terracotta-soft bg-terracotta-soft/60 p-4">
               <div className="flex items-start gap-2">
                 <Shield size={15} className="text-terracotta mt-0.5 flex-shrink-0" />
                 <div>
@@ -223,9 +223,9 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
             </div>
           </section>
 
-          <section>
-            <div className="flex items-center justify-between gap-3 mb-3">
-              <p className="text-micro text-ink-muted uppercase tracking-wider font-inter">Local data</p>
+          <section className="rounded-2xl bg-bg-elevated p-4 shadow-soft">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <p className="text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">Local data</p>
               <Badge variant="secondary" className="text-micro text-ink-muted">Local only</Badge>
             </div>
             <input
@@ -253,17 +253,17 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
             )}
           </section>
 
-          <section>
-            <div className="flex items-center justify-between gap-3 mb-3">
-              <p className="text-micro text-ink-muted uppercase tracking-wider font-inter">Review flags</p>
+          <section className="rounded-2xl bg-bg-elevated p-4 shadow-soft">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <p className="text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">Review flags</p>
               <Badge variant="secondary" className="text-micro text-ink-muted">Local only</Badge>
             </div>
             <p className="text-small text-ink-muted leading-relaxed mb-3">
-              Local review only — not sent to faculty yet. Flagged messages are visible only on this device.
+              Local review only - not sent to faculty yet. Flagged messages are visible only on this device.
               Faculty verification workflow is planned for Phase 0C.
             </p>
             {flags.length === 0 ? (
-              <div className="border border-rule rounded-lg bg-bg-elevated px-4 py-3">
+              <div className="rounded-xl border border-rule/70 bg-surface-subtle px-4 py-3">
                 <p className="text-small text-ink-muted">No local flags yet.</p>
               </div>
             ) : (
@@ -274,8 +274,8 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
                     type="button"
                     onClick={() => openFlag(flag)}
                     className={cn(
-                      "w-full text-left border border-rule rounded-lg bg-bg-elevated px-3 py-2",
-                      "hover:border-electric transition-colors duration-150",
+                      "w-full rounded-xl border border-rule/70 bg-bg px-3 py-2 text-left",
+                      "transition-all duration-300 ease-standard hover:border-electric/40 hover:shadow-soft",
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
                     )}
                   >
@@ -297,8 +297,8 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
             )}
           </section>
 
-          <section>
-            <p className="text-micro text-ink-muted uppercase tracking-wider font-inter mb-3">Display</p>
+          <section className="rounded-2xl bg-bg-elevated p-4 shadow-soft">
+            <p className="mb-3 text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">Display</p>
             <div className="space-y-2">
               <div className="flex items-center justify-between py-2">
                 <span className="text-small text-ink">Theme</span>
@@ -312,7 +312,8 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
           </section>
         </div>
 
-        <div className="px-6 py-4 border-t border-rule space-y-2">
+        <div className="space-y-2 border-t border-rule/70 px-6 py-4">
+          <p className="text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">Danger zone</p>
           <Button
             variant="outline"
             size="sm"
@@ -336,3 +337,4 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
     </Sheet>
   )
 }
+

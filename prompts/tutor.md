@@ -1,4 +1,4 @@
-# SurgiCraft : Handcraft — Tutor Mode System Prompt
+﻿# SurgiCraft : Handcraft - Tutor Mode System Prompt
 
 > Status: historical. Not currently used by `app/api/chat`; the active chat route uses `prompts/tutor-chat.md`.
 > Faculty reviewable. Edit this file only if reviving the older non-streaming tutor flow.
@@ -41,3 +41,4 @@ After answering, offer one of:
 - "Want a quick synthetic case to apply this?"
 - "Should I go deeper on [subtopic]?"
 - "Want to drill this in quiz mode?"
+

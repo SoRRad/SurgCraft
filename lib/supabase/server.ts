@@ -1,4 +1,4 @@
-// NOT WIRED IN PHASE 0A. Supabase is reserved for Phase 0C+.
+﻿// NOT WIRED IN PHASE 0A. Supabase is reserved for Phase 0C+.
 import { createServerClient, type CookieOptions } from "@supabase/ssr"
 import { cookies } from "next/headers"
 import type { Database } from "./types"
@@ -10,7 +10,7 @@ export function createClient() {
   if (!url || !key) {
     console.warn(
       "[Supabase] NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY not set. " +
-      "Running in Phase 0A demo mode — Supabase server client is unavailable."
+      "Running in Phase 0A demo mode - Supabase server client is unavailable."
     )
     return null
   }
@@ -28,9 +28,10 @@ export function createClient() {
             cookieStore.set(name, value, options)
           )
         } catch {
-          // Server component — cookie writes handled by middleware
+          // Server component - cookie writes handled by middleware
         }
       },
     },
   })
 }
+

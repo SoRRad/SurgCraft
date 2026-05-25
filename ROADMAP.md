@@ -95,6 +95,7 @@ Goal: make the current Phase 0B experience crisp enough for hand-surgery faculty
 
 - Walk through the QA checklist on desktop and mobile
 - Polish copy, spacing, loading states, and empty states in chat and Settings
+- Refine frontend hierarchy, navigation, case progress visuals, and demo usability
 - Add a short scripted faculty demo path
 - Validate that all local demo content is marked verified or needs faculty verification
 - Improve mock responses only where they are confusing or brittle

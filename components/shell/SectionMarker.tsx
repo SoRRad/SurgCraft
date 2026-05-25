@@ -11,15 +11,13 @@ export function SectionMarker({ number, label, className }: SectionMarkerProps) 
   return (
     <div
       className={cn(
-        "flex items-baseline gap-2 font-fraunces text-terracotta",
-        "text-small tracking-widest uppercase",
+        "flex items-baseline gap-2 font-inter text-micro font-semibold tracking-[0.18em] uppercase text-terracotta",
         className
       )}
-      style={{ fontVariant: "small-caps" }}
     >
-      <span aria-hidden="true">§</span>
+      <span aria-hidden="true">No.</span>
       <span>{num}</span>
-      <span aria-hidden="true">—</span>
+      <span aria-hidden="true">/</span>
       <span>{label}</span>
     </div>
   )

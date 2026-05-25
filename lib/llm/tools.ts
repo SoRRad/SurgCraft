@@ -1,4 +1,4 @@
-// Vercel AI SDK v6 tool definitions for the SurgiCraft : Handcraft tutor.
+﻿// Vercel AI SDK v6 tool definitions for the SurgiCraft : Handcraft tutor.
 // All tools have server-side execute functions that return structured data.
 // The client renders rich UI based on the tool name and result.
 
@@ -57,7 +57,7 @@ export const allTools = {
   show_pearl: tool({
     description:
       "Use when one known local demo pearl perfectly captures the teaching point. " +
-      "Use sparingly — at most one per response. Never fabricate pearl text or attribution. " +
+      "Use sparingly - at most one per response. Never fabricate pearl text or attribution. " +
       "Available pearl IDs: fight-bite-mcp, eikenella, mallet-flex-resets-clock, " +
       "mallet-leave-pip, acute-cts-distal-radius, distal-radius-not-just-a-wrist-fracture.",
     inputSchema: ShowPearlInputSchema,
@@ -129,7 +129,7 @@ export const allTools = {
 
   suggest_followups: tool({
     description:
-      "Call at the end of nearly every response to offer 2–4 follow-up paths the user can take. " +
+      "Call at the end of nearly every response to offer 2-4 follow-up paths the user can take. " +
       "Make chips specific to what was just discussed. " +
       'Examples: "Quiz me on this", "Show the common mistake", "Walk me through a case", ' +
       '"What changes management?", "Tell me about the anatomy", "What\'s the do-not-miss here?"',
@@ -138,10 +138,12 @@ export const allTools = {
         .array(z.string())
         .min(2)
         .max(4)
-        .describe("2–4 short follow-up prompts the user can tap"),
+        .describe("2-4 short follow-up prompts the user can tap"),
     }),
     execute: async (input) => input,
   }),
 }
 
 export type ToolName = keyof typeof allTools
+
+

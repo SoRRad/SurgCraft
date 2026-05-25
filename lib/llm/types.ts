@@ -1,9 +1,9 @@
-// Shared TypeScript types for the provider-agnostic LLM layer.
+﻿// Shared TypeScript types for the provider-agnostic LLM layer.
 // All providers (mock, Anthropic, OpenAI, Azure, Bedrock, etc.) use these shapes.
 
 import type { Role } from "@/lib/supabase/types"
 
-// ── Shared primitives ────────────────────────────────────────────────────────
+// -- Shared primitives --------------------------------------------------------
 
 export type ConversationMessage = {
   role: "user" | "assistant"
@@ -16,7 +16,7 @@ export type Citation = {
   url?: string
 }
 
-// ── Tutor mode ───────────────────────────────────────────────────────────────
+// -- Tutor mode ---------------------------------------------------------------
 
 export type TutorInput = {
   question: string
@@ -34,7 +34,7 @@ export type TutorResponse = {
   isUncertain: boolean      // Triggers "flag for faculty" template when true
 }
 
-// ── Case canvas ──────────────────────────────────────────────────────────────
+// -- Case canvas --------------------------------------------------------------
 
 export type CaseRevealInput = {
   userQuery: string
@@ -50,7 +50,7 @@ export type CaseRevealResponse = {
   runningNarrative?: string        // Brief "what we've established" update
 }
 
-// ── Pimping simulator ────────────────────────────────────────────────────────
+// -- Pimping simulator --------------------------------------------------------
 
 export type PimpingIntensity = "gentle" | "standard" | "pyrotechnic"
 
@@ -69,7 +69,7 @@ export type PimpingResponse = {
   rightAnswer?: string             // "The right way to answer on rounds"
 }
 
-// ── Pre-op prep ──────────────────────────────────────────────────────────────
+// -- Pre-op prep --------------------------------------------------------------
 
 export type PreOpInput = {
   procedure: string
@@ -85,7 +85,7 @@ export type PreOpResponse = {
   references: string[]
 }
 
-// ── OR debrief ───────────────────────────────────────────────────────────────
+// -- OR debrief ---------------------------------------------------------------
 
 export type DebriefInput = {
   caseSummary: string
@@ -98,3 +98,4 @@ export type DebriefResponse = {
   knowledgeGap?: string
   suggestion?: string
 }
+

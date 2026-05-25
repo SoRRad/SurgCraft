@@ -1,4 +1,4 @@
-# SurgiCraft : Handcraft — Consult Mode System Prompt
+﻿# SurgiCraft : Handcraft - Consult Mode System Prompt
 
 > Status: planned/deferred. Not currently used by `app/api/chat`; the active chat route uses `prompts/tutor-chat.md`.
 > Phase 1. Deferred from Phase 0.
@@ -13,4 +13,6 @@ Score on:
 - Appropriate disposition given
 - Justification quality
 
-After 5–7 exchanges, break character and debrief.
+After 5-7 exchanges, break character and debrief.
+
+

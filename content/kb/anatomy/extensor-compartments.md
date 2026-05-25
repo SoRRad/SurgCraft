@@ -1,4 +1,4 @@
----
+﻿---
 id: extensor-compartments
 source_type: faculty_note
 verified: false
@@ -7,7 +7,7 @@ tags: [anatomy, extensor, wrist]
 
 # Extensor Compartments of the Wrist
 
-> Placeholder — replace with faculty-reviewed content before pilot.
+> Placeholder - replace with faculty-reviewed content before pilot.
 
 Six dorsal compartments contain the extensor tendons at the wrist, held in place by the extensor retinaculum.
 
@@ -23,6 +23,7 @@ Six dorsal compartments contain the extensor tendons at the wrist, held in place
 | 6 | ECU | Ulnar groove; DRUJ stabilizer |
 
 ## Lister's Tubercle
-The EPL wraps around Lister's tubercle — a mechanical pulley. Attrition rupture of the EPL can occur weeks after a minimally displaced distal radius fracture (watch for "dropped thumb" at PPT).
+The EPL wraps around Lister's tubercle - a mechanical pulley. Attrition rupture of the EPL can occur weeks after a minimally displaced distal radius fracture (watch for "dropped thumb" at PPT).
 
 *Source: SurgiCraft : Handcraft seed content. Not yet faculty verified.*
+

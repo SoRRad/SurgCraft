@@ -1,4 +1,4 @@
-# SurgiCraft : Handcraft QA Checklist
+﻿# SurgiCraft : Handcraft QA Checklist
 
 Complete this checklist before faculty demo. SurgiCraft : Handcraft is educational only, uses synthetic/local demo content in Phase 0B.2, and must not receive PHI.
 
@@ -12,6 +12,7 @@ Complete this checklist before faculty demo. SurgiCraft : Handcraft is education
 | [ ] | Complete onboarding with a synthetic learner profile. | `/` redirects to `/c` after onboarding. |
 | [ ] | Confirm Header and Settings provider status. | Provider shows `Mock demo`; Settings says no external AI API is being used. |
 | [ ] | Confirm chat empty state warning. | Educational-only and no-PHI text is visible. |
+| [ ] | Confirm quick-start cards. | Cards are keyboard reachable and send the expected prompt. |
 | [ ] | Ask: "How do I manage a fight bite?" | Mock tutor streams a relevant educational answer. |
 | [ ] | Ask: "Walk me through a fight bite case." | A fight bite case launcher or case-directed answer appears. |
 | [ ] | Ask: "Quiz me on flexor tendon zones." | Quiz mode starts and asks one question at a time. |
@@ -19,6 +20,7 @@ Complete this checklist before faculty demo. SurgiCraft : Handcraft is education
 | [ ] | Ask a real-patient-style prompt. | Tutor should refuse clinical guidance and offer to convert it into a synthetic educational case. |
 | [ ] | Open Mistake Museum. | Page loads and shows local demo mistake cards. |
 | [ ] | Open Do-Not-Miss. | Page loads and shows escalation-focused educational warnings. |
+| [ ] | Open a case and reveal cards. | Progress updates, management stays gated, and commit-before-management is visible before management reveal. |
 | [ ] | Save a pearl from an assistant answer. | Bookmark state turns on and `/pearls` shows the saved item. |
 | [ ] | Unsave the same pearl from chat. | Bookmark state turns off and the item disappears from `/pearls`. |
 | [ ] | Remove a pearl from `/pearls`. | Pearl can still be removed from the pearls page. |
@@ -55,8 +57,9 @@ Complete this checklist before faculty demo. SurgiCraft : Handcraft is education
 
 | Done | Check | Expected result |
 |------|-------|-----------------|
-| [ ] | Confirm pearls show faculty verification status. | Verified content says `Faculty verified`; unverified content says `Local demo content · needs faculty verification`. |
+| [ ] | Confirm pearls show faculty verification status. | Verified content says `Faculty verified`; unverified content says `Local demo content | needs faculty verification`. |
 | [ ] | Confirm no ASPS/textbook content is copied into the app. | Content is synthetic, authored locally, cited, or paraphrased. |
 | [ ] | Confirm educational-only disclaimer is visible. | Disclaimer appears in About and chat/privacy surfaces. |
 | [ ] | Confirm no runtime route links point to removed legacy paths. | No `/dashboard` links are present. |
 | [ ] | Confirm faculty verification messaging. | UI states that faculty verification workflow is planned for Phase 0C. |
+
