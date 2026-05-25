@@ -81,6 +81,8 @@ export const PEARL_IDS = [
   "mallet-leave-pip",
   "acute-cts-distal-radius",
   "distal-radius-not-just-a-wrist-fracture",
+  "mayo-distal-radius-elderly",
+  "mayo-fragility-fracture",
 ] as const
 
 export type PearlId = typeof PEARL_IDS[number]
@@ -138,6 +140,25 @@ export const PEARLS: PearlEntry[] = [
     attribution: "Hand service",
     sourceLabel: "Local demo pearl registry",
     tags: ["distal-radius", "osteoporosis", "prevention"],
+    verified: false,
+  },
+  // ── Public Mayo Clinic citations (verified before pilot use) ──────────
+  {
+    id: "mayo-distal-radius-elderly",
+    topic: "Distal radius",
+    text: "Cohort and trial work covered in Mayo Clinic Proceedings supports a shared-decision approach to operative vs. nonoperative management of distal radius fractures in older adults — function at one year is often comparable when reduction is acceptable.",
+    attribution: "Public Mayo literature",
+    sourceLabel: "Mayo Clinic Proceedings — open at mayoclinicproceedings.org",
+    tags: ["distal-radius", "elderly", "mayo", "shared-decision"],
+    verified: false,
+  },
+  {
+    id: "mayo-fragility-fracture",
+    topic: "Fragility fracture",
+    text: "A distal radius fracture in an older patient is a fragility fracture until proven otherwise. Mayo Clinic's bone-health and osteoporosis program recommends bone-density evaluation and a secondary-fracture prevention plan for any patient over 50 with a low-energy fracture.",
+    attribution: "Public Mayo literature",
+    sourceLabel: "Mayo Clinic — Osteoporosis (mayoclinic.org/diseases-conditions/osteoporosis)",
+    tags: ["distal-radius", "osteoporosis", "mayo", "prevention", "elderly"],
     verified: false,
   },
 ]

@@ -42,7 +42,7 @@ export function InlineMistakeCard({ entry }: InlineMistakeCardProps) {
           </p>
         </div>
         <Link
-          href="/mistakes"
+          href="/library?focus=pitfalls"
           className="inline-block rounded text-micro text-electric hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
         >
           See all common pitfalls

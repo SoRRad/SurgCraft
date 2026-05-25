@@ -66,6 +66,8 @@
 | E4 | `mallet-leave-pip` | Splint DIP only, leave PIP free | — | — | pending |
 | E5 | `acute-cts-distal-radius` | Persistent median nerve symptoms = urgent CTR | — | — | pending |
 | E6 | `distal-radius-not-just-a-wrist-fracture` | Sentinel-event framing for osteoporosis workup | — | — | pending |
+| E7 | `mayo-distal-radius-elderly` | Mayo Clinic Proceedings: shared decision in elderly DRF | — | — | pending — Mayo public cite |
+| E8 | `mayo-fragility-fracture` | Mayo Clinic osteoporosis program / fragility-fracture framing | — | — | pending — Mayo public cite |
 
 ## F. Tutor system prompt (`prompts/tutor-chat.md`)
 
@@ -82,9 +84,21 @@ These are the only sources currently referenced. Anything cited should be summar
 
 - Wolfe et al., *Green's Operative Hand Surgery* — chapters on hand infections, extensor tendon injuries, distal radius
 - AAOS Clinical Practice Guideline on Distal Radius Fractures
+- AAOS Clinical Practice Guideline on Carpal Tunnel Syndrome
+- ASSH (American Society for Surgery of the Hand) — guidelines and patient education
 - Patzakis MJ et al., Management of human bite injuries of the hand
 - Lin JS, Samora JB, Surgical and Nonsurgical Management of Mallet Finger
+- Mayo Clinic — Osteoporosis / bone health (public clinician portal at mayoclinic.org)
+- Mayo Clinic Proceedings — peer-reviewed journal, open links at mayoclinicproceedings.org
 - (Various) "general clinical knowledge" — fallback label for claims without a specific source
+
+### Mayo-internal materials (placeholders — awaiting faculty content)
+
+| ID | Topic | Reviewer | Date | Status |
+|---|---|---|---|---|
+| M1 | Mayo internal: Hand-trauma intake protocol | — | — | awaiting upload |
+| M2 | Mayo internal: Resident-curriculum module on PIP-joint injuries | — | — | awaiting upload |
+| M3 | Mayo internal: Microsurgical replant pathway | — | — | awaiting upload |
 
 Any future content addition that cites a textbook, journal, or guideline must add the citation to this list and confirm the use is compliant with the source's license.
 
@@ -96,3 +110,4 @@ Any future content addition that cites a textbook, journal, or guideline must ad
 |---|---|---|
 | 2026-05-24 | Claude (cleanup pass) | Initial creation during the SurgiCraft polish pass. |
 | 2026-05-25 | Claude (ORION rebrand) | Rebrand to ORION Surgery; added cross-link columns to Mistake / Do-Not-Miss tables; portal at /admin/review. |
+| 2026-05-25 | Claude (navy refresh + library merge) | Repalette to navy + dark mode; module selector on landing; merged /topics, /mistakes, /donotmiss into /library with search; added /resources; added voice TTS/STT; added Mayo affiliation + public-Mayo pearls E7/E8 + Mayo-internal placeholder section. |

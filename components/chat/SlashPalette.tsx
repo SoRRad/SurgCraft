@@ -46,24 +46,24 @@ export const SLASH_COMMANDS: SlashCommand[] = [
         : "Give me an attributable pearl from the Hand module.",
   },
   {
-    trigger: "/mistake",
-    label: "Common mistakes",
-    description: "Surfaces the decision-time mistake card for a topic.",
+    trigger: "/pitfall",
+    label: "Common pitfall",
+    description: "Surfaces a decision-time reasoning pitfall card.",
     icon: TriangleAlert,
     build: (arg) =>
       arg.trim()
-        ? `What's the common decision-time mistake in ${arg.trim()}?`
-        : "What's a high-yield decision-time mistake in hand surgery?",
+        ? `What's a common pitfall in ${arg.trim()}?`
+        : "What's a high-yield decision-time pitfall in hand surgery?",
   },
   {
-    trigger: "/donotmiss",
-    label: "Do-not-miss red flag",
-    description: "Surfaces a recognition-time red flag card.",
+    trigger: "/redflag",
+    label: "Red flag",
+    description: "Surfaces a recognition-time red-flag card.",
     icon: Eye,
     build: (arg) =>
       arg.trim()
-        ? `Show me the do-not-miss red flag for ${arg.trim()}.`
-        : "Walk me through a do-not-miss red flag in hand surgery.",
+        ? `Show me the red flag for ${arg.trim()}.`
+        : "Walk me through a red flag in hand surgery.",
   },
 ]
 

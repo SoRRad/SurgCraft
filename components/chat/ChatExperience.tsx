@@ -19,6 +19,7 @@ import { QuizStarter } from "./tool-results/QuizStarter"
 import { FollowupChips } from "./tool-results/FollowupChips"
 import { TodaysPearl } from "./TodaysPearl"
 import { SlashPalette } from "./SlashPalette"
+import { MicButton, ReadAloudButton } from "./VoiceControls"
 import {
   createConversation, appendMessage, updateMessage, updateConversationTitle,
   getConversation, removePearlByMessageId, savePearl, uiMessageToChatMessageInput, type ChatMessage,
@@ -290,6 +291,7 @@ function MessageActions({
         active={savedAsPearl}
         onClick={handleSavePearl}
       />
+      <ReadAloudButton text={content} />
       <ActionButton
         icon={copied ? <Check size={13} /> : <Copy size={13} />}
         label="Copy"
@@ -437,9 +439,10 @@ interface EmptyStateProps {
   onSubmit: (e: React.FormEvent) => void
   onSuggestedPrompt: (prompt: string) => void
   onSlashSelect: (expanded: string) => void
+  onVoiceTranscript: (text: string) => void
 }
 
-function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSuggestedPrompt, onSlashSelect }: EmptyStateProps) {
+function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSuggestedPrompt, onSlashSelect, onVoiceTranscript }: EmptyStateProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -458,8 +461,8 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
 
   const isGuest = handle === "Guest"
   return (
-    <div className="flex flex-1 items-center justify-center overflow-y-auto px-4 py-8 sm:py-12">
-      <div className="w-full max-w-[720px] space-y-8">
+    <div className="flex-1 overflow-y-auto">
+      <div className="safe-center mx-auto w-full max-w-[720px] space-y-8 px-4 py-8 sm:py-12">
         <div>
           <h1 className="font-fraunces text-h1 leading-tight text-ink heading-readable">
             {isGuest ? "Welcome to ORION." : `Hello, ${handle}.`}
@@ -487,13 +490,14 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
                 aria-label="Chat input"
                 className="w-full resize-none overflow-hidden bg-transparent px-4 pb-12 pt-4 text-body text-ink placeholder:text-ink-faint focus:outline-none"
               />
-              <div className="absolute bottom-2.5 right-2.5">
+              <div className="absolute bottom-2.5 right-2.5 flex items-center gap-1.5">
+                <MicButton onTranscript={onVoiceTranscript} />
                 <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
                   className={cn(
-                    "rounded-lg px-4 py-2 text-small font-medium transition-all duration-200 ease-standard",
-                    "bg-electric text-bg shadow-soft hover:-translate-y-0.5 hover:shadow-medium disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none",
+                    "h-9 rounded-lg px-4 text-small font-medium transition-all duration-200 ease-standard",
+                    "bg-electric text-bg-elevated shadow-soft hover:-translate-y-0.5 hover:shadow-medium disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
                   )}
                 >
@@ -543,6 +547,9 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
 }
 
 // -- Conversation input bar ----------------------------------------------------
+//
+// Includes a microphone button when the browser supports SpeechRecognition.
+// Push-to-talk: click once to start, click again (or release after speech) to stop.
 
 interface ConversationInputProps {
   input: string
@@ -550,9 +557,12 @@ interface ConversationInputProps {
   onInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   onSubmit: (e: React.FormEvent) => void
   onSlashSelect: (expanded: string) => void
+  onVoiceTranscript: (text: string) => void
 }
 
-function ConversationInput({ input, isLoading, onInputChange, onSubmit, onSlashSelect }: ConversationInputProps) {
+function ConversationInput({
+  input, isLoading, onInputChange, onSubmit, onSlashSelect, onVoiceTranscript,
+}: ConversationInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -576,11 +586,12 @@ function ConversationInput({ input, isLoading, onInputChange, onSubmit, onSlashS
           Educational only. No PHI: do not enter names, MRNs, DOBs, images, or patient identifiers.
         </p>
         <form onSubmit={onSubmit} className="flex items-end gap-2">
+          <MicButton onTranscript={onVoiceTranscript} />
           <div className="relative flex-1">
             <SlashPalette input={input} onSelect={onSlashSelect} />
             <div className={cn(
-              "relative rounded-2xl border border-rule/70 bg-bg-elevated shadow-soft transition-all duration-300 ease-standard",
-              "focus-within:border-electric/50 focus-within:ring-4 focus-within:ring-electric/10"
+              "relative rounded-2xl border border-rule bg-bg-elevated shadow-soft transition-all duration-200 ease-standard",
+              "focus-within:border-electric/60 focus-within:ring-4 focus-within:ring-electric/10"
             )}>
               <textarea
                 ref={textareaRef}
@@ -590,7 +601,7 @@ function ConversationInput({ input, isLoading, onInputChange, onSubmit, onSlashS
                 placeholder="Type / for commands, or ask a follow-up"
                 rows={1}
                 aria-label="Chat input"
-                className="w-full resize-none overflow-hidden bg-transparent px-4 py-3 text-body text-ink placeholder:text-ink-muted focus:outline-none"
+                className="w-full resize-none overflow-hidden bg-transparent px-4 py-2.5 text-body text-ink placeholder:text-ink-faint focus:outline-none"
               />
             </div>
           </div>
@@ -599,8 +610,8 @@ function ConversationInput({ input, isLoading, onInputChange, onSubmit, onSlashS
             disabled={!input.trim() || isLoading}
             aria-label="Send message"
             className={cn(
-              "flex-shrink-0 rounded-2xl px-4 py-3 text-small font-semibold transition-all duration-300 ease-standard",
-              "bg-electric text-bg shadow-soft hover:-translate-y-0.5 hover:shadow-medium disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none",
+              "h-9 flex-shrink-0 rounded-lg px-4 text-small font-medium transition-all duration-200 ease-standard",
+              "bg-electric text-bg-elevated shadow-soft hover:-translate-y-0.5 hover:shadow-medium disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
             )}
           >
@@ -898,6 +909,7 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
           onSubmit={handleSubmit}
           onSuggestedPrompt={(p) => { setInput(""); void doSend(p) }}
           onSlashSelect={handleSlashSelect}
+          onVoiceTranscript={(t) => setInput((prev) => (prev ? `${prev} ${t}` : t))}
         />
       ) : (
         <div className="relative flex flex-col flex-1 overflow-hidden">
@@ -958,6 +970,7 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
             onInputChange={(e) => setInput(e.target.value)}
             onSubmit={handleSubmit}
             onSlashSelect={handleSlashSelect}
+            onVoiceTranscript={(t) => setInput((prev) => (prev ? `${prev} ${t}` : t))}
           />
         </div>
       )}

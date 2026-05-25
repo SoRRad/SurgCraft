@@ -4,32 +4,35 @@
 
 @layer base {
   :root {
-    /* ── ORION palette ───────────────────────────────────────────────── */
-    --bg:               #FBF8F3;
-    --bg-elevated:      #FFFDF8;
-    --surface-subtle:   #F4EEE4;
+    /* ── ORION palette: navy + royal blue (Mayo-aligned), light theme ── */
+    --bg:               #F6F8FB;
+    --bg-elevated:      #FFFFFF;
+    --surface-subtle:   #EEF2F8;
     --surface-raised:   #FFFFFF;
-    --ink:              #20201E;
-    --ink-muted:        #686259;
-    --ink-faint:        #93897D;
-    --rule:             #E7DED0;
+    --ink:              #0C2340;   /* deep navy, primary text */
+    --ink-muted:        #475569;
+    --ink-faint:        #7C8AA0;
+    --rule:             #DDE5EE;
 
-    --terracotta:       #B95E45;
-    --terracotta-soft:  #F1DDD3;
+    --navy:             #0C2340;
+    --navy-soft:        #DCE4EF;
 
-    --electric:         #315F86;
-    --electric-soft:    #DCEAF2;
+    --electric:         #1E5BA8;   /* royal blue, primary action */
+    --electric-soft:    #DCE9F7;
 
-    --correct:          #35785D;
-    --correct-soft:     #DDEBE2;
-    --warn:             #9D7423;
-    --warn-soft:        #F2E6C8;
-    --wrong:            #A34B55;
-    --wrong-soft:       #F1DADD;
+    --accent:           #0C2340;   /* same as ink for brand mark */
+    --accent-soft:      #DCE4EF;
 
-    --shadow-soft:      0 1px 2px rgba(32, 32, 30, 0.04), 0 10px 30px rgba(32, 32, 30, 0.06);
-    --shadow-medium:    0 2px 8px rgba(32, 32, 30, 0.06), 0 18px 48px rgba(32, 32, 30, 0.10);
-    --shadow-floating:  0 8px 24px rgba(32, 32, 30, 0.10), 0 28px 80px rgba(32, 32, 30, 0.14);
+    --correct:          #1F7A55;
+    --correct-soft:     #D8ECE2;
+    --warn:             #8A5A1B;
+    --warn-soft:        #F1E1C2;
+    --wrong:            #A1414B;
+    --wrong-soft:       #F0D6D8;
+
+    --shadow-soft:      0 1px 2px rgba(12, 35, 64, 0.04), 0 8px 24px rgba(12, 35, 64, 0.06);
+    --shadow-medium:    0 2px 8px rgba(12, 35, 64, 0.07), 0 16px 40px rgba(12, 35, 64, 0.10);
+    --shadow-floating:  0 8px 24px rgba(12, 35, 64, 0.12), 0 24px 64px rgba(12, 35, 64, 0.14);
 
     --ease-standard:    cubic-bezier(0.22, 0.61, 0.36, 1);
     --ease-reveal:      cubic-bezier(0.16, 1, 0.3, 1);
@@ -41,27 +44,79 @@
     --font-instrument-serif:  "Iowan Old Style", "Palatino Linotype", Palatino, "Cambria", Georgia, serif;
     --font-jetbrains-mono:    ui-monospace, "SF Mono", "Menlo", "Cascadia Code", "Consolas", monospace;
 
-    /* ── shadcn/ui HSL tokens (kept for primitive components) ──────── */
-    --background:             36 50% 97%;
-    --foreground:             60  3% 12%;
-    --card:                   42 100% 99%;
-    --card-foreground:        60  3% 12%;
-    --popover:                42 100% 99%;
-    --popover-foreground:     60  3% 12%;
-    --primary:               205  46% 36%;
-    --primary-foreground:     42 100% 98%;
-    --secondary:              35  36% 89%;
-    --secondary-foreground:   60   3% 12%;
-    --muted:                  35  36% 89%;
-    --muted-foreground:       36   8% 38%;
-    --accent:                 35  36% 89%;
-    --accent-foreground:      60   3% 12%;
-    --destructive:           354  37% 47%;
-    --destructive-foreground: 42 100% 98%;
-    --border:                 35  34% 86%;
-    --input:                  35  34% 86%;
-    --ring:                  205  46% 36%;
+    /* ── shadcn/ui HSL tokens (matched to navy palette) ─────────────── */
+    --background:             214  33% 97%;
+    --foreground:             214  69% 15%;
+    --card:                   0    0% 100%;
+    --card-foreground:        214  69% 15%;
+    --popover:                0    0% 100%;
+    --popover-foreground:     214  69% 15%;
+    --primary:               212  70% 38%;
+    --primary-foreground:     0   0% 100%;
+    --secondary:             214  33% 93%;
+    --secondary-foreground:   214 69% 15%;
+    --muted:                 214  33% 93%;
+    --muted-foreground:       215 20% 35%;
+    --accent:                214  33% 93%;
+    --accent-foreground:      214 69% 15%;
+    --destructive:           354 37% 47%;
+    --destructive-foreground: 0  0% 100%;
+    --border:                 214 22% 87%;
+    --input:                  214 22% 87%;
+    --ring:                   212 70% 38%;
     --radius:                 0.75rem;
+  }
+
+  /* ── Dark theme: deep navy page, lighter ink ─────────────────────── */
+  .dark {
+    --bg:               #0A1B30;
+    --bg-elevated:      #122C4A;
+    --surface-subtle:   #16345A;
+    --surface-raised:   #1B3D68;
+    --ink:              #EAF1F9;
+    --ink-muted:        #B2C2D6;
+    --ink-faint:        #7C90AA;
+    --rule:             #234868;
+
+    --navy:             #0A1B30;
+    --navy-soft:        #234868;
+
+    --electric:         #6FA3DE;
+    --electric-soft:    #234868;
+
+    --accent:           #6FA3DE;
+    --accent-soft:      #234868;
+
+    --correct:          #7CCBA2;
+    --correct-soft:     #1F4F3A;
+    --warn:             #E2B470;
+    --warn-soft:        #5A411C;
+    --wrong:            #E89BA3;
+    --wrong-soft:       #5C2A30;
+
+    --shadow-soft:      0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3);
+    --shadow-medium:    0 2px 8px rgba(0, 0, 0, 0.35), 0 16px 40px rgba(0, 0, 0, 0.4);
+    --shadow-floating:  0 8px 24px rgba(0, 0, 0, 0.4), 0 24px 64px rgba(0, 0, 0, 0.5);
+
+    --background:             214 69% 11%;
+    --foreground:             214 33% 95%;
+    --card:                   214 60% 18%;
+    --card-foreground:        214 33% 95%;
+    --popover:                214 60% 18%;
+    --popover-foreground:     214 33% 95%;
+    --primary:               212 65% 65%;
+    --primary-foreground:     214 69% 11%;
+    --secondary:              214 50% 22%;
+    --secondary-foreground:   214 33% 95%;
+    --muted:                  214 50% 22%;
+    --muted-foreground:       214 22% 75%;
+    --accent:                 214 50% 22%;
+    --accent-foreground:      214 33% 95%;
+    --destructive:           354 60% 65%;
+    --destructive-foreground: 214 69% 11%;
+    --border:                 214 45% 30%;
+    --input:                  214 45% 30%;
+    --ring:                   212 65% 65%;
   }
 
   * {
@@ -79,12 +134,17 @@
     text-rendering: optimizeLegibility;
     text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
   }
 
   body {
     min-height: 100dvh;
     background:
-      radial-gradient(circle at 20% 0%, rgba(185, 94, 69, 0.04), transparent 30rem),
+      radial-gradient(circle at 90% -10%, rgba(30, 91, 168, 0.06), transparent 30rem),
       var(--bg);
     color: var(--ink);
     font-size: 1rem;
@@ -92,7 +152,12 @@
     overflow-x: hidden;
   }
 
-  /* ── Headings: serif, balanced, never overflow ──────────────────── */
+  .dark body {
+    background:
+      radial-gradient(circle at 90% -10%, rgba(111, 163, 222, 0.10), transparent 30rem),
+      var(--bg);
+  }
+
   h1, h2, h3, h4 {
     font-family: var(--font-fraunces);
     color: var(--ink);
@@ -101,9 +166,7 @@
     overflow-wrap: anywhere;
   }
 
-  p, li {
-    text-wrap: pretty;
-  }
+  p, li { text-wrap: pretty; }
 
   :focus-visible {
     outline: 2px solid var(--electric);
@@ -116,7 +179,6 @@
     color: var(--ink);
   }
 
-  /* ── Reduced motion ─────────────────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -130,20 +192,19 @@
 }
 
 @layer utilities {
-  /* Prose containers cap line length so long answers stay readable */
-  .prose-readable {
-    max-width: 70ch;
-  }
-  .heading-readable {
-    max-width: 30ch;
-  }
-
-  /* Tabular figures for counters and timers */
-  .tabular {
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* Hide scrollbar but keep scroll (used in horizontal chip rails) */
+  .prose-readable    { max-width: 70ch; }
+  .heading-readable  { max-width: 30ch; }
+  .tabular           { font-variant-numeric: tabular-nums; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* "safe-center" pattern: center content vertically when it fits, but
+     allow scrolling to top when it overflows. Replaces `items-center`
+     on overflow-y containers. */
+  .safe-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: safe center;
+    min-height: 100%;
+  }
 }

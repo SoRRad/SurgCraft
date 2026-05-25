@@ -17,9 +17,8 @@ const SHORTCUTS: ShortcutDef[] = [
   { keys: ["/"], label: "Focus the chat input", scope: "chat" },
   { keys: ["g", "c"], label: "Go to chat", scope: "global" },
   { keys: ["g", "m"], label: "Go to Modules", scope: "global" },
-  { keys: ["g", "k"], label: "Go to Mistake Museum", scope: "global" },
-  { keys: ["g", "d"], label: "Go to Do-Not-Miss", scope: "global" },
-  { keys: ["g", "t"], label: "Go to Topic index", scope: "global" },
+  { keys: ["g", "l"], label: "Go to Library", scope: "global" },
+  { keys: ["g", "r"], label: "Go to Resources", scope: "global" },
   { keys: ["g", "p"], label: "Go to Saved pearls", scope: "global" },
   { keys: ["g", "a"], label: "Go to About", scope: "global" },
   { keys: ["Esc"], label: "Close panels and dialogs", scope: "global" },
@@ -90,9 +89,8 @@ export function KeyboardShortcuts() {
           {
             c: "/c",
             m: "/modules",
-            k: "/mistakes",
-            d: "/donotmiss",
-            t: "/topics",
+            l: "/library",
+            r: "/resources",
             p: "/pearls",
             a: "/about",
           } as Record<string, string>

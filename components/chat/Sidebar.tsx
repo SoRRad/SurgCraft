@@ -4,20 +4,19 @@ import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import {
-  AlertTriangle,
   BookOpen,
   Bookmark,
   ChevronDown,
   ChevronUp,
-  Compass,
   Info,
   Keyboard,
   Layers,
+  Library,
+  LinkIcon,
   type LucideIcon,
   MessageSquare,
   Plus,
   Settings,
-  ShieldAlert,
   Trash2,
 } from "lucide-react"
 import { SettingsDrawer } from "@/components/shell/SettingsDrawer"
@@ -38,14 +37,13 @@ function getRelativeTime(isoDate: string): string {
 }
 
 /**
- * Sidebar nav is intentionally short. Labels are what a textbook would
- * call them (no invented internal terms like "Mistake Museum").
+ * Sidebar nav, tight. Plain labels — no internal jargon. Three groups
+ * (Learn / Saved / Platform) plus the conversation list.
  */
 const LEARN_LINKS = [
-  { href: "/case",      label: "Cases",          icon: BookOpen },
-  { href: "/mistakes",  label: "Common pitfalls", icon: AlertTriangle },
-  { href: "/donotmiss", label: "Red flags",      icon: ShieldAlert },
-  { href: "/topics",    label: "Topics",         icon: Compass },
+  { href: "/case",      label: "Cases",     icon: BookOpen },
+  { href: "/library",   label: "Library",   icon: Library },
+  { href: "/resources", label: "Resources", icon: LinkIcon },
 ]
 
 const SAVED_LINKS = [
@@ -117,7 +115,7 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
   return (
     <>
       <div className="flex h-full flex-col bg-bg">
-        {/* Brand strip */}
+        {/* Brand */}
         <div className="flex items-center gap-2 px-4 pb-3 pt-4">
           <Link
             href="/c"
@@ -139,7 +137,7 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
             onClick={handleNewConversation}
             className={cn(
               "flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5",
-              "bg-electric text-small font-medium text-bg shadow-soft",
+              "bg-electric text-small font-medium text-bg-elevated shadow-soft",
               "transition-all duration-200 ease-standard hover:-translate-y-0.5 hover:shadow-medium active:translate-y-0",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
             )}

@@ -29,8 +29,13 @@ const config: Config = {
         "ink-muted": "var(--ink-muted)",
         "ink-faint": "var(--ink-faint)",
         rule: "var(--rule)",
-        terracotta: "var(--terracotta)",
-        "terracotta-soft": "var(--terracotta-soft)",
+        navy: "var(--navy)",
+        "navy-soft": "var(--navy-soft)",
+        // Aliases retained so legacy "terracotta" classes keep compiling
+        // until they are renamed in a follow-up pass. They now resolve to
+        // the new navy accent.
+        terracotta: "var(--accent)",
+        "terracotta-soft": "var(--accent-soft)",
         electric: "var(--electric)",
         "electric-soft": "var(--electric-soft)",
         correct: "var(--correct)",

@@ -2,6 +2,7 @@ import type { ReactNode } from "react"
 import Link from "next/link"
 import { AppShell } from "@/components/shell/AppShell"
 import { SectionMarker } from "@/components/shell/SectionMarker"
+import { MayoMark } from "@/components/shell/MayoMark"
 import { ChevronDown } from "lucide-react"
 import type { Metadata } from "next"
 
@@ -62,9 +63,24 @@ export default function AboutPage() {
           </p>
         </div>
 
+        {/* Mayo affiliation block */}
+        <div className="mb-6 flex items-start gap-4 rounded-2xl border border-rule bg-bg-elevated p-5 shadow-soft">
+          <MayoMark size={36} />
+          <div>
+            <p className="text-small font-semibold text-ink">In affiliation with Mayo Clinic</p>
+            <p className="mt-1 text-small text-ink-muted leading-relaxed">
+              ORION Surgery is being developed for a Mayo Clinic pilot. Public Mayo Clinic resources are cited and linked in the{" "}
+              <Link href="/resources" className="text-electric hover:underline">Resources</Link>
+              {" "}section. Faculty-curated internal materials are added only after explicit sign-off and tracked in{" "}
+              <Link href="/admin/review" className="text-electric hover:underline">CONTENT_REVIEW.md</Link>.
+              The Mayo Clinic name and shield are used with permission for this pilot.
+            </p>
+          </div>
+        </div>
+
         {/* Top disclaimer — loud */}
-        <div className="mb-10 rounded-2xl border border-terracotta-soft bg-terracotta-soft p-5">
-          <p className="mb-2 text-small font-semibold uppercase tracking-wide text-terracotta">
+        <div className="mb-10 rounded-2xl border border-wrong-soft bg-wrong-soft p-5">
+          <p className="mb-2 text-small font-semibold uppercase tracking-wide text-wrong">
             Educational use only
           </p>
           <p className="text-body text-ink">

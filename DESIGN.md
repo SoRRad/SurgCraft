@@ -4,33 +4,43 @@
 
 ## Theme
 
-Light, warm cream as the default surface. A surgical resident is using ORION on a hospital workstation at 2pm or on a personal laptop at 11pm; both contexts reward a quiet, low-glare page. Dark mode is not in scope for Phase 0B.
+Two themes. The default is light: a clean blue-tinted off-white that reads professional in a clinical environment. The dark theme uses deep navy and lighter ink for late-night studying. Theme follows the system preference unless the user picks one in Settings.
+
+A surgical resident might use ORION on a hospital workstation at 2pm or on a personal laptop at 11pm. The two themes cover both honestly.
 
 ## Color strategy
 
-**Restrained**: tinted neutrals dominate; one accent (electric blue) is reserved for primary actions, links, and active states; one warm secondary (terracotta) carries the brand voice on the wordmark and hover transitions. Status colors (correct / warn / wrong) are muted, never neon.
+**Restrained**: tinted blue-grey neutrals dominate; one accent (royal blue) is reserved for primary actions, links, focus rings, and active states; a deep navy carries the brand voice on the wordmark and section indicators. Status colors (correct / warn / wrong) are muted. The palette is aligned with Mayo Clinic's visual language without copying its mark.
 
-### Tokens (CSS variables)
+### Light tokens
 
 | Token | Hex | Purpose |
 |---|---|---|
-| `--bg` | `#FBF8F3` | Page background |
-| `--bg-elevated` | `#FFFDF8` | Cards, input surfaces |
-| `--surface-subtle` | `#F4EEE4` | Inset wells, hover backgrounds |
-| `--surface-raised` | `#FFFFFF` | Topmost surfaces only |
-| `--ink` | `#20201E` | Primary text |
-| `--ink-muted` | `#686259` | Secondary text |
-| `--ink-faint` | `#93897D` | Tertiary text, micro labels |
-| `--rule` | `#E7DED0` | Borders, dividers |
-| `--terracotta` | `#B95E45` | Brand accent (wordmark, citations) |
-| `--electric` | `#315F86` | Primary action, links, focus |
-| `--correct` | `#35785D` | Success states |
-| `--warn` | `#9D7423` | In-development, caution |
-| `--wrong` | `#A34B55` | Errors, deletions |
+| `--bg` | `#F6F8FB` | Page background |
+| `--bg-elevated` | `#FFFFFF` | Cards, input surfaces |
+| `--surface-subtle` | `#EEF2F8` | Inset wells, hover backgrounds |
+| `--surface-raised` | `#FFFFFF` | Topmost surfaces |
+| `--ink` | `#0C2340` | Deep navy — primary text |
+| `--ink-muted` | `#475569` | Secondary text |
+| `--ink-faint` | `#7C8AA0` | Tertiary text, micro labels |
+| `--rule` | `#DDE5EE` | Borders, dividers |
+| `--navy` | `#0C2340` | Brand accent |
+| `--electric` | `#1E5BA8` | Primary action, links, focus |
+| `--correct` | `#1F7A55` | Success states |
+| `--warn` | `#8A5A1B` | In-development, caution |
+| `--wrong` | `#A1414B` | Errors, deletions |
 
-Each color has a `-soft` variant for backgrounds.
+### Dark tokens
 
-Tinted neutrals — every "grey" carries a faint warm chroma so the page never feels clinical. Never use `#000` or `#fff`.
+| Token | Hex | Purpose |
+|---|---|---|
+| `--bg` | `#0A1B30` | Deep navy page |
+| `--bg-elevated` | `#122C4A` | Cards |
+| `--surface-subtle` | `#16345A` | Inset wells |
+| `--ink` | `#EAF1F9` | Primary text |
+| `--electric` | `#6FA3DE` | Primary action / link (lighter for contrast) |
+
+Each color has a `-soft` variant for backgrounds. Never use `#000` or `#fff` straight.
 
 ## Typography
 

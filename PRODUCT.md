@@ -18,9 +18,13 @@ Success looks like a resident saying "I felt sharper on rounds because I rehears
 
 ## Brand Personality
 
-Three words: **academic**, **calm**, **earnest**. The voice is the senior resident who explains things clearly without showing off. Warm typography in a quiet cream-and-ink palette. Confident but never flashy. No gamified streaks, no leaderboards, no badges. The interface should feel closer to a well-typeset textbook than to a SaaS dashboard or a study app.
+Three words: **academic**, **calm**, **earnest**. The voice is the senior resident who explains things clearly without showing off. Quiet typography in a navy and blue-grey palette that aligns with the Mayo Clinic visual language. Confident but never flashy. No gamified streaks, no leaderboards, no badges. The interface should feel closer to a well-typeset academic journal than to a SaaS dashboard or a study app.
 
 Emotional goals: confidence (the learner trusts the answer), respect (the tool treats them as an adult professional), and focus (one thing at a time, no clutter).
+
+## Affiliation
+
+ORION Surgery is being developed for a Mayo Clinic pilot. The Mayo Clinic name and shield are used with permission on the landing page and About surface. Public Mayo Clinic resources (mayoclinic.org clinician portal, Mayo Clinic Proceedings) are cited and linked under Resources; faculty-curated internal materials are added only after explicit sign-off and tracked in `CONTENT_REVIEW.md`.
 
 ## Anti-references
 

@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Download, Flag, Shield, Trash2, Upload } from "lucide-react"
+import { Download, Flag, Monitor, Moon, Shield, Sun, Trash2, Upload, Volume2 } from "lucide-react"
+import { useTheme } from "@/components/shell/ThemeProvider"
+import { speak, stopSpeaking, useVoiceSettings } from "@/components/shell/VoiceSettings"
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle,
 } from "@/components/ui/sheet"
@@ -297,19 +299,8 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
             )}
           </section>
 
-          <section className="rounded-2xl bg-bg-elevated p-4 shadow-soft">
-            <p className="mb-3 text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">Display</p>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between py-2">
-                <span className="text-small text-ink">Theme</span>
-                <span className="text-small text-ink-muted">Light (dark coming soon)</span>
-              </div>
-              <div className="flex items-center justify-between py-2">
-                <span className="text-small text-ink">Reduced motion</span>
-                <span className="text-small text-ink-muted">System preference</span>
-              </div>
-            </div>
-          </section>
+          <ThemeSection />
+          <VoiceSection />
         </div>
 
         <div className="space-y-2 border-t border-rule/70 px-6 py-4">
@@ -335,6 +326,172 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
         </div>
       </SheetContent>
     </Sheet>
+  )
+}
+
+// ── Theme section ────────────────────────────────────────────────────────────
+function ThemeSection() {
+  const { theme, setTheme } = useTheme()
+  const options = [
+    { id: "light",  label: "Light",  Icon: Sun },
+    { id: "dark",   label: "Dark",   Icon: Moon },
+    { id: "system", label: "System", Icon: Monitor },
+  ] as const
+  return (
+    <section className="rounded-2xl bg-bg-elevated p-4 shadow-soft">
+      <p className="mb-3 text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">Theme</p>
+      <div role="radiogroup" aria-label="Theme" className="grid grid-cols-3 gap-2">
+        {options.map(({ id, label, Icon }) => {
+          const selected = theme === id
+          return (
+            <button
+              key={id}
+              type="button"
+              role="radio"
+              aria-checked={selected}
+              onClick={() => setTheme(id)}
+              className={cn(
+                "flex flex-col items-center gap-1 rounded-lg border px-3 py-2.5 text-small transition-colors duration-150 ease-standard",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric",
+                selected
+                  ? "border-electric/60 bg-electric-soft text-ink"
+                  : "border-rule bg-bg text-ink-muted hover:text-ink"
+              )}
+            >
+              <Icon size={14} className={selected ? "text-electric" : "text-ink-faint"} />
+              {label}
+            </button>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
+// ── Voice section ────────────────────────────────────────────────────────────
+function VoiceSection() {
+  const { prefs, setPrefs, voices, ttsSupported, sttSupported } = useVoiceSettings()
+  if (!ttsSupported && !sttSupported) {
+    return (
+      <section className="rounded-2xl bg-bg-elevated p-4 shadow-soft">
+        <p className="mb-1 text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">Voice</p>
+        <p className="text-small text-ink-muted">
+          Your browser does not support the Web Speech API. Try Chrome, Edge, or Safari for read-aloud and voice input.
+        </p>
+      </section>
+    )
+  }
+
+  function handlePreview() {
+    if (!ttsSupported) return
+    stopSpeaking()
+    speak("This is how ORION will sound when reading answers.", prefs, voices)
+  }
+
+  return (
+    <section className="rounded-2xl bg-bg-elevated p-4 shadow-soft">
+      <p className="mb-3 text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">Voice</p>
+
+      {ttsSupported && (
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="tts-voice" className="text-small">Voice</Label>
+            <Select
+              value={prefs.voiceURI ?? "default"}
+              onValueChange={(v) => setPrefs({ voiceURI: v === "default" ? null : v })}
+            >
+              <SelectTrigger id="tts-voice" className="mt-1">
+                <SelectValue placeholder="Browser default" />
+              </SelectTrigger>
+              <SelectContent className="max-h-72">
+                <SelectItem value="default">Browser default</SelectItem>
+                {voices.map((v) => (
+                  <SelectItem key={v.voiceURI} value={v.voiceURI}>
+                    {v.name} · {v.lang}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <SliderRow
+            label="Speed"
+            value={prefs.rate}
+            min={0.5}
+            max={2.0}
+            step={0.1}
+            onChange={(rate) => setPrefs({ rate })}
+            format={(v) => `${v.toFixed(1)}×`}
+          />
+          <SliderRow
+            label="Pitch"
+            value={prefs.pitch}
+            min={0.0}
+            max={2.0}
+            step={0.1}
+            onChange={(pitch) => setPrefs({ pitch })}
+            format={(v) => v.toFixed(1)}
+          />
+          <SliderRow
+            label="Volume"
+            value={prefs.volume}
+            min={0}
+            max={1}
+            step={0.1}
+            onChange={(volume) => setPrefs({ volume })}
+            format={(v) => `${Math.round(v * 100)}%`}
+          />
+
+          <Button type="button" variant="outline" size="sm" onClick={handlePreview} className="w-full">
+            <Volume2 size={14} />
+            Preview voice
+          </Button>
+        </div>
+      )}
+
+      <p className="mt-3 text-micro text-ink-muted">
+        {sttSupported
+          ? "Voice input and read-aloud use your browser's built-in speech APIs. Nothing is sent to an external service."
+          : "Voice input is not supported in this browser. Read-aloud is available."}
+      </p>
+    </section>
+  )
+}
+
+function SliderRow({
+  label,
+  value,
+  min,
+  max,
+  step,
+  onChange,
+  format,
+}: {
+  label: string
+  value: number
+  min: number
+  max: number
+  step: number
+  onChange: (v: number) => void
+  format: (v: number) => string
+}) {
+  return (
+    <div>
+      <div className="mb-1.5 flex items-baseline justify-between">
+        <span className="text-small text-ink">{label}</span>
+        <span className="tabular text-micro text-electric">{format(value)}</span>
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        aria-label={label}
+        className="w-full accent-electric"
+      />
+    </div>
   )
 }
 
