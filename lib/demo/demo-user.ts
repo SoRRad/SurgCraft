@@ -17,6 +17,8 @@ export type DemoUser = {
     peripheralNerve: number
     microsurgery: number
   }
+  activeModule?: "hand"
+  testMode?: boolean
   createdAt: string
 }
 
@@ -35,6 +37,26 @@ export function getDemoUser(): DemoUser | null {
 export function saveDemoUser(user: DemoUser): void {
   if (typeof window === "undefined") return
   localStorage.setItem(KEY, JSON.stringify(user))
+}
+
+export function createTestModeUser(): DemoUser {
+  return {
+    handle: "Demo Learner",
+    role: "PGY-2",
+    specialty: "Plastic Surgery",
+    onHandService: true,
+    primaryGoal: "Prepare for hand surgery consults and cases",
+    comfort: {
+      anatomy: 2,
+      trauma: 2,
+      congenital: 2,
+      peripheralNerve: 1,
+      microsurgery: 2,
+    },
+    activeModule: "hand",
+    testMode: true,
+    createdAt: new Date().toISOString(),
+  }
 }
 
 export function clearDemoUser(): void {

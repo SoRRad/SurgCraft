@@ -1,5 +1,2 @@
 import { redirect } from "next/navigation"
-
-export default function AdminIndexPage() {
-  redirect("/admin/review")
-}
+export default function AdminIndexPage(){ redirect("/admin/review") }

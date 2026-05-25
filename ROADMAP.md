@@ -4,7 +4,7 @@
 
 ORION Surgery is the parent surgical education platform. Hand is module 01, focused on hand surgery. The current product is a Phase 0B chat-first prototype: users enter through `/c`, learn through streaming conversation, and launch cases, quizzes, pearls, mistakes, and do-not-miss content inline through chat tools.
 
-The app remains educational only. It must not guide real patient care, must not request PHI, and uses synthetic/local demo content until faculty review and Phase 0C governance are in place.
+The app remains educational only. It must not guide real patient care, must not request PHI, and uses synthetic/local demo content until faculty review and Phase 0C governance are in place. No live web search in Phase 0B/0C.
 
 ---
 
@@ -107,7 +107,7 @@ Gate:
 
 ---
 
-## Planned Phase 0B.3 - Ollama / Local Model Provider
+## Deferred (post-pilot)
 
 Goal: support a no-cloud live model for development and demos where internet/API spending is undesirable.
 
@@ -125,9 +125,9 @@ Gate:
 
 ---
 
-## Planned Phase 0B.4 - OpenAI Provider
+## Deferred provider expansions
 
-Goal: prove provider portability beyond Anthropic.
+Goal: keep provider scope stable during Hand pilot preparation.
 
 - Add `LLM_PROVIDER=openai`
 - Add OpenAI provider package and server-only provider implementation
@@ -177,7 +177,7 @@ Goal: deploy to a small Mayo hand surgery learner cohort with governance, monito
 - Faculty-reviewed case and KB corpus
 - Stable admin workflow for flagged outputs
 - Analytics focused on engagement and learning, not punitive ranking
-- Opt-in anonymous leaderboard only if approved
+- Leaderboards and user rankings are not planned for pilot.
 - Pre/post knowledge assessment plan
 - Clear incident process for unsafe or incorrect AI output
 
