@@ -19,8 +19,6 @@ ORION is platform-ready, but **Hand is the only active module in the demo-facing
 
 Additional modules are intentionally deferred until Hand proof-of-concept validation and faculty pilot feedback are complete.
 
-Additional modules are deferred for now; Phase 0B.2 faculty demos focus on the Hand module only.
-
 ---
 
 ## What the Hand module includes
