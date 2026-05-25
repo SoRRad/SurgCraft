@@ -24,15 +24,14 @@ Use this ~6-minute path for a Phase 0B.2 faculty demo. Run in mock/demo mode unl
 8. **Do-Not-Miss.** Open `/donotmiss`. These are **recognition-time red flags only**. The two libraries are strictly separated by intent; cross-links connect paired topics.
 9. **Topic index.** Open `/topics`. One unified index linking every topic to its case, decision mistake, and recognition red flag.
 10. **Modules.** Open `/modules` (or click the chip in the header). Hand is active; Bariatric, Foot & Ankle, Plastic, Pediatric, Vascular are placeholders awaiting faculty champions. Click one to see the recruitment page.
-11. **Faculty review portal.** Open `/admin/review`. The page renders `CONTENT_REVIEW.md` and stats — every authored claim is tracked here for review.
-12. **Save a pearl.** Bookmark an assistant answer. Open `/pearls` to see it. Pearls are local to this browser.
-13. **Flag a response.** Open Settings → Review flags. Note that flags are local in Phase 0B and not yet routed to faculty.
-14. **Export / Settings.** Show export/import in Settings. Close with the keyboard shortcut panel (press `?`).
+11. **Save a pearl.** Bookmark an assistant answer. Open `/pearls` to see it. Pearls are local to this browser.
+12. **Flag a response.** Open Settings → Review flags. Note that flags are local in Phase 0B and not yet routed to faculty.
+13. **Export / Settings.** Show export/import in Settings. Close with the keyboard shortcut panel (press `?`).
 
 ## Talking points for close
 
 - Local demo content; no real patient data.
-- Needs faculty verification — visible at `/admin/review` and `CONTENT_REVIEW.md`.
+- Needs faculty verification — tracked in `CONTENT_REVIEW.md` and module content labels.
 - No PHI; not for clinical decisions.
 - Modules are intentionally a separate concept so ORION can grow beyond Hand as faculty champions sign on.
 - RAG, accounts, faculty admin UI, and persisted analytics planned for Phase 0C.

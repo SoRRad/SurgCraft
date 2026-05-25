@@ -3,7 +3,7 @@
 **ORION** — **O**perative **R**easoning and **I**nteractive **O**nline **N**avigator.
 A multi-module surgical education platform for medical students, residents, and fellows.
 
-Piloting at Mayo Clinic. Phase 0B.2: chat-first, local-first, deterministic mock provider by default.
+Designed for a planned Mayo Clinic pilot. Phase 0B.2: chat-first, local-first, deterministic mock provider by default.
 
 ---
 
@@ -183,4 +183,4 @@ An in-app faculty review portal is available at `/admin/review` and renders dire
 
 ## Acknowledgments
 
-ORION Surgery is being built as a pilot in collaboration with Mayo Clinic faculty. Specific contributors will be acknowledged in `/about` as content is reviewed and approved.
+ORION Surgery is being developed for Mayo Clinic pilot evaluation in collaboration with Mayo Clinic faculty. Specific contributors will be acknowledged in `/about` as content is reviewed and approved.

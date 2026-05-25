@@ -16,7 +16,6 @@ import {
   Layers,
   MessageSquare,
   MessageSquarePlus,
-  ShieldCheck,
   Settings,
   Trash2,
 } from "lucide-react"
@@ -50,7 +49,6 @@ const SAVED_LINKS = [
 
 const PLATFORM_LINKS = [
   { href: "/modules", label: "Modules", icon: Layers },
-  { href: "/admin/review", label: "Faculty review", icon: ShieldCheck },
 ]
 
 interface SidebarInnerProps {
@@ -119,8 +117,8 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
             type="button"
             onClick={handleNewConversation}
             className={cn(
-              "flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3",
-              "bg-electric text-small font-semibold text-bg shadow-soft",
+              "flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-2.5",
+              "bg-electric text-small font-semibold text-bg shadow-[0_6px_24px_rgba(49,95,134,0.24)]",
               "transition-all duration-300 ease-standard hover:-translate-y-0.5 hover:shadow-medium active:translate-y-0",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
             )}

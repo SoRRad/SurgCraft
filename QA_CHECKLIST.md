@@ -20,15 +20,17 @@ Complete this checklist before faculty demo. ORION · Hand is educational only, 
 | [ ] | Ask a real-patient-style prompt. | Tutor should refuse clinical guidance and offer to convert it into a synthetic educational case. |
 | [ ] | Open Mistake Museum. | Page loads. Cards are collapsed by default with a "Show why it happens..." disclosure. Each card frames a decision-time cognitive error. Cross-link to paired Do-Not-Miss entry appears when relevant. |
 | [ ] | Open Do-Not-Miss. | Page loads. Cards frame recognition-time red flags, escalation language is visible. Cross-link to paired Mistake entry appears when relevant. |
-| [ ] | Open Topic index (`/topics`). | One unified index with Cases / Decision mistakes / Do-Not-Miss columns per topic. |
 | [ ] | Open Modules (`/modules`). | Hand shows as Active; Bariatric, Foot & Ankle, Plastic, Pediatric, Vascular show as In development with faculty-recruitment notes. |
+| [ ] | Open Bariatric placeholder (`/m/bariatric`). | Placeholder page loads with launch scope and faculty champion call-to-action. |
+| [ ] | Open Topic index (`/topics`). | One unified index with Cases / Decision mistakes / Do-Not-Miss columns per topic. |
+| [ ] | Click "New conversation" in the sidebar after an active chat. | App routes to `/c` and clears prior messages in the composer view. |
+| [ ] | Open invalid case route (`/case/invalid-case`). | Graceful "Case not found" state appears with Back to cases/chat actions. |
 | [ ] | Click any in-development module. | Loads `/m/[id]` placeholder with "what it will include at launch" + faculty recruitment CTA. |
 | [ ] | Open the Module switcher chip in the header. | Dropdown shows all modules, current marked. Picking a module routes correctly. |
 | [ ] | Type `/` in chat input. | Slash palette appears with /case, /quiz, /pearl, /mistake, /donotmiss. Tab/Enter expand the command. |
 | [ ] | Press `?` anywhere outside an input. | Keyboard shortcuts panel opens. Press Escape to close. |
 | [ ] | Press `g` then `m` (outside an input). | Navigates to /modules. Try other chords from the panel. |
 | [ ] | Empty chat shows "Today's pearl" card. | Pearl content rotates by day; attribution visible. |
-| [ ] | Open Faculty review portal (`/admin/review`). | Renders CONTENT_REVIEW.md with stats cards (Mistakes / Do-Not-Miss / Pearls). |
 | [ ] | Open a case and reveal cards. | Progress updates, management stays gated, and commit-before-management is visible before management reveal. |
 | [ ] | Save a pearl from an assistant answer. | Bookmark state turns on and `/pearls` shows the saved item. |
 | [ ] | Unsave the same pearl from chat. | Bookmark state turns off and the item disappears from `/pearls`. |
