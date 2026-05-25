@@ -295,14 +295,14 @@ function MessageActions({
 
   if (role === "user") {
     return (
-      <div className="flex gap-1 mt-1 justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-100">
+      <div className="flex gap-1 mt-1 justify-end opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-100">
         <ActionButton icon={copied ? <Check size={13} /> : <Copy size={13} />} label="Copy" onClick={handleCopy} />
       </div>
     )
   }
 
   return (
-    <div className="flex gap-1 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-100">
+    <div className="flex gap-1 mt-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-100">
       <ActionButton
         icon={<ThumbsUp size={13} className={feedback === "up" ? "fill-current" : ""} />}
         label="Good response"
@@ -317,7 +317,7 @@ function MessageActions({
       />
       <ActionButton
         icon={<Flag size={13} className={flagged ? "fill-current" : ""} />}
-        label="Flag for faculty"
+        label="Flag locally for review"
         active={flagged}
         activeColor="text-terracotta"
         onClick={handleFlag}
@@ -504,7 +504,7 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
             Ask a question, work through a case, or quiz yourself.
           </p>
           <p className="text-small text-ink-muted">
-            No PHI: do not enter names, MRNs, dates of birth, or other patient identifiers.
+            Educational only. No PHI: do not enter names, MRNs, DOBs, images, or patient identifiers.
           </p>
         </div>
 
@@ -533,7 +533,7 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
                 )}
               >
-                {isLoading ? "···" : "Ask →"}
+                {isLoading ? "Sending" : "Ask →"}
               </button>
             </div>
           </div>
@@ -588,6 +588,9 @@ function ConversationInput({ input, isLoading, onInputChange, onSubmit }: Conver
   return (
     <div className="border-t border-rule bg-bg px-4 py-3 flex-shrink-0">
       <div className="mx-auto max-w-2xl">
+        <p className="mb-2 text-micro text-ink-muted">
+          Educational only. No PHI: do not enter names, MRNs, DOBs, images, or patient identifiers.
+        </p>
         <form onSubmit={onSubmit} className="flex gap-2 items-end">
           <div className={cn(
             "flex-1 relative border rounded-lg bg-bg-elevated transition-shadow duration-150",
@@ -614,7 +617,7 @@ function ConversationInput({ input, isLoading, onInputChange, onSubmit }: Conver
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
             )}
           >
-            {isLoading ? "···" : "→"}
+            {isLoading ? "Sending" : "Send"}
           </button>
         </form>
       </div>
@@ -886,6 +889,16 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
                   onCaseComplete={handleCaseComplete}
                 />
               ))}
+              {status === "submitted" && (
+                <div className="flex gap-3" role="status" aria-live="polite">
+                  <div className="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center mt-0.5 bg-terracotta-soft text-terracotta text-micro font-semibold">
+                    H
+                  </div>
+                  <div className="rounded-lg rounded-tl-none px-4 py-3 text-body bg-bg-elevated border border-rule text-ink-muted">
+                    Tutor is responding.
+                  </div>
+                </div>
+              )}
               <div ref={messagesEndRef} />
             </div>
           </div>

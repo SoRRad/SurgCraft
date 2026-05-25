@@ -259,7 +259,8 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
               <Badge variant="secondary" className="text-micro text-ink-muted">Local only</Badge>
             </div>
             <p className="text-small text-ink-muted leading-relaxed mb-3">
-              Flagged messages are visible only on this device until Phase 0C adds governed review workflows.
+              Local review only — not sent to faculty yet. Flagged messages are visible only on this device.
+              Faculty verification workflow is planned for Phase 0C.
             </p>
             {flags.length === 0 ? (
               <div className="border border-rule rounded-lg bg-bg-elevated px-4 py-3">

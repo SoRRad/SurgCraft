@@ -77,9 +77,39 @@ describe("local conversation and pearl helpers", () => {
       conversationTitle: conversation.title,
       messageId: "a1",
     })
+    savePearl({
+      content: "Keep me",
+      conversationId: conversation.id,
+      conversationTitle: conversation.title,
+      messageId: "a2",
+    })
 
     removePearlByMessageId("a1")
 
-    expect(listPearls()).toHaveLength(0)
+    expect(listPearls()).toHaveLength(1)
+    expect(listPearls()[0]).toMatchObject({ content: "Keep me", messageId: "a2" })
+  })
+
+  it("does not duplicate pearls for the same assistant message id", () => {
+    const conversation = createConversation("Duplicate pearl")
+    savePearl({
+      content: "First save",
+      conversationId: conversation.id,
+      conversationTitle: conversation.title,
+      messageId: "a1",
+    })
+    savePearl({
+      content: "Updated save",
+      conversationId: conversation.id,
+      conversationTitle: conversation.title,
+      messageId: "a1",
+    })
+
+    expect(listPearls()).toHaveLength(1)
+    expect(listPearls()[0]).toMatchObject({ content: "Updated save", messageId: "a1" })
+  })
+
+  it("rejects malformed imports cleanly", () => {
+    expect(() => importLocalData(null)).toThrow("Expected a SurgiCraft local data export object.")
   })
 })

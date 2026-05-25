@@ -57,7 +57,7 @@ export default function AboutPage() {
           </p>
           <p>
             <strong>Handcraft</strong> is the first module — focused on hand surgery. It adapts its
-            voice and depth to the learner&apos;s role, grounds answers in a curated knowledge base, and
+            voice and depth to the learner&apos;s role, organizes curated local learning content, and
             turns passive reading into active reasoning: Socratic dialogue, unfolding cases,
             calibrated confidence, and faculty pearls.
           </p>
@@ -140,27 +140,33 @@ export default function AboutPage() {
             {[
               {
                 phase: "Phase 0A",
-                status: "planned",
+                status: "done",
                 description:
-                  "Fully local faculty-demo prototype. No external API keys required. Mock LLM provider. Validates educational structure, UX, and content before committing to infrastructure cost.",
+                  "Completed local faculty-demo foundation. No external API keys required. Mock LLM provider, onboarding, synthetic cases, Mistake Museum, and Do-Not-Miss library.",
               },
               {
-                phase: "Phase 0B (current)",
+                phase: "Phase 0B.1",
+                status: "done",
+                description:
+                  "Completed stabilization: request validation, provider status, local persistence, saved pearls, local flags, tests, CI, QA checklist, and documentation alignment.",
+              },
+              {
+                phase: "Phase 0B.2 (current)",
                 status: "active",
                 description:
-                  "Live LLM integration (provider-agnostic — could be Anthropic, OpenAI, Azure, or Mayo-hosted). Real streaming chat, tutor mode, case reveal logic. Still no auth, no database.",
+                  "Faculty-demo polish. Chat-first local conversations, mock/demo mode, optional Anthropic live mode, case launch, pearls, local flags, and export/import. Still no auth and no database.",
               },
               {
                 phase: "Phase 0C",
                 status: "planned",
                 description:
-                  "Supabase database integration, pgvector RAG, user accounts, streak rings, pearl unlocks, flag-for-faculty flow. Confidence calibration tracking.",
+                  "Supabase database integration, pgvector RAG, user accounts, faculty verification workflow, governed flagged-output review, and persisted usage tracking.",
               },
               {
                 phase: "Phase 1 (Pilot)",
                 status: "future",
                 description:
-                  "10–20 residents at Mayo. All 6 modes live. Leaderboards (opt-in, anonymous). Admin review UI for flagged content. KB ingestion pipeline.",
+                  "10-20 residents at Mayo. Faculty-reviewed content, governed deployment path, admin review UI, and learning analytics focused on education rather than ranking.",
               },
               {
                 phase: "Phase 2+",
@@ -174,6 +180,7 @@ export default function AboutPage() {
                   <div
                     className={`w-2.5 h-2.5 rounded-full mt-1.5 ${
                       status === "active" ? "bg-correct" :
+                      status === "done" ? "bg-correct" :
                       status === "planned" ? "bg-electric" : "bg-rule"
                     }`}
                   />
@@ -188,15 +195,15 @@ export default function AboutPage() {
           </div>
         </Section>
 
-        {/* Phase 0A note */}
+        {/* Phase 0B.2 note */}
         <div className="p-4 border border-rule rounded-lg bg-bg-elevated">
           <p className="text-small text-ink-muted">
-            <strong className="text-ink">Why no API in Phase 0A?</strong>{" "}
-            Avoiding cost during early validation, avoiding compliance complexity before a Mayo-sanctioned
-            environment is established, and making faculty demos frictionless — no keys, no setup, just
+            <strong className="text-ink">Why mock mode by default?</strong>{" "}
+            Avoiding cost during faculty review, avoiding compliance complexity before a Mayo-sanctioned
+            environment is established, and making faculty demos frictionless: no keys, no setup, just
             <code className="font-mono text-micro mx-1">npm install && npm run dev</code>.
-            The LLM layer is provider-agnostic: when Phase 0B begins, we swap the mock provider
-            for a real one without rewriting any app code.
+            The LLM layer is provider-agnostic, and Anthropic live mode is available when configured
+            through the server route.
           </p>
         </div>
 

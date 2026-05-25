@@ -10,7 +10,7 @@ The app remains educational only. It must not guide real patient care, must not 
 
 ## Current State
 
-**Phase:** 0B chat-first prototype
+**Phase:** 0B.2 faculty-demo polish
 **Runtime dependency:** none in demo mode
 **Persistence:** browser `localStorage` only
 **Live LLM:** Anthropic Claude is the first live provider
@@ -73,7 +73,7 @@ Goal: make the current prototype reliable enough for repeated faculty demos befo
 
 - Docs synchronized around the chat-first architecture
 - Lightweight Vitest coverage for provider fallback, pearl tool schema safety, and local data helpers
-- GitHub Actions CI for lint and build
+- GitHub Actions CI for lint, test, and build
 - Manual QA checklist for mock mode, Anthropic mode, safety, persistence, and mobile sidebar
 - Saved pearl unbookmarking removes the saved pearl by assistant message ID
 - Provider status is resolved server-side and shown in Header/Settings
@@ -89,7 +89,7 @@ Gate:
 
 ---
 
-## Planned Phase 0B.2 - Faculty Demo Polish
+## Active Phase 0B.2 - Faculty Demo Polish
 
 Goal: make the current Phase 0B experience crisp enough for hand-surgery faculty review without adding infrastructure.
 

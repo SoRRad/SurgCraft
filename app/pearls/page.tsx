@@ -80,7 +80,7 @@ function PearlsContent() {
         <div>
           <h2 className="font-fraunces text-h2 text-ink mb-2">No pearls saved yet</h2>
           <p className="text-body text-ink-muted max-w-sm">
-            Click the bookmark icon on any answer in the chat to save it here.
+            Saved pearls are local to this browser. Click the bookmark icon on any answer in the chat to save it here.
           </p>
         </div>
         <Link
@@ -116,7 +116,7 @@ function PearlsContent() {
       </div>
 
       <p className="mt-8 text-micro text-ink-muted text-center">
-        Pearls are stored locally in your browser. Phase 0C will sync them to your profile.
+        Saved pearls are local to this browser. Faculty verification workflow is planned for Phase 0C.
       </p>
     </div>
   )

@@ -110,7 +110,7 @@ the next provider.
 | **0A** | ✅ Done | Local demo, mock LLM, no external dependencies |
 | **0B** | ✅ Active | Chat-first UI, local conversations, tools, mock + Anthropic provider |
 | **0B.1** | Done | Stabilization, tests, CI, QA checklist, docs alignment |
-| **0B.2** | Planned | Faculty demo polish |
+| **0B.2** | Active | Faculty demo polish |
 | **0B.3** | Planned | Optional Ollama/local model provider |
 | **0B.4** | Planned | Optional OpenAI provider |
 | **0C** | Planned | Supabase database, pgvector RAG, content governance |
@@ -119,7 +119,7 @@ the next provider.
 
 ---
 
-## Scripts
+## Active Scripts
 
 | Command | What it does |
 |---------|-------------|
@@ -127,9 +127,17 @@ the next provider.
 | `npm run build` | Production build |
 | `npm run lint` | ESLint check |
 | `npm run test` | Lightweight Vitest utility tests |
-| `npx tsx scripts/seed-db.ts` | Seed cases and pearls to Supabase (Phase 0C+) |
-| `npx tsx scripts/ingest-kb.ts` | Embed KB markdown → pgvector (Phase 0C+) |
-| `npx tsx scripts/gen-types.ts` | Regenerate Supabase TypeScript types (Phase 0C+) |
+
+### Phase 0C Placeholder Scripts
+
+These scripts are present as future scaffolding and are not part of the active Phase 0B.2 demo flow.
+They require Phase 0C Supabase/pgvector setup before use.
+
+| Command | Status |
+|---------|--------|
+| `npx tsx scripts/seed-db.ts` | Phase 0C placeholder |
+| `npx tsx scripts/ingest-kb.ts` | Phase 0C placeholder |
+| `npx tsx scripts/gen-types.ts` | Phase 0C placeholder |
 
 ---
 
@@ -145,7 +153,7 @@ lib/              Other utilities (scoring, analytics, RAG helpers)
 content/          Markdown KB (content/kb/) and seed cases (content/cases/)
 prompts/          System prompts per mode — faculty-editable markdown
 supabase/         SQL migrations (not run until Phase 0C)
-scripts/          DB seeding and KB ingestion CLI tools
+scripts/          Phase 0C placeholder CLI tools for DB seeding and KB ingestion
 public/           Static assets (illustrations, anatomy SVGs)
 ```
 
@@ -153,8 +161,8 @@ public/           Static assets (illustrations, anatomy SVGs)
 via PR or a future admin UI without touching the app. System prompts live in `/prompts` and can
 be reviewed and edited by faculty without touching code.
 
-GitHub Actions CI runs `npm ci`, `npm run lint`, and `npm run build` on pushes and pull requests to
-`main`. CI uses mock mode and does not require API keys.
+GitHub Actions CI runs `npm ci`, `npm run lint`, `npm run test`, and `npm run build` on pushes and
+pull requests to `main`. CI uses mock/demo mode and requires no API keys.
 
 ---
 
