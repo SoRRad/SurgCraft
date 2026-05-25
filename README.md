@@ -12,7 +12,7 @@ Piloting at Mayo Clinic with medical students, residents, and fellows.
 
 ## What this is
 
-**SurgiCraft** is a platform for interactive surgical education. It meets learners where they are — a sub-I who doesn't want to embarrass themselves on rounds, a PGY-2 cramming for the in-service, a hand fellow prepping for a tricky case. The platform adapts its voice and depth to the learner, grounds answers in a curated knowledge base, and turns passive reading into active reasoning.
+**SurgiCraft** is a platform for interactive surgical education. It meets learners where they are: a sub-I who doesn't want to embarrass themselves on rounds, a PGY-2 cramming for the in-service, a hand fellow prepping for a tricky case. The Phase 0B prototype is chat-first, local-first, and defaults to a deterministic mock provider.
 
 **Handcraft** is the first module — focused on hand surgery. It includes:
 - **Tutor mode:** free-form Q&A with citations and role-aware depth
@@ -24,7 +24,7 @@ Piloting at Mayo Clinic with medical students, residents, and fellows.
 
 ## What this is not
 
-- Not clinical decision support
+- Not real-patient care guidance
 - Not a substitute for textbooks, ASPS modules, or attending teaching
 - Not a public ranking system (leaderboards are opt-in, anonymous, cohort-scoped only)
 - Not connected to any real patient data — all cases are entirely synthetic
@@ -36,7 +36,8 @@ Piloting at Mayo Clinic with medical students, residents, and fellows.
 This is the **chat-first phase**. The app can stream from a local mock provider or from a live
 LLM provider. Anthropic Claude is the first live provider wired for Phase 0B, but the chat route
 is designed to select providers through `lib/llm/` rather than hardcoding one vendor. It still
-requires no database and no accounts.
+requires no database and no accounts. Supabase, pgvector, RAG, OpenAI, Ollama, and Mayo login are
+deferred to later phases.
 
 ### Running in demo mode (no API key required)
 
@@ -108,9 +109,10 @@ the next provider.
 |-------|--------|-------------|
 | **0A** | ✅ Done | Local demo, mock LLM, no external dependencies |
 | **0B** | ✅ Active | Chat-first UI, local conversations, tools, mock + Anthropic provider |
-| **0B.1** | Planned | Stabilization, tests, QA, docs alignment |
-| **0B.2** | Planned | Ollama/local model provider |
-| **0B.3** | Planned | OpenAI provider |
+| **0B.1** | Done | Stabilization, tests, CI, QA checklist, docs alignment |
+| **0B.2** | Planned | Faculty demo polish |
+| **0B.3** | Planned | Optional Ollama/local model provider |
+| **0B.4** | Planned | Optional OpenAI provider |
 | **0C** | Planned | Supabase database, pgvector RAG, content governance |
 | **1 (Pilot)** | Future | 10–20 residents at Mayo, all 6 modes, admin UI, opt-in leaderboards |
 | **2+** | Future | Wider Mayo deployment, second subspecialty module |
@@ -124,6 +126,7 @@ the next provider.
 | `npm run dev` | Start development server (port 3000) |
 | `npm run build` | Production build |
 | `npm run lint` | ESLint check |
+| `npm run test` | Lightweight Vitest utility tests |
 | `npx tsx scripts/seed-db.ts` | Seed cases and pearls to Supabase (Phase 0C+) |
 | `npx tsx scripts/ingest-kb.ts` | Embed KB markdown → pgvector (Phase 0C+) |
 | `npx tsx scripts/gen-types.ts` | Regenerate Supabase TypeScript types (Phase 0C+) |
@@ -149,6 +152,9 @@ public/           Static assets (illustrations, anatomy SVGs)
 **Key principle:** content (`/content`) is separate from code. Faculty can edit KB markdown files
 via PR or a future admin UI without touching the app. System prompts live in `/prompts` and can
 be reviewed and edited by faculty without touching code.
+
+GitHub Actions CI runs `npm ci`, `npm run lint`, and `npm run build` on pushes and pull requests to
+`main`. CI uses mock mode and does not require API keys.
 
 ---
 

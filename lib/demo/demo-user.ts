@@ -6,7 +6,7 @@ import type { Role, Specialty } from "@/lib/supabase/types"
 export type DemoUser = {
   handle: string
   role: Role
-  pgy: number | null       // null if not a resident/fellow
+  pgy?: number | null       // null if not a resident/fellow
   specialty: Specialty
   onHandService: boolean
   primaryGoal: string
@@ -47,7 +47,7 @@ export function isDemoUserSaved(): boolean {
   return localStorage.getItem(KEY) !== null
 }
 
-// Migration helper: carry over data saved under the Week 1 key
+// Migration helper: carry over data saved under the legacy Handcraft key.
 export function migrateFromWeek1Key(): void {
   if (typeof window === "undefined") return
   const old = localStorage.getItem("handcraft_user")

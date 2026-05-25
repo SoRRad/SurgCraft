@@ -4,7 +4,7 @@
 
 SurgiCraft is an interactive surgical education platform. Handcraft is module 01, focused on hand surgery for medical students, residents, and fellows.
 
-The app is educational only. It is not clinical decision support, must not request PHI, and must never guide care for a real patient.
+The app is educational only. It must not request PHI, and must never guide care for a real patient.
 
 ---
 
@@ -158,6 +158,7 @@ Provider selection is centralized:
 - `lib/llm/streaming-provider.ts`
 - `lib/llm/index.ts`
 - `lib/llm/provider.ts`
+- `/api/provider-status`
 
 Supported now:
 
@@ -170,7 +171,7 @@ Planned:
 - `openai`
 - self-hosted or institution-hosted providers such as vLLM
 
-`LLM_PROVIDER` is the preferred server-side selection variable. `NEXT_PUBLIC_APP_MODE=live` is supported for compatibility and currently maps to Anthropic. If a live provider lacks credentials, the app falls back to mock behavior.
+`LLM_PROVIDER` is the preferred server-side selection variable. `NEXT_PUBLIC_APP_MODE=live` is supported for compatibility and currently maps to Anthropic. If a live provider lacks credentials, the app falls back to mock behavior. Header and Settings read `/api/provider-status` so the UI reflects the server-resolved provider rather than guessing from public env alone.
 
 ### 7.3 API Routes
 
@@ -179,6 +180,7 @@ Current important routes:
 ```text
 /api/chat              POST streaming chat
 /api/chat/title        POST conversation title generation
+/api/provider-status   GET resolved provider status, no secrets
 /api/case/start        POST legacy/demo case start
 /api/case/reveal       POST legacy/demo reveal helper
 /api/flag              POST flag placeholder
@@ -218,9 +220,10 @@ Short form:
 
 - **0A complete:** local demo, static content, mock provider
 - **0B active:** chat-first streaming prototype, local conversations, tools, Anthropic first live provider
-- **0B.1 planned:** stabilization, tests, QA, docs
-- **0B.2 planned:** Ollama/local provider
-- **0B.3 planned:** OpenAI provider
+- **0B.1 complete:** stabilization, tests, CI, QA, docs
+- **0B.2 planned:** faculty demo polish
+- **0B.3 planned:** optional Ollama/local provider
+- **0B.4 planned:** optional OpenAI provider
 - **0C planned:** Supabase, RAG, content governance, faculty workflows
 - **Phase 1 future:** Mayo pilot readiness
 

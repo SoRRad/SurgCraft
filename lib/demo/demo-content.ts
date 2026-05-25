@@ -67,8 +67,9 @@ export const PIMPING_TOPICS = [
 export type PearlEntry = {
   id: string
   topic: string
-  content: string
+  text: string
   attribution: string
+  sourceLabel: string
   tags: string[]
   verified: boolean
 }
@@ -88,48 +89,54 @@ export const PEARLS: PearlEntry[] = [
   {
     id: "fight-bite-mcp",
     topic: "Fight bite",
-    content: "Any wound over the dorsal MCP in a young adult is a fight bite until proven otherwise — and the joint is involved until proven otherwise.",
+    text: "Any wound over the dorsal MCP in a young adult is a fight bite until proven otherwise, and the joint is involved until proven otherwise.",
     attribution: "Hand service",
+    sourceLabel: "Local demo pearl registry",
     tags: ["infection", "trauma", "MCP"],
     verified: false,
   },
   {
     id: "eikenella",
     topic: "Fight bite",
-    content: "Eikenella corrodens is the bug you don't want to miss — and the reason ampicillin-sulbactam beats cephalexin here.",
+    text: "Eikenella corrodens is the bug you don't want to miss, and the reason ampicillin-sulbactam beats cephalexin here.",
     attribution: "Hand service",
+    sourceLabel: "Local demo pearl registry",
     tags: ["infection", "microbiology"],
     verified: false,
   },
   {
     id: "mallet-flex-resets-clock",
     topic: "Mallet finger",
-    content: "If the DIP flexes even once during splinting, the clock starts over. Tell the patient. Tell them again.",
+    text: "If the DIP flexes even once during splinting, the clock starts over. Tell the patient. Tell them again.",
     attribution: "Hand service",
+    sourceLabel: "Local demo pearl registry",
     tags: ["extensor", "splinting", "mallet"],
     verified: false,
   },
   {
     id: "mallet-leave-pip",
     topic: "Mallet finger",
-    content: "Splint the DIP only. Leaving the PIP free preserves function and improves compliance.",
+    text: "Splint the DIP only. Leaving the PIP free preserves function and improves compliance.",
     attribution: "Hand service",
+    sourceLabel: "Local demo pearl registry",
     tags: ["extensor", "splinting", "mallet"],
     verified: false,
   },
   {
     id: "acute-cts-distal-radius",
     topic: "Distal radius",
-    content: "Median nerve symptoms after a distal radius fracture demand re-examination after reduction. Persistent symptoms = urgent carpal tunnel release, not a watch-and-wait.",
+    text: "Median nerve symptoms after a distal radius fracture demand re-examination after reduction. Persistent symptoms = urgent carpal tunnel release, not a watch-and-wait.",
     attribution: "Hand service",
+    sourceLabel: "Local demo pearl registry",
     tags: ["nerve", "distal-radius", "carpal-tunnel"],
     verified: false,
   },
   {
     id: "distal-radius-not-just-a-wrist-fracture",
     topic: "Distal radius",
-    content: "A distal radius fracture in a 58-year-old woman is a sentinel event. Recommend DEXA and consider osteoporosis workup — the next fracture is often the hip.",
+    text: "A distal radius fracture in a 58-year-old woman is a sentinel event. Recommend DEXA and consider osteoporosis workup, because the next fracture is often the hip.",
     attribution: "Hand service",
+    sourceLabel: "Local demo pearl registry",
     tags: ["distal-radius", "osteoporosis", "prevention"],
     verified: false,
   },

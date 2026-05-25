@@ -1,2 +1,2 @@
-// Week 2: message input with submit, multiline, keyboard shortcuts
+// Historical placeholder: active chat input lives in components/chat/ChatExperience.tsx.
 export {}

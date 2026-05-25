@@ -1,2 +1,2 @@
-// Week 2: SSE streaming helpers for /api/chat
+// Historical placeholder: streaming now lives in lib/llm/streaming-provider.ts and app/api/chat.
 export {}

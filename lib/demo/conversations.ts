@@ -251,6 +251,17 @@ function writePearls(pearls: SavedPearl[]): void {
 }
 
 export function savePearl(pearl: Omit<SavedPearl, "id" | "savedAt">): SavedPearl {
+  const existing = readPearls().find((p) => p.messageId === pearl.messageId)
+  if (existing) {
+    const updated: SavedPearl = {
+      ...existing,
+      ...pearl,
+      savedAt: new Date().toISOString(),
+    }
+    writePearls([updated, ...readPearls().filter((p) => p.id !== existing.id)])
+    return updated
+  }
+
   const full: SavedPearl = {
     id: generateId(),
     savedAt: new Date().toISOString(),
@@ -262,6 +273,10 @@ export function savePearl(pearl: Omit<SavedPearl, "id" | "savedAt">): SavedPearl
 
 export function removePearl(id: string): void {
   writePearls(readPearls().filter((p) => p.id !== id))
+}
+
+export function removePearlByMessageId(messageId: string): void {
+  writePearls(readPearls().filter((p) => p.messageId !== messageId))
 }
 
 export function listPearls(): SavedPearl[] {

@@ -42,7 +42,7 @@ export default function AboutPage() {
             Educational use only
           </p>
           <p className="text-body text-ink">
-            This application is <strong>not</strong> clinical decision support. It is a learning tool
+            This application is <strong>not</strong> real-patient care guidance. It is a learning tool
             for medical students, residents, and fellows. No content here should be used to guide the
             care of a real patient. For real patients, consult your attending.
           </p>

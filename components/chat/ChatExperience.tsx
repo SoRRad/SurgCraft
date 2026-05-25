@@ -18,8 +18,9 @@ import { QuizStarter } from "./tool-results/QuizStarter"
 import { FollowupChips } from "./tool-results/FollowupChips"
 import {
   createConversation, appendMessage, updateMessage, updateConversationTitle,
-  getConversation, savePearl, type ChatMessage,
+  getConversation, removePearlByMessageId, savePearl, type ChatMessage,
 } from "@/lib/demo/conversations"
+import { getDemoUser, migrateFromWeek1Key } from "@/lib/demo/demo-user"
 import { cn } from "@/lib/utils"
 
 // ── Suggested prompts ─────────────────────────────────────────────────────────
@@ -70,7 +71,7 @@ function getToolPartSummary(part: UIMessage["parts"][number]): string | null {
     }
     case "show_pearl": {
       const topic = getRecordText(output, "topic")
-      const content = getRecordText(output, "content")
+      const content = getRecordText(output, "text") || getRecordText(output, "content")
       return content ? `Tool result: pearl${topic ? ` on ${topic}` : ""}: ${content}` : null
     }
     case "show_mistake": {
@@ -283,7 +284,11 @@ function MessageActions({
   function handleSavePearl() {
     if (!conversationId) return
     const next = !savedAsPearl
-    if (next) savePearl({ content, conversationId, conversationTitle, messageId })
+    if (next) {
+      savePearl({ content, conversationId, conversationTitle, messageId })
+    } else {
+      removePearlByMessageId(messageId)
+    }
     updateMessage(conversationId, messageId, { savedAsPearl: next })
     onUpdate({ savedAsPearl: next })
   }
@@ -693,10 +698,8 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
   const isLoading = status === "submitted" || status === "streaming"
 
   useEffect(() => {
-    const raw = localStorage.getItem("surgicraft_demo_user") ?? localStorage.getItem("handcraft_user")
-    if (raw) {
-      try { setHandle(JSON.parse(raw)?.handle ?? "doctor") } catch {}
-    }
+    migrateFromWeek1Key()
+    setHandle(getDemoUser()?.handle ?? "doctor")
   }, [])
 
   useEffect(() => {

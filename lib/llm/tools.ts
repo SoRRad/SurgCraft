@@ -16,6 +16,12 @@ const CASE_MAP: Record<string, { id: string; title: string; stem: string; diffic
   "003-distal-radius": case003,
 }
 
+export const ShowPearlInputSchema = z
+  .object({
+    pearl_id: z.enum(PEARL_IDS).describe("ID of the known local pearl to surface"),
+  })
+  .strict()
+
 export const allTools = {
   launch_case: tool({
     description:
@@ -54,9 +60,7 @@ export const allTools = {
       "Use sparingly — at most one per response. Never fabricate pearl text or attribution. " +
       "Available pearl IDs: fight-bite-mcp, eikenella, mallet-flex-resets-clock, " +
       "mallet-leave-pip, acute-cts-distal-radius, distal-radius-not-just-a-wrist-fracture.",
-    inputSchema: z.object({
-      pearl_id: z.enum(PEARL_IDS).describe("ID of the known local pearl to surface"),
-    }),
+    inputSchema: ShowPearlInputSchema,
     execute: async ({ pearl_id }) => PEARLS.find((p) => p.id === pearl_id) ?? null,
   }),
 

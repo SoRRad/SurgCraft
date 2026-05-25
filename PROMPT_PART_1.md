@@ -1,6 +1,7 @@
 # Historical Phase 0B Part 1 Prompt
 
 > Status: historical. This prompt has already been executed and should not be replayed against the current repo.
+> Historical prompt. Do not use as current source of truth. See ROADMAP.md.
 
 Current source of truth:
 

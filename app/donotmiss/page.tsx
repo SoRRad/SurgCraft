@@ -59,7 +59,7 @@ export default function DoNotMissPage() {
               </p>
               <div className="mt-4 p-4 border border-rule rounded-lg bg-bg-elevated">
                 <p className="text-small text-ink-muted leading-relaxed">
-                  <strong className="text-ink">Educational use only.</strong> This page teaches recognition clues and educational context. It is not a clinical decision support tool. In any real clinical scenario involving these diagnoses, escalate immediately to your senior resident and attending.
+                  <strong className="text-ink">Educational use only.</strong> This page teaches recognition clues and educational context. It is not real-patient care guidance. In any real clinical scenario involving these diagnoses, escalate immediately to your senior resident and attending.
                 </p>
               </div>
             </div>

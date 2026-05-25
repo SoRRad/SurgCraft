@@ -43,6 +43,7 @@ SurgCraft/
 │   └── api/
 │       ├── chat/route.ts            # Validated streaming chat endpoint
 │       ├── chat/title/route.ts      # Conversation title generation
+│       ├── provider-status/route.ts # Resolved mock/Anthropic provider status
 │       ├── case/start/route.ts      # Legacy/demo helper
 │       ├── case/reveal/route.ts     # Legacy/demo helper
 │       ├── flag/route.ts            # Placeholder until Phase 0C
@@ -80,6 +81,7 @@ SurgCraft/
 │   │   ├── Footer.tsx
 │   │   ├── AppShell.tsx             # Legacy/non-chat shell
 │   │   ├── SettingsDrawer.tsx
+│   │   ├── useProviderStatus.ts     # Client-side provider status fetch/display helper
 │   │   └── SectionMarker.tsx
 │   ├── interaction/                 # Deferred/future interaction components
 │   ├── motif/
@@ -110,6 +112,13 @@ SurgCraft/
 │   ├── scoring/
 │   ├── analytics/
 │   └── utils.ts
+│
+├── tests/                            # Vitest utility tests
+│   ├── provider-selection.test.ts
+│   ├── pearl-tool-safety.test.ts
+│   └── conversations.test.ts
+│
+├── .github/workflows/ci.yml          # GitHub Actions lint/build CI
 │
 ├── content/
 │   ├── cases/

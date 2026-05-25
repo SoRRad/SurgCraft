@@ -21,18 +21,15 @@ import {
   listFlaggedMessages,
   type LocalFlaggedMessage,
 } from "@/lib/demo/conversations"
+import { getDemoUser, migrateFromWeek1Key, saveDemoUser } from "@/lib/demo/demo-user"
 import { cn } from "@/lib/utils"
+import {
+  getProviderStatusDetail,
+  getProviderStatusLabel,
+  useProviderStatus,
+} from "./useProviderStatus"
 
-const isLive = process.env.NEXT_PUBLIC_APP_MODE === "live"
-
-interface UserData {
-  handle: string
-  role: string
-  specialty: string
-  onHandService: boolean
-  primaryGoal: string
-  [key: string]: unknown
-}
+type SettingsUser = NonNullable<ReturnType<typeof getDemoUser>>
 
 interface SettingsDrawerProps {
   open: boolean
@@ -51,10 +48,11 @@ function getFlagPreview(flag: LocalFlaggedMessage): string {
 
 export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
   const router = useRouter()
+  const { status: providerStatus } = useProviderStatus()
   const importInputRef = useRef<HTMLInputElement>(null)
-  const [user, setUser] = useState<UserData | null>(null)
+  const [user, setUser] = useState<SettingsUser | null>(null)
   const [handle, setHandle] = useState("")
-  const [role, setRole] = useState("")
+  const [role, setRole] = useState<SettingsUser["role"] | "">("")
   const [saved, setSaved] = useState(false)
   const [flags, setFlags] = useState<LocalFlaggedMessage[]>([])
   const [dataNotice, setDataNotice] = useState("")
@@ -62,14 +60,12 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
   useEffect(() => {
     if (!open) return
 
-    const raw = localStorage.getItem("surgicraft_demo_user") ?? localStorage.getItem("handcraft_user")
-    if (raw) {
-      try {
-        const parsed = JSON.parse(raw) as UserData
-        setUser(parsed)
-        setHandle(parsed.handle ?? "")
-        setRole(parsed.role ?? "")
-      } catch {}
+    migrateFromWeek1Key()
+    const parsed = getDemoUser()
+    if (parsed) {
+      setUser(parsed)
+      setHandle(parsed.handle ?? "")
+      setRole(parsed.role ?? "")
     }
 
     setFlags(listFlaggedMessages())
@@ -80,8 +76,12 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
 
   function handleSave() {
     if (!user) return
-    const updated = { ...user, handle: handle.trim() || user.handle, role }
-    localStorage.setItem("surgicraft_demo_user", JSON.stringify(updated))
+    const updated = {
+      ...user,
+      handle: handle.trim() || user.handle,
+      role: role || user.role,
+    }
+    saveDemoUser(updated)
     setSaved(true)
     setTimeout(() => setSaved(false), 1500)
   }
@@ -163,7 +163,7 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
               </div>
               <div>
                 <Label htmlFor="settings-role" className="text-small">Role</Label>
-                <Select value={role} onValueChange={setRole}>
+                <Select value={role} onValueChange={(value) => setRole(value as SettingsUser["role"])}>
                   <SelectTrigger id="settings-role" className="mt-1">
                     <SelectValue placeholder="Select role..." />
                   </SelectTrigger>
@@ -187,16 +187,21 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
                 variant="secondary"
                 className={cn(
                   "text-micro",
-                  isLive ? "bg-correct-soft text-correct" : "text-ink-muted"
+                  providerStatus.provider === "anthropic"
+                    ? "bg-correct-soft text-correct"
+                    : providerStatus.reason
+                    ? "bg-warn-soft text-warn"
+                    : "text-ink-muted"
                 )}
               >
-                {isLive ? "Live AI" : "Demo mode"}
+                {getProviderStatusLabel(providerStatus)}
               </Badge>
             </div>
             <p className="text-small text-ink-muted leading-relaxed">
-              {isLive
-                ? "Connected to Claude via Anthropic. Set ANTHROPIC_API_KEY in .env.local."
-                : "Using local mock provider. To enable real Claude, set ANTHROPIC_API_KEY and NEXT_PUBLIC_APP_MODE=live in .env.local and restart the dev server."}
+              {getProviderStatusDetail(providerStatus)}
+            </p>
+            <p className="mt-2 text-small text-ink-muted leading-relaxed">
+              To test Anthropic live mode, set LLM_PROVIDER=anthropic and ANTHROPIC_API_KEY on the server, then restart.
             </p>
           </section>
 

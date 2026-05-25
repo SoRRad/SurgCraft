@@ -10,9 +10,8 @@ import {
 } from "lucide-react"
 import { listConversations, deleteConversation, type Conversation } from "@/lib/demo/conversations"
 import { SettingsDrawer } from "@/components/shell/SettingsDrawer"
+import { getProviderStatusLabel, useProviderStatus } from "@/components/shell/useProviderStatus"
 import { cn } from "@/lib/utils"
-
-const isLive = process.env.NEXT_PUBLIC_APP_MODE === "live"
 
 function getRelativeTime(isoDate: string): string {
   const diff = Date.now() - new Date(isoDate).getTime()
@@ -40,6 +39,7 @@ interface SidebarInnerProps {
 export function SidebarInner({ onClose }: SidebarInnerProps) {
   const router = useRouter()
   const pathname = usePathname()
+  const { status: providerStatus } = useProviderStatus()
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [showAll, setShowAll] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
@@ -222,7 +222,7 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
             </button>
           </div>
           <p className="text-micro text-ink-muted">
-            Phase 0B · {isLive ? "Live AI" : "Demo mode"}
+            Phase 0B · {getProviderStatusLabel(providerStatus)}
           </p>
         </div>
 

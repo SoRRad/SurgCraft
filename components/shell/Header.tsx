@@ -4,8 +4,7 @@ import Link from "next/link"
 import { Menu } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-
-const isLive = process.env.NEXT_PUBLIC_APP_MODE === "live"
+import { getProviderStatusLabel, useProviderStatus } from "./useProviderStatus"
 
 interface HeaderProps {
   className?: string
@@ -13,6 +12,9 @@ interface HeaderProps {
 }
 
 export function Header({ className, onMenuClick }: HeaderProps) {
+  const { status } = useProviderStatus()
+  const providerLabel = getProviderStatusLabel(status)
+
   return (
     <header className={cn("sticky top-0 z-40 border-b border-rule bg-bg flex-shrink-0", className)}>
       <div className="flex items-center px-4 py-3 gap-3">
@@ -50,12 +52,15 @@ export function Header({ className, onMenuClick }: HeaderProps) {
             variant="secondary"
             className={cn(
               "text-micro hidden sm:flex",
-              isLive
+              status.provider === "anthropic"
                 ? "bg-correct-soft text-correct border-correct-soft"
+                : status.reason
+                ? "bg-warn-soft text-warn border-warn-soft"
                 : "text-ink-muted"
             )}
+            title={status.reason ?? undefined}
           >
-            {isLive ? "Live AI" : "Demo mode"}
+            {providerLabel}
           </Badge>
 
           <Link

@@ -1,2 +1,2 @@
-// Week 2 (stub) / Week 4 (pgvector top-k): KB retrieval
+// Phase 0C placeholder: pgvector-backed KB retrieval.
 export {}

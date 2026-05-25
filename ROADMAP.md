@@ -4,7 +4,7 @@
 
 SurgiCraft is the parent surgical education platform. Handcraft is module 01, focused on hand surgery. The current product is a Phase 0B chat-first prototype: users enter through `/c`, learn through streaming conversation, and launch cases, quizzes, pearls, mistakes, and do-not-miss content inline through chat tools.
 
-The app remains educational only. It is not clinical decision support, must not request PHI, and uses synthetic/local demo content until faculty review and Phase 0C governance are in place.
+The app remains educational only. It must not guide real patient care, must not request PHI, and uses synthetic/local demo content until faculty review and Phase 0C governance are in place.
 
 ---
 
@@ -59,39 +59,54 @@ Phase 0B turns the app into a chat-first prototype with streaming AI and local c
 - Static case JSON imported safely by ID
 - Provider-flexible streaming helper in `lib/llm/streaming-provider.ts`
 - Provider resolution in `lib/llm/provider-selection.ts`
+- Provider status endpoint at `/api/provider-status`
 - Mock mode by default, Anthropic live mode when configured
 - Request validation, message caps, output token caps, and development-only cost guard
+- Local data import/export, saved pearls, local flags, and review-in-Settings flow
 - Safety prompt hardened for no PHI, no real-patient guidance, honest citations, and no fabricated pearls
 
 ---
 
-## Planned Phase 0B.1 - Stabilization
+## Completed Phase 0B.1 - Stabilization
 
 Goal: make the current prototype reliable enough for repeated faculty demos before adding more providers or persistence.
 
-- Finish docs synchronization around the chat-first architecture
-- Add focused API route tests for:
-  - malformed request rejection
-  - max message truncation
-  - provider fallback
-  - mock stream tool results
-- Add small client tests or manual scripts for:
-  - conversation ID propagation
-  - reload persistence
-  - tool result rendering with `null` outputs
-- Add explicit manual QA checklist for desktop and mobile
-- Audit all surfaced local demo content for "needs faculty verification" labels
-- Keep cost guard comments clear: in-memory only, development-only, DB required in Phase 0C
+- Docs synchronized around the chat-first architecture
+- Lightweight Vitest coverage for provider fallback, pearl tool schema safety, and local data helpers
+- GitHub Actions CI for lint and build
+- Manual QA checklist for mock mode, Anthropic mode, safety, persistence, and mobile sidebar
+- Saved pearl unbookmarking removes the saved pearl by assistant message ID
+- Provider status is resolved server-side and shown in Header/Settings
+- Surfaced local demo content keeps "needs faculty verification" labels
+- Cost guard comments remain clear: in-memory only, development-only, DB required in Phase 0C
 
 Gate:
 - `npm run build` and `npm run lint` pass
+- `npm run test` passes
 - Mock mode works with no `.env.local`
 - Anthropic live mode is ready for key-backed testing
 - Faculty can demo the current flow without hidden setup
 
 ---
 
-## Planned Phase 0B.2 - Ollama / Local Model Provider
+## Planned Phase 0B.2 - Faculty Demo Polish
+
+Goal: make the current Phase 0B experience crisp enough for hand-surgery faculty review without adding infrastructure.
+
+- Walk through the QA checklist on desktop and mobile
+- Polish copy, spacing, loading states, and empty states in chat and Settings
+- Add a short scripted faculty demo path
+- Validate that all local demo content is marked verified or needs faculty verification
+- Improve mock responses only where they are confusing or brittle
+- Keep all persistence browser-local
+
+Gate:
+- A faculty reviewer can complete onboarding, ask chat questions, launch a case, save/unsave a pearl, flag a response, and export/import local data without developer assistance
+- No new provider, database, RAG, or login work is required
+
+---
+
+## Planned Phase 0B.3 - Ollama / Local Model Provider
 
 Goal: support a no-cloud live model for development and demos where internet/API spending is undesirable.
 
@@ -109,7 +124,7 @@ Gate:
 
 ---
 
-## Planned Phase 0B.3 - OpenAI Provider
+## Planned Phase 0B.4 - OpenAI Provider
 
 Goal: prove provider portability beyond Anthropic.
 

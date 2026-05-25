@@ -1,2 +1,2 @@
-// Week 3: serif case stem block (Instrument Serif, text-stem size)
+// Historical placeholder for the deferred reusable case stem component.
 export {}

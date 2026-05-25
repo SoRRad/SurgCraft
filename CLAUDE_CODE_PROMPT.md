@@ -1,6 +1,7 @@
 # Historical Claude Code Scaffold Prompt
 
 > Status: historical. This was the original scaffold prompt for the early Handcraft build and no longer describes the current app architecture.
+> Historical prompt. Do not use as current source of truth. See ROADMAP.md.
 
 Do not use this file as the source of truth for future development. The current project is `SurgiCraft : Handcraft`, a Phase 0B chat-first prototype centered on `/c`, `ChatLayout`, local conversations, provider-flexible streaming, and inline chat tools.
 
@@ -14,7 +15,7 @@ Use these files instead:
 
 Historical context:
 
-- The original scaffold assumed a dashboard-centered Week 1-6 build.
+- The original scaffold assumed a dashboard-centered calendar build.
 - It referenced legacy dashboard and chat routes, both removed or replaced by the chat-first `/c` flow.
 - It treated Supabase as an initial setup item; Supabase is now Phase 0C+.
 - It predated the provider selection layer and the current tool-result rendering.

@@ -1,9 +1,9 @@
-// Week 2: flag a bot response for faculty review
+// Phase 0C placeholder: database-backed faculty flag review.
 import { NextResponse } from "next/server"
 
 export async function POST() {
   return NextResponse.json(
-    { error: "Flag API not yet implemented. See Week 2 in BUILD_ORDER.md." },
+    { error: "Flag API is deferred to Phase 0C content governance." },
     { status: 501 }
   )
 }

@@ -2,7 +2,7 @@
 
 > Current implementation sequence. `ROADMAP.md` is the canonical phase plan.
 
-The old Week 1-6 dashboard plan has been superseded by the chat-first Phase 0B architecture. Use this file as an execution checklist for the current repo.
+The old calendar-based dashboard plan has been superseded by the chat-first Phase 0B architecture. Use this file as an execution checklist for the current repo.
 
 ---
 
@@ -61,30 +61,51 @@ Demo checkpoint:
 
 ## Phase 0B.1 - Stabilization Next
 
-Status: next.
+Status: completed.
 
-- [ ] Add route-level tests for `/api/chat`
-- [ ] Add provider selection tests for mock fallback and Anthropic readiness
-- [ ] Add fixtures for AI SDK UI message request validation
-- [ ] Add regression test for static case imports in mock stream
-- [ ] Add manual QA checklist for desktop and mobile
-- [ ] Audit every library page for current "use in chat" behavior
-- [ ] Confirm `null` tool outputs render nothing gracefully
-- [ ] Confirm every unverified surfaced content card has a faculty verification label
-- [ ] Move old prompt docs into historical/archive language
-- [ ] Keep README, SPEC, FILE_STRUCTURE, BUILD_ORDER, and ROADMAP synchronized
+- [x] Add provider selection tests for mock fallback and Anthropic readiness
+- [x] Add pearl tool schema safety tests
+- [x] Add local conversation/import/export helper tests
+- [x] Add GitHub Actions CI for lint/build
+- [x] Add manual QA checklist for demo mode, live mode, safety, persistence, and mobile
+- [x] Audit every library page for current "use in chat" behavior
+- [x] Confirm `null` tool outputs render nothing gracefully
+- [x] Confirm every unverified surfaced content card has a faculty verification label
+- [x] Move old prompt docs into historical/archive language
+- [x] Keep README, SPEC, FILE_STRUCTURE, BUILD_ORDER, and ROADMAP synchronized
 
 Gate:
 
 - `npm run build` passes
 - `npm run lint` passes
+- `npm run test` passes
 - Mock mode works with no `.env.local`
 - Live Anthropic mode is ready for API-key testing
 - Faculty demo script can be followed by someone who did not build the app
 
 ---
 
-## Phase 0B.2 - Ollama / Local Model Provider
+## Phase 0B.2 - Faculty Demo Polish
+
+Status: next.
+
+- [ ] Run the full QA checklist on desktop
+- [ ] Run the full QA checklist on mobile width
+- [ ] Polish copy, spacing, loading states, and empty states in chat and Settings
+- [ ] Prepare a 5-minute faculty demo script
+- [ ] Verify every local content card is marked verified or needs faculty verification
+- [ ] Keep mock mode deterministic and no-key
+- [ ] Keep this phase free of new providers, Supabase, RAG, and login work
+
+Gate:
+
+- A faculty reviewer can complete the demo path without developer assistance
+- No real patient data is entered or requested
+- No hidden setup is required for mock mode
+
+---
+
+## Phase 0B.3 - Ollama / Local Model Provider
 
 Status: planned.
 
@@ -103,7 +124,7 @@ Gate:
 
 ---
 
-## Phase 0B.3 - OpenAI Provider
+## Phase 0B.4 - OpenAI Provider
 
 Status: planned.
 

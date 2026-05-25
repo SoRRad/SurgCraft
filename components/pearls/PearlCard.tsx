@@ -1,2 +1,2 @@
-// Week 3: faculty pearl with attribution and terracotta glow unlock animation
+// Historical placeholder for the deferred reusable pearl card.
 export {}

@@ -92,6 +92,8 @@ export async function POST(req: Request) {
   const modelMessages = messages.slice(-MAX_MESSAGES_FOR_MODEL)
   const providerConfig = getStreamingProviderConfig(quizMode)
 
+  // Development-only guard: this in-memory check is useful for Phase 0B demos,
+  // but Phase 0C must move usage logs and limits into the database.
   if (!checkSessionLimit(sessionId)) {
     return jsonError("Session cost limit reached. Start a new conversation.", 429)
   }

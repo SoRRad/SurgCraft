@@ -28,13 +28,15 @@ Provider selection lives under `lib/llm/`.
 - `LLM_PROVIDER=anthropic` for Claude via Anthropic
 - `NEXT_PUBLIC_APP_MODE=live` is still supported for compatibility and maps to Anthropic
 - Missing live credentials fall back to mock behavior
+- `/api/provider-status` exposes the resolved provider status to Header and Settings without exposing secrets
 
 Provider-specific model selection belongs in `lib/llm/streaming-provider.ts`, not in API route business logic.
 
 Planned provider extensions:
 
-- Ollama/local model in Phase 0B.2
-- OpenAI in Phase 0B.3
+- Faculty demo polish in Phase 0B.2
+- Ollama/local model in optional Phase 0B.3
+- OpenAI in optional Phase 0B.4
 - vLLM or institution-hosted models later if needed
 
 ---
@@ -42,7 +44,7 @@ Planned provider extensions:
 ## Current Safety Position
 
 - Educational use only
-- No clinical decision support
+- No real-patient care guidance
 - No PHI and no patient identifiers
 - Synthetic cases only
 - Citation honesty: cite only curated/static sources available to the app

@@ -1,2 +1,2 @@
-// Week 2: chat message with citation chips and flag button
+// Historical placeholder: active message rendering lives in components/chat/ChatExperience.tsx.
 export {}
