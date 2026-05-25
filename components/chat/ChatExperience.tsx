@@ -729,7 +729,17 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
 
   useEffect(() => {
     setConvId(conversationId)
-    if (!conversationId) return
+
+    if (!conversationId) {
+      setConvTitle("")
+      setMsgMeta({})
+      setMessages([])
+      persistedMessageSnapshotsRef.current = new Map()
+      lastAssistantMsgIdRef.current = null
+      setSendError(null)
+      return
+    }
+
     const conv = getConversation(conversationId)
     if (!conv) return
     setConvTitle(conv.title)
