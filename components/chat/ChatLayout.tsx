@@ -25,6 +25,14 @@ interface ChatLayoutProps {
   children: React.ReactNode
 }
 
+/**
+ * App shell for every authenticated/chat page.
+ *
+ * - md+ : fixed 264px sidebar, content fills the rest.
+ * - <md : sidebar collapses into a left drawer triggered by the header hamburger.
+ *
+ * The header stays visible everywhere (carries PHI pill + provider badge).
+ */
 export function ChatLayout({ children }: ChatLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -33,7 +41,7 @@ export function ChatLayout({ children }: ChatLayoutProps) {
       <div className="flex h-dvh overflow-hidden bg-bg">
         <aside
           className={cn(
-            "hidden w-[296px] flex-shrink-0 flex-col md:flex",
+            "hidden w-[264px] flex-shrink-0 flex-col md:flex",
             "border-r border-rule/70 bg-bg/80"
           )}
           aria-label="Navigation sidebar"
@@ -50,14 +58,13 @@ export function ChatLayout({ children }: ChatLayoutProps) {
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
         <SheetContent
           side="left"
-          className="w-[300px] border-r border-rule/70 bg-bg p-0 shadow-floating"
+          className="w-[280px] border-r border-rule/70 bg-bg p-0 shadow-floating"
           aria-label="Navigation drawer"
         >
           <SidebarInner onClose={() => setSidebarOpen(false)} />
         </SheetContent>
       </Sheet>
 
-      {/* Global keyboard shortcuts + ? help dialog */}
       <KeyboardShortcuts />
     </SidebarContext.Provider>
   )

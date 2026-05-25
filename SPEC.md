@@ -135,7 +135,7 @@ Future pilot privacy contract:
 
 > Your individual responses are private. Faculty and program directors cannot see how you score. Aggregate anonymized data helps improve the platform.
 
-Leaderboards, if built, must be opt-in, anonymous, cohort-scoped, and non-punitive.
+Leaderboards are out of scope at every phase. Personal progress is local and private; no public ranking and no faculty-visible scores.
 
 ---
 
@@ -205,7 +205,6 @@ pearl_unlocks
 kb_chunks
 streaks
 flags
-leaderboards
 ```
 
 `kb_chunks` will use pgvector for retrieval-grounded responses.

@@ -114,7 +114,7 @@ export default function ModulesPage() {
               Surgical subspecialty modules
             </h1>
             <p className="mt-3 text-body text-ink-muted">
-              ORION Surgery is built as a platform. Each module ships its own knowledge base, seed cases, Mistake Museum, and Do-Not-Miss library. Modules unlock when a faculty champion signs on to author and review content.
+              ORION Surgery is built as a platform. Each module ships its own knowledge base, seed cases, common-pitfall library, and red-flag library. Modules unlock when a faculty champion signs on to author and review content.
             </p>
           </div>
 
@@ -143,7 +143,7 @@ export default function ModulesPage() {
           <div className="mt-10 rounded-2xl border border-rule/70 bg-surface-subtle/60 p-5 text-small text-ink-muted">
             <p className="mb-1 font-semibold text-ink">Want to bring a module online?</p>
             <p className="leading-relaxed">
-              ORION needs a faculty champion per module — one attending who is willing to co-author seed cases, validate the Mistake Museum and Do-Not-Miss entries, and review content as it grows. Reach out via the contact details in <Link href="/about" className="text-electric hover:underline">About</Link>.
+              ORION needs a faculty champion per module — one attending willing to co-author seed cases, validate the pitfall and red-flag libraries, and review content as it grows. Reach out via the contact details in <Link href="/about" className="text-electric hover:underline">About</Link>.
             </p>
           </div>
         </div>

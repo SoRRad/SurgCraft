@@ -26,7 +26,7 @@ async function main() {
   // 3. Chunk content by paragraph (~512 tokens max)
   // 4. Embed via Anthropic or Voyage API
   // 5. Upsert to kb_chunks table with embedding vector
-  console.log("Not yet implemented - see BUILD_ORDER.md Week 4")
+  console.log("Not yet implemented — planned for Phase 0C")
 }
 
 main().catch(console.error)

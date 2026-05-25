@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation"
 import ReactMarkdown from "react-markdown"
 import {
   AlertTriangle, ArrowDown, Bookmark, BookOpen, Check, ClipboardList, Copy,
-  Eye, Flag, Sparkles, ThumbsDown, ThumbsUp, X,
+  Eye, Flag, ThumbsDown, ThumbsUp, X,
 } from "lucide-react"
 import { CitationChip } from "./CitationChip"
 import { CaseLauncher } from "./tool-results/CaseLauncher"
@@ -28,26 +28,11 @@ import { cn } from "@/lib/utils"
 
 // -- Suggested prompts ---------------------------------------------------------
 
-const SUGGESTED_PROMPTS = [
-  "Manage a fight bite",
-  "Walk me through a case",
-  "Quiz me on flexor tendon zones",
-  "Show common mistakes",
-  "Do-not-miss diagnoses",
-  "Prepare me for rounds",
-]
-
 const QUICK_STARTS = [
   {
-    label: "Manage a fight bite",
-    prompt: "How do I manage a fight bite?",
-    helper: "High-yield infection framing",
-    icon: Sparkles,
-  },
-  {
-    label: "Walk me through a case",
+    label: "Walk through a case",
     prompt: "Walk me through a fight bite case.",
-    helper: "Progressive reveal",
+    helper: "One step at a time",
     icon: BookOpen,
   },
   {
@@ -57,22 +42,16 @@ const QUICK_STARTS = [
     icon: ClipboardList,
   },
   {
-    label: "Common mistakes",
-    prompt: "Common mistakes in mallet finger.",
-    helper: "Error patterns",
+    label: "Common pitfalls",
+    prompt: "What are common pitfalls in mallet finger management?",
+    helper: "Reasoning errors",
     icon: AlertTriangle,
   },
   {
-    label: "Do-not-miss",
-    prompt: "Walk me through do-not-miss diagnoses in hand surgery.",
-    helper: "Recognition clues",
+    label: "Red flags",
+    prompt: "Walk me through red flags in hand-surgery presentations.",
+    helper: "Don't miss these",
     icon: Eye,
-  },
-  {
-    label: "Prepare for rounds",
-    prompt: "Prepare me for hand surgery rounds on fight bites.",
-    helper: "One-liners and follow-ups",
-    icon: Sparkles,
   },
 ]
 
@@ -477,48 +456,43 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
     }
   }
 
+  const isGuest = handle === "Guest"
   return (
-    <div className="flex flex-1 items-center justify-center overflow-y-auto px-4 py-10">
-      <div className="w-full max-w-[820px] space-y-7">
-        <div className="text-center">
-          <p className="text-micro font-semibold uppercase tracking-[0.22em] text-ink-faint">
-            ORION · Hand
-          </p>
-          <h1 className="mt-3 font-fraunces text-h1 leading-tight text-ink">
-            What are we working on today,{" "}
-            <span className="text-terracotta">{handle}</span>?
+    <div className="flex flex-1 items-center justify-center overflow-y-auto px-4 py-8 sm:py-12">
+      <div className="w-full max-w-[720px] space-y-8">
+        <div>
+          <h1 className="font-fraunces text-h1 leading-tight text-ink heading-readable">
+            {isGuest ? "Welcome to ORION." : `Hello, ${handle}.`}
           </h1>
-          <p className="mx-auto mt-3 max-w-xl text-body text-ink-muted">
-            Ask a question, work through a case, quiz yourself, or review high-yield mistakes.
-          </p>
-          <p className="mx-auto mt-3 max-w-xl rounded-full bg-surface-subtle px-4 py-2 text-small text-ink-muted">
-            Educational only. No PHI: do not enter names, MRNs, DOBs, images, or patient identifiers.
+          <p className="mt-3 max-w-prose text-body text-ink-muted">
+            Ask a question, work a case, or quiz yourself on hand-surgery topics.
+            Educational use only. Do not enter PHI.
           </p>
         </div>
 
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} className="space-y-5">
           <div className="relative">
             <SlashPalette input={input} onSelect={onSlashSelect} />
             <div className={cn(
-              "relative rounded-2xl border border-rule/70 bg-bg-elevated shadow-medium transition-all duration-300 ease-standard",
-              "focus-within:border-electric/50 focus-within:ring-4 focus-within:ring-electric/10"
+              "relative rounded-2xl border border-rule bg-bg-elevated shadow-soft transition-all duration-200 ease-standard",
+              "focus-within:border-electric/60 focus-within:ring-4 focus-within:ring-electric/10"
             )}>
               <textarea
                 ref={textareaRef}
                 value={input}
                 onChange={onInputChange}
                 onKeyDown={handleKeyDown}
-                placeholder="Ask anything — or type / for commands"
-                rows={3}
+                placeholder="Ask anything — type / for commands"
+                rows={2}
                 aria-label="Chat input"
-                className="w-full resize-none overflow-hidden bg-transparent px-5 pb-14 pt-5 text-body text-ink placeholder:text-ink-muted focus:outline-none"
+                className="w-full resize-none overflow-hidden bg-transparent px-4 pb-12 pt-4 text-body text-ink placeholder:text-ink-faint focus:outline-none"
               />
-              <div className="absolute bottom-3 right-3">
+              <div className="absolute bottom-2.5 right-2.5">
                 <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
                   className={cn(
-                    "rounded-xl px-4 py-2 text-small font-semibold transition-all duration-300 ease-standard",
+                    "rounded-lg px-4 py-2 text-small font-medium transition-all duration-200 ease-standard",
                     "bg-electric text-bg shadow-soft hover:-translate-y-0.5 hover:shadow-medium disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
                   )}
@@ -527,46 +501,38 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
                 </button>
               </div>
             </div>
+            <p className="mt-2 text-micro text-ink-faint">
+              Enter to send, Shift + Enter for a new line.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {QUICK_STARTS.map(({ label, prompt, helper, icon: Icon }) => (
-              <button
-                key={label}
-                type="button"
-                onClick={() => onSuggestedPrompt(prompt)}
-                className={cn(
-                  "group rounded-2xl border border-rule/70 bg-bg-elevated p-4 text-left shadow-soft",
-                  "transition-all duration-300 ease-standard hover:-translate-y-0.5 hover:border-electric/40 hover:shadow-medium",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
-                )}
-              >
-                <span className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-surface-subtle text-electric transition-colors duration-300 group-hover:bg-electric-soft">
-                  <Icon size={16} />
-                </span>
-                <span className="block text-small font-semibold text-ink">{label}</span>
-                <span className="mt-1 block text-micro text-ink-muted">{helper}</span>
-              </button>
-            ))}
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            {SUGGESTED_PROMPTS.slice(0, 3).map((p) => (
-              <button
-                key={p}
-                type="button"
-                onClick={() => onSuggestedPrompt(p)}
-                className="rounded-full border border-rule/70 bg-bg-elevated px-3 py-1.5 text-micro text-ink-muted transition-colors duration-300 ease-standard hover:border-electric/40 hover:text-electric focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
-              >
-                {p}
-              </button>
-            ))}
-            <a
-              href="/topics"
-              className="rounded-full border border-rule/70 bg-bg-elevated px-3 py-1.5 text-micro text-ink-muted transition-colors duration-300 ease-standard hover:border-electric/40 hover:text-electric focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
-            >
-              Browse topic index
-            </a>
+          <div>
+            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
+              Start here
+            </p>
+            <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {QUICK_STARTS.map(({ label, prompt, helper, icon: Icon }) => (
+                <li key={label}>
+                  <button
+                    type="button"
+                    onClick={() => onSuggestedPrompt(prompt)}
+                    className={cn(
+                      "group flex w-full items-start gap-3 rounded-xl border border-rule bg-bg-elevated px-3.5 py-3 text-left",
+                      "transition-all duration-200 ease-standard hover:-translate-y-0.5 hover:border-electric/50 hover:shadow-soft",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
+                    )}
+                  >
+                    <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-surface-subtle text-electric">
+                      <Icon size={14} />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-small font-medium text-ink">{label}</span>
+                      <span className="block text-micro text-ink-muted">{helper}</span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
         </form>
 

@@ -30,19 +30,19 @@ interface ReasoningAutopsyProps {
 export function ReasoningAutopsy({ data }: ReasoningAutopsyProps) {
   return (
     <section aria-labelledby="autopsy-heading" className="mt-10">
-      <div className="rounded-2xl border border-rule/70 bg-bg-elevated p-5 shadow-medium">
-        <SectionMarker number="06" label="Reasoning Autopsy" className="mb-4" />
+      <div className="rounded-2xl border border-rule bg-bg-elevated p-5 shadow-soft">
+        <SectionMarker number="06" label="Case debrief" className="mb-4" />
         <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h2 id="autopsy-heading" className="font-fraunces text-h2 text-ink">
+            <h2 id="autopsy-heading" className="font-fraunces text-h2 text-ink heading-readable">
               How the case turns
             </h2>
             <p className="mt-2 max-w-2xl text-small text-ink-muted">
-              The senior-resident version: what mattered early, what changes management, and how to say it on rounds.
+              The senior-resident view: what mattered early, what changes management, and how to say it on rounds.
             </p>
           </div>
           <span className="rounded-full bg-surface-subtle px-3 py-1 text-micro text-ink-muted">
-            Demo mode | needs faculty verification
+            Demo content · needs faculty verification
           </span>
         </div>
 

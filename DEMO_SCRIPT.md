@@ -6,33 +6,31 @@ Use this ~6-minute path for a Phase 0B.2 faculty demo. Run in mock/demo mode unl
 
 - `LLM_PROVIDER=mock`, `NEXT_PUBLIC_APP_MODE=demo`, then `npm run dev`.
 - Confirm no API key is required.
-- Open http://localhost:3000.
+- Open <http://localhost:3000>.
 
 ## Walk-through (5–6 minutes)
 
-1. **First-run onboarding.** Complete as a PGY-2 or M4 using a synthetic learner profile. Show the privacy contract and the "edit later in Settings" affordance.
-2. **Chat empty state.** Point out:
-   - The ORION wordmark and the "Hand" module chip in the header (clickable — opens the **Module switcher**).
-   - The "Educational only · No PHI" pill in the header.
-   - **Today's Pearl** card under the input.
-   - Quick-start cards + topic-index link.
+1. **Landing.** Show the two entry paths: **Try the demo** (skip onboarding, generic resident profile — what a faculty reviewer would pick) and **Set up a learner profile** (for residents who want personalized tutor depth).
+2. **Chat empty state.** Welcome line, input with `/` palette hint, "Start here" tiles, today's pearl. The sidebar carries the ORION brand and module label; the header carries the PHI pill and provider badge.
 3. **Slash commands.** Type `/` in the input — the slash palette appears. Try `/case fight bite` and Tab/Enter to expand.
 4. **First chat.** Ask: "How do I manage a fight bite?" Emphasize that this is educational only.
 5. **Inline case launcher.** Ask: "Walk me through a fight bite case." Click the launcher to expand the case inline. Reveal cards step by step. Point out the **progress bar** and the **commit-before-management** checkpoint.
-6. **Reasoning Autopsy.** At end of case, scroll to the postmortem-style debrief. The point is teaching reasoning, not the final answer.
-7. **Mistake Museum.** Open `/mistakes`. The Mistake Museum is **decision-time cognitive errors only**. Click "Show details" on a card to expand. Point out the cross-link to the paired Do-Not-Miss entry.
-8. **Do-Not-Miss.** Open `/donotmiss`. These are **recognition-time red flags only**. The two libraries are strictly separated by intent; cross-links connect paired topics.
-9. **Topic index.** Open `/topics`. One unified index linking every topic to its case, decision mistake, and recognition red flag.
-10. **Modules.** Open `/modules` (or click the chip in the header). Hand is active; Bariatric, Foot & Ankle, Plastic, Pediatric, Vascular are placeholders awaiting faculty champions. Click one to see the recruitment page.
-11. **Save a pearl.** Bookmark an assistant answer. Open `/pearls` to see it. Pearls are local to this browser.
-12. **Flag a response.** Open Settings → Review flags. Note that flags are local in Phase 0B and not yet routed to faculty.
-13. **Export / Settings.** Show export/import in Settings. Close with the keyboard shortcut panel (press `?`).
+6. **Case debrief.** At end of case, scroll to the postmortem-style debrief. The point is teaching reasoning, not the final answer.
+7. **Common pitfalls.** Open `/mistakes` (sidebar → Common pitfalls). Decision-time reasoning errors. Expand a card to see why the trap happens, what goes wrong, and the round-ready correction.
+8. **Red flags.** Open `/donotmiss` (sidebar → Red flags). Recognition-time presentations you cannot miss at first contact. The two libraries are strictly separated; cross-links connect paired topics.
+9. **Topics.** Open `/topics`. One unified index linking every topic to its case, pitfall, and red flag.
+10. **Modules.** Open `/modules`. Hand is active; Bariatric, Foot & Ankle, Plastic, Pediatric, Vascular are placeholders awaiting faculty champions.
+11. **Faculty review portal.** Open `/admin/review`. Renders `CONTENT_REVIEW.md` and stats — every authored claim is tracked.
+12. **Save a pearl.** Bookmark an assistant answer. Open `/pearls`. Pearls are local to this browser.
+13. **Flag a response.** Settings → Review flags. Flags are local in Phase 0B; not yet routed to faculty.
+14. **Export / Settings.** Show export/import in Settings. Close with the keyboard shortcut panel (press `?`).
 
 ## Talking points for close
 
 - Local demo content; no real patient data.
-- Needs faculty verification — tracked in `CONTENT_REVIEW.md` and module content labels.
+- Faculty verification visible at `/admin/review` and `CONTENT_REVIEW.md`.
 - No PHI; not for clinical decisions.
+- No leaderboards, no public ranking, no faculty-visible scores — by design at every phase.
 - Modules are intentionally a separate concept so ORION can grow beyond Hand as faculty champions sign on.
 - RAG, accounts, faculty admin UI, and persisted analytics planned for Phase 0C.
 

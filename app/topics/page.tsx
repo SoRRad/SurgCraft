@@ -1,16 +1,15 @@
 import Link from "next/link"
-import { AlertTriangle, BookOpen, Eye, MessageSquare, Sparkles } from "lucide-react"
+import { AlertTriangle, BookOpen, MessageSquare, ShieldAlert, Sparkles } from "lucide-react"
 import { ChatLayout } from "@/components/chat/ChatLayout"
-import { SectionMarker } from "@/components/shell/SectionMarker"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DO_NOT_MISS, MISTAKE_MUSEUM, TOPIC_INDEX } from "@/lib/demo/demo-content"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Topic index",
+  title: "Topics",
   description:
-    "Cross-content topic index for the ORION Hand module. Every topic links to the related cases, mistakes, do-not-miss entries, and tutor answers.",
+    "Cross-content topic index for the ORION Hand module. Every topic links to its cases, pitfalls, red flags, and tutor walkthroughs.",
 }
 
 const CASE_TITLES: Record<string, string> = {
@@ -23,30 +22,32 @@ export default function TopicsPage() {
   return (
     <ChatLayout>
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-5xl px-6 py-10">
-          <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
-            <div className="max-w-3xl">
-              <SectionMarker number="06" label="Topic index" className="mb-3" />
-              <h1 className="font-fraunces text-h1 text-ink">Topics across the library</h1>
-              <p className="mt-3 text-body text-ink-muted">
-                One unified index for every clinical topic the ORION Hand module covers. Each row links to the related cases, decision-time mistakes, recognition-time red flags, and tutor walkthroughs.
-              </p>
-            </div>
-          </div>
+        <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
+          <header className="mb-8">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
+              Learn
+            </p>
+            <h1 className="mt-1.5 font-fraunces text-h1 text-ink heading-readable">
+              Topics
+            </h1>
+            <p className="mt-3 text-body text-ink-muted prose-readable">
+              Every clinical topic the Hand module covers, with links to the cases, common pitfalls, red flags, and tutor walkthroughs that touch it.
+            </p>
+          </header>
 
-          <div className="space-y-5">
+          <div className="space-y-4">
             {TOPIC_INDEX.map((topic) => {
-              const mistakes = topic.mistakeIds
+              const pitfalls = topic.mistakeIds
                 .map((id) => MISTAKE_MUSEUM.find((m) => m.id === id))
                 .filter((m): m is NonNullable<typeof m> => Boolean(m))
-              const doNotMiss = topic.doNotMissIds
+              const redFlags = topic.doNotMissIds
                 .map((id) => DO_NOT_MISS.find((d) => d.id === id))
                 .filter((d): d is NonNullable<typeof d> => Boolean(d))
 
               return (
                 <article
                   key={topic.topic}
-                  className="overflow-hidden rounded-2xl border border-rule/70 bg-bg-elevated shadow-soft transition-all duration-300 ease-standard hover:-translate-y-0.5 hover:shadow-medium"
+                  className="overflow-hidden rounded-2xl border border-rule bg-bg-elevated transition-shadow duration-200 ease-standard hover:shadow-soft"
                 >
                   <div className="border-b border-rule/60 bg-surface-subtle/40 px-5 py-4">
                     <div className="flex flex-wrap items-center justify-between gap-3">
@@ -69,19 +70,19 @@ export default function TopicsPage() {
 
                   <div className="grid gap-4 px-5 py-4 md:grid-cols-3">
                     <TopicSlot
-                      icon={<BookOpen size={14} className="text-electric" />}
+                      icon={<BookOpen size={13} className="text-electric" />}
                       label="Cases"
                       items={topic.caseIds.map((id) => ({
                         id,
                         label: CASE_TITLES[id] ?? id,
                         href: `/case/${id}`,
                       }))}
-                      emptyText="No seed case yet"
+                      emptyText="No case yet"
                     />
                     <TopicSlot
-                      icon={<AlertTriangle size={14} className="text-warn" />}
-                      label="Decision mistake"
-                      items={mistakes.map((m) => ({
+                      icon={<AlertTriangle size={13} className="text-warn" />}
+                      label="Common pitfalls"
+                      items={pitfalls.map((m) => ({
                         id: m.id,
                         label: m.title,
                         href: `/mistakes#${m.id}`,
@@ -89,9 +90,9 @@ export default function TopicsPage() {
                       emptyText="None catalogued"
                     />
                     <TopicSlot
-                      icon={<Eye size={14} className="text-wrong" />}
-                      label="Do-not-miss"
-                      items={doNotMiss.map((d) => ({
+                      icon={<ShieldAlert size={13} className="text-wrong" />}
+                      label="Red flags"
+                      items={redFlags.map((d) => ({
                         id: d.id,
                         label: d.diagnosis,
                         href: `/donotmiss#${d.id}`,
@@ -101,15 +102,15 @@ export default function TopicsPage() {
                   </div>
 
                   {topic.tutorAnswerIds.length > 0 && (
-                    <div className="border-t border-rule/60 bg-bg/60 px-5 py-3">
+                    <div className="border-t border-rule/60 bg-bg/40 px-5 py-3">
                       <p className="flex items-center gap-2 text-micro text-ink-muted">
-                        <Sparkles size={12} className="text-terracotta" />
-                        Tutor walkthrough available for this topic — try{" "}
+                        <Sparkles size={11} className="text-terracotta" />
+                        Tutor walkthrough available —{" "}
                         <Link
                           href={`/c?prefill=${encodeURIComponent(`Walk me through: ${topic.topic}`)}`}
-                          className="font-semibold text-electric hover:underline"
+                          className="font-medium text-electric hover:underline"
                         >
-                          asking the tutor
+                          ask the tutor
                         </Link>
                         .
                       </p>
@@ -138,19 +139,19 @@ function TopicSlot({
 }) {
   return (
     <div className="space-y-2">
-      <p className="flex items-center gap-1.5 text-micro font-semibold uppercase tracking-[0.16em] text-ink-faint">
+      <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
         {icon}
         {label}
       </p>
       {items.length === 0 ? (
         <p className="text-small italic text-ink-faint">{emptyText}</p>
       ) : (
-        <ul className="space-y-1">
+        <ul className="space-y-0.5">
           {items.map((item) => (
             <li key={item.id}>
               <Link
                 href={item.href}
-                className="block rounded-md px-2 py-1 text-small leading-snug text-ink transition-colors duration-200 ease-standard hover:bg-surface-subtle hover:text-electric focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
+                className="block rounded-md px-2 py-1 text-small leading-snug text-ink transition-colors duration-150 ease-standard hover:bg-surface-subtle hover:text-electric focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
               >
                 {item.label}
               </Link>

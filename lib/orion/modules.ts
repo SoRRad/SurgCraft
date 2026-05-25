@@ -65,7 +65,7 @@ export const MODULES: readonly SurgicalModule[] = [
     homeRoute: null,
     accent: "electric",
     recruitmentNote:
-      "Seeking a bariatric surgery faculty champion to co-author seed cases and validate the Mistake Museum and Do-Not-Miss libraries for this module.",
+      "Seeking a bariatric surgery faculty champion to co-author seed cases and validate the pitfall and red-flag libraries for this module.",
   },
   {
     id: "foot-ankle",

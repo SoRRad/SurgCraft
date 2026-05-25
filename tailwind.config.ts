@@ -12,7 +12,11 @@ const config: Config = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: {
+        DEFAULT: "1rem",
+        sm: "1.5rem",
+        lg: "2rem",
+      },
       screens: { "2xl": "1400px" },
     },
     extend: {
@@ -70,20 +74,25 @@ const config: Config = {
         },
       },
       fontFamily: {
-        fraunces: ["var(--font-fraunces)", "serif"],
-        inter: ["var(--font-inter)", "sans-serif"],
-        "instrument-serif": ["var(--font-instrument-serif)", "serif"],
-        mono: ["var(--font-jetbrains-mono)", "monospace"],
+        fraunces: ["var(--font-fraunces)"],
+        inter: ["var(--font-inter)"],
+        "instrument-serif": ["var(--font-instrument-serif)"],
+        mono: ["var(--font-jetbrains-mono)"],
       },
+      /*
+       * Fluid typography: every heading clamps so it never overflows
+       * on a 360px phone and never inflates past the readable max on
+       * a 1440px monitor. Body text stays fixed at 1rem.
+       */
       fontSize: {
-        display: ["64px", { lineHeight: "1.05" }],
-        h1: ["40px", { lineHeight: "1.15" }],
-        h2: ["28px", { lineHeight: "1.25" }],
-        h3: ["20px", { lineHeight: "1.35" }],
-        stem: ["24px", { lineHeight: "1.5" }],
-        body: ["16px", { lineHeight: "1.6" }],
-        small: ["14px", { lineHeight: "1.5" }],
-        micro: ["12px", { lineHeight: "1.4" }],
+        display: ["clamp(2.25rem, 5vw + 1rem, 3.75rem)", { lineHeight: "1.05", letterSpacing: "-0.02em" }],
+        h1:      ["clamp(1.75rem, 3vw + 0.75rem, 2.5rem)", { lineHeight: "1.15", letterSpacing: "-0.015em" }],
+        h2:      ["clamp(1.375rem, 2vw + 0.5rem, 1.75rem)", { lineHeight: "1.25", letterSpacing: "-0.01em" }],
+        h3:      ["clamp(1.125rem, 1vw + 0.5rem, 1.25rem)", { lineHeight: "1.35" }],
+        stem:    ["clamp(1.0625rem, 0.75vw + 0.75rem, 1.25rem)", { lineHeight: "1.5" }],
+        body:    ["1rem", { lineHeight: "1.6" }],
+        small:   ["0.875rem", { lineHeight: "1.5" }],
+        micro:   ["0.75rem", { lineHeight: "1.4" }],
       },
       borderRadius: {
         "2xl": "1rem",
@@ -112,7 +121,7 @@ const config: Config = {
           to: { height: "0" },
         },
         "fade-up": {
-          from: { opacity: "0", transform: "translateY(12px)" },
+          from: { opacity: "0", transform: "translateY(8px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
         "fade-in": {
@@ -120,7 +129,7 @@ const config: Config = {
           to: { opacity: "1" },
         },
         "scale-in": {
-          from: { opacity: "0", transform: "scale(0.96)" },
+          from: { opacity: "0", transform: "scale(0.97)" },
           to: { opacity: "1", transform: "scale(1)" },
         },
       },
@@ -128,8 +137,8 @@ const config: Config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-up": "fade-up 280ms cubic-bezier(0.22, 0.61, 0.36, 1) both",
-        "fade-in": "fade-in 280ms cubic-bezier(0.22, 0.61, 0.36, 1) both",
-        "scale-in": "scale-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both",
+        "fade-in": "fade-in 220ms cubic-bezier(0.22, 0.61, 0.36, 1) both",
+        "scale-in": "scale-in 320ms cubic-bezier(0.16, 1, 0.3, 1) both",
       },
     },
   },

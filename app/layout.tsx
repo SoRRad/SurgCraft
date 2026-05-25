@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -7,8 +7,15 @@ export const metadata: Metadata = {
     template: "%s · ORION Surgery",
   },
   description:
-    "ORION Surgery — Operative Reasoning and Interactive Online Navigator. Interactive surgical education for medical students, residents, and fellows. Active module: Hand. Educational use only.",
+    "ORION Surgery — Operative Reasoning and Interactive Online Navigator. Educational hand-surgery tutoring for medical students, residents, and fellows. Educational use only.",
   robots: { index: false, follow: false },
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#FBF8F3",
 }
 
 export default function RootLayout({
@@ -17,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="antialiased">
       <body>{children}</body>
     </html>
   )

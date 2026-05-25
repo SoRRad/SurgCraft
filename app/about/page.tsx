@@ -75,7 +75,7 @@ export default function AboutPage() {
         {/* C1 — Platform vs. Module — open by default */}
         <CollapsibleSection number="01" label="ORION vs. its modules" defaultOpen>
           <p>
-            <strong>ORION Surgery</strong> is the platform. It is designed to host multiple surgical subspecialty modules, each with its own knowledge base, cases, Mistake Museum, Do-Not-Miss library, and pearl registry.
+            <strong>ORION Surgery</strong> is the platform. It is designed to host multiple surgical subspecialty modules, each with its own knowledge base, cases, common-pitfall library, red-flag library, and pearl registry.
           </p>
           <p>
             The active module today is <strong>Hand</strong> (hand surgery — trauma, infection, tendon, nerve, fracture). The platform is built so additional modules can be brought online when a faculty champion signs on to author and validate content. See <Link href="/modules" className="text-electric hover:underline">the module index</Link> for the full list and current status.
@@ -93,11 +93,11 @@ export default function AboutPage() {
           <p>The core moves we try to teach:</p>
           <ul className="space-y-2 pl-0">
             {[
-              ["Recognition", "What to spot at first contact (the Do-Not-Miss reflex)."],
+              ["Recognition", "What to spot at first contact (the red-flag reflex)."],
               ["Reasoning", "How to integrate history, exam, imaging, and labs into a working diagnosis."],
-              ["Decision", "How to choose between management options, and the cognitive errors that derail learners (the Mistake Museum)."],
-              ["Communication", "How to defend the plan on rounds in one sentence (the “rounds one-liner”)."],
-              ["Reflection", "What you should have noticed earlier — the Reasoning Autopsy at case end."],
+              ["Decision", "How to choose between management options, and the reasoning errors that derail learners (the common-pitfall library)."],
+              ["Communication", "How to defend the plan on rounds in one sentence (the rounds one-liner)."],
+              ["Reflection", "What you should have noticed earlier — the case debrief at case end."],
             ].map(([title, body]) => (
               <li key={title} className="flex gap-3">
                 <span className="mt-2 inline-block h-1 w-1 flex-shrink-0 rounded-full bg-terracotta" aria-hidden="true" />
@@ -117,12 +117,12 @@ export default function AboutPage() {
               {
                 who: "M3 / sub-I",
                 use:
-                  "You don’t want to embarrass yourself on rounds tomorrow. Use the tutor for one-liners and the Mistake Museum to internalize the common traps.",
+                  "You don’t want to embarrass yourself on rounds tomorrow. Use the tutor for one-liners and the common-pitfall library to internalize the common traps.",
               },
               {
                 who: "Intern · night float",
                 use:
-                  "A consult just came in. Quiz the bot on the Do-Not-Miss library for the relevant subspecialty before you walk into the room.",
+                  "A consult just came in. Quiz the bot on the red-flag library for the relevant subspecialty before you walk into the room.",
               },
               {
                 who: "PGY-2 cramming for ABSITE / in-service",
@@ -262,12 +262,12 @@ export default function AboutPage() {
         <CollapsibleSection number="09" label="Phase roadmap" defaultOpen>
           <div className="space-y-4">
             {[
-              { phase: "Phase 0A", status: "done", description: "Local faculty-demo foundation. Mock LLM provider, onboarding, synthetic cases, Mistake Museum, and Do-Not-Miss library." },
+              { phase: "Phase 0A", status: "done", description: "Local faculty-demo foundation. Mock LLM, onboarding, synthetic cases, common-pitfall and red-flag libraries." },
               { phase: "Phase 0B.1", status: "done", description: "Stabilization: request validation, provider status, local persistence, saved pearls, local flags, tests, CI, QA checklist." },
-              { phase: "Phase 0B.2", status: "active", description: "Faculty-demo polish + ORION rebrand + multi-module foundation + Mistake/Do-Not-Miss strict separation + dropdown patterns + slash commands, keyboard shortcuts, topic index, today's pearl, faculty review portal." },
-              { phase: "Phase 0C", status: "planned", description: "Supabase database, pgvector RAG, user accounts, faculty verification workflow, governed flagged-output review, persisted usage tracking." },
-              { phase: "Phase 1 (Pilot)", status: "future", description: "10–20 residents at Mayo. Faculty-reviewed content. Mayo-sanctioned hosting. Learning analytics focused on education, not ranking." },
-              { phase: "Phase 2+", status: "future", description: "Wider Mayo deployment. Additional modules brought online as faculty champions sign on. Multi-institution scoping." },
+              { phase: "Phase 0B.2", status: "active", description: "Faculty-demo polish + ORION rebrand + multi-module foundation + redesign + demo-mode skip-onboarding + slash commands and keyboard shortcuts." },
+              { phase: "Phase 0C", status: "planned", description: "Supabase database, pgvector RAG, user accounts, faculty verification workflow, governed flagged-output review." },
+              { phase: "Phase 1 (Pilot)", status: "future", description: "10–20 residents at Mayo. Faculty-reviewed content. Mayo-sanctioned hosting. Learning analytics focused on education — no leaderboards or public ranking." },
+              { phase: "Phase 2+", status: "future", description: "Wider Mayo deployment. Additional modules as faculty champions sign on. Multi-institution scoping." },
             ].map(({ phase, status, description }) => (
               <div key={phase} className="flex gap-4">
                 <div className="flex flex-col items-center gap-1 flex-shrink-0">
@@ -306,8 +306,8 @@ export default function AboutPage() {
               ["Kanavel signs", "Four cardinal signs of pyogenic flexor tenosynovitis."],
               ["FOOSH", "Fall On Outstretched Hand (mechanism of injury)."],
               ["MCP / PIP / DIP", "Metacarpophalangeal / proximal / distal interphalangeal joints."],
-              ["Reasoning Autopsy", "A postmortem-style debrief at end of case that surfaces what a senior learner would have noticed earlier."],
-              ["Mistake Museum / Do-Not-Miss", "ORION's two error libraries. Mistake = decision-time. Do-Not-Miss = recognition-time."],
+              ["Case debrief", "An end-of-case review that surfaces what a senior learner would have noticed earlier."],
+              ["Common pitfalls / Red flags", "ORION's two error libraries. Pitfalls = decision-time reasoning errors. Red flags = recognition-time presentations you cannot miss."],
             ].map(([term, definition]) => (
               <div key={term} className="rounded-xl border border-rule/60 bg-bg p-3">
                 <dt className="text-small font-semibold text-ink">{term}</dt>

@@ -112,15 +112,6 @@ create table if not exists flags (
   reviewed_at timestamptz
 );
 
--- ── leaderboards ──────────────────────────────────────────────────────────────
-create table if not exists leaderboards (
-  id               uuid primary key default uuid_generate_v4(),
-  scope            text not null check (scope in ('program', 'pgy', 'national')),
-  period           text not null,   -- e.g. '2025-W22'
-  jsonb_rankings   jsonb not null default '[]',
-  opt_in_user_ids  uuid[] not null default '{}'
-);
-
 -- ── Indexes ───────────────────────────────────────────────────────────────────
 create index if not exists messages_session_id_idx    on messages(session_id);
 create index if not exists case_attempts_user_id_idx  on case_attempts(user_id);

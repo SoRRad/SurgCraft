@@ -24,7 +24,7 @@ export function InlineMistakeCard({ entry }: InlineMistakeCardProps) {
       <div className="flex items-center gap-2 border-b border-rule/70 bg-surface-subtle/60 px-4 py-3">
         <AlertTriangle size={14} className="flex-shrink-0 text-warn" />
         <p className="text-micro font-semibold uppercase tracking-[0.16em] text-warn">
-          Common mistake
+          Common pitfall
         </p>
       </div>
       <div className="space-y-3 px-4 py-3">
@@ -45,7 +45,7 @@ export function InlineMistakeCard({ entry }: InlineMistakeCardProps) {
           href="/mistakes"
           className="inline-block rounded text-micro text-electric hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
         >
-          See all mistakes in Mistake Museum
+          See all common pitfalls
         </Link>
         {!entry.verified && (
           <p className="text-micro text-ink-muted">

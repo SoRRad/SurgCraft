@@ -176,8 +176,7 @@ Goal: deploy to a small Mayo hand surgery learner cohort with governance, monito
 - Auth restricted as required by pilot governance
 - Faculty-reviewed case and KB corpus
 - Stable admin workflow for flagged outputs
-- Analytics focused on engagement and learning, not punitive ranking
-- Opt-in anonymous leaderboard only if approved
+- Analytics focused on engagement and learning, not ranking — no leaderboards at any phase
 - Pre/post knowledge assessment plan
 - Clear incident process for unsafe or incorrect AI output
 

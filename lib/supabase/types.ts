@@ -139,17 +139,6 @@ export interface Database {
         Insert: Omit<Database["public"]["Tables"]["flags"]["Row"], "id">
         Update: Partial<Database["public"]["Tables"]["flags"]["Insert"]>
       }
-      leaderboards: {
-        Row: {
-          id: string
-          scope: "program" | "pgy" | "national"
-          period: string
-          jsonb_rankings: unknown
-          opt_in_user_ids: string[]
-        }
-        Insert: Omit<Database["public"]["Tables"]["leaderboards"]["Row"], "id">
-        Update: Partial<Database["public"]["Tables"]["leaderboards"]["Insert"]>
-      }
     }
   }
 }

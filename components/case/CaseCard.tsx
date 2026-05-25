@@ -1,4 +1,4 @@
 ﻿// Historical placeholder for the deferred reusable revealable case card.
-// Card reveal: slide-up 12px + fade in (see DESIGN_SYSTEM.md Section5)
+// Card reveal: slide-up + fade in (see DESIGN.md)
 export {}
 

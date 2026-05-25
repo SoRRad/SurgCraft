@@ -10,13 +10,14 @@ import {
   ChevronDown,
   ChevronUp,
   Compass,
-  Eye,
   Info,
   Keyboard,
   Layers,
+  type LucideIcon,
   MessageSquare,
-  MessageSquarePlus,
+  Plus,
   Settings,
+  ShieldAlert,
   Trash2,
 } from "lucide-react"
 import { SettingsDrawer } from "@/components/shell/SettingsDrawer"
@@ -36,11 +37,15 @@ function getRelativeTime(isoDate: string): string {
   return `${days}d ago`
 }
 
-const LIBRARY_LINKS = [
-  { href: "/case", label: "Cases", icon: BookOpen },
-  { href: "/mistakes", label: "Mistake Museum", icon: AlertTriangle },
-  { href: "/donotmiss", label: "Do-Not-Miss", icon: Eye },
-  { href: "/topics", label: "Topic index", icon: Compass },
+/**
+ * Sidebar nav is intentionally short. Labels are what a textbook would
+ * call them (no invented internal terms like "Mistake Museum").
+ */
+const LEARN_LINKS = [
+  { href: "/case",      label: "Cases",          icon: BookOpen },
+  { href: "/mistakes",  label: "Common pitfalls", icon: AlertTriangle },
+  { href: "/donotmiss", label: "Red flags",      icon: ShieldAlert },
+  { href: "/topics",    label: "Topics",         icon: Compass },
 ]
 
 const SAVED_LINKS = [
@@ -57,7 +62,7 @@ interface SidebarInnerProps {
 
 function GroupLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="px-4 pb-2 pt-4 text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">
+    <p className="px-3 pb-1.5 pt-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
       {children}
     </p>
   )
@@ -112,30 +117,47 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
   return (
     <>
       <div className="flex h-full flex-col bg-bg">
-        <div className="px-4 pb-3 pt-4">
+        {/* Brand strip */}
+        <div className="flex items-center gap-2 px-4 pb-3 pt-4">
+          <Link
+            href="/c"
+            onClick={handleLinkClick}
+            className="flex items-baseline gap-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
+            aria-label="ORION home"
+          >
+            <span className="font-fraunces text-[18px] font-semibold uppercase tracking-[0.14em] text-ink">
+              ORION
+            </span>
+            <span className="font-fraunces text-small text-ink-faint">· Hand</span>
+          </Link>
+        </div>
+
+        {/* New conversation */}
+        <div className="px-3 pb-3">
           <button
             type="button"
             onClick={handleNewConversation}
             className={cn(
-              "flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-2.5",
-              "bg-electric text-small font-semibold text-bg shadow-[0_6px_24px_rgba(49,95,134,0.24)]",
-              "transition-all duration-300 ease-standard hover:-translate-y-0.5 hover:shadow-medium active:translate-y-0",
+              "flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5",
+              "bg-electric text-small font-medium text-bg shadow-soft",
+              "transition-all duration-200 ease-standard hover:-translate-y-0.5 hover:shadow-medium active:translate-y-0",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric focus-visible:ring-offset-2"
             )}
           >
-            <MessageSquarePlus size={16} />
+            <Plus size={15} />
             New conversation
           </button>
         </div>
 
+        {/* Nav */}
         <div className="flex-1 overflow-y-auto px-2 pb-3">
           <GroupLabel>Recent</GroupLabel>
           {conversations.length === 0 ? (
-            <div className="mx-2 rounded-xl bg-surface-subtle px-3 py-3 text-small text-ink-muted">
-              Start a chat and it will appear here.
-            </div>
+            <p className="mx-2 rounded-lg px-3 py-2 text-small text-ink-faint">
+              No conversations yet.
+            </p>
           ) : (
-            <ul className="space-y-1">
+            <ul className="space-y-0.5">
               {visibleConvs.map((conv) => {
                 const isActive = conv.id === activeConvId
                 return (
@@ -144,16 +166,26 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
                       type="button"
                       onClick={() => handleConversationClick(conv.id)}
                       className={cn(
-                        "w-full rounded-xl px-3 py-2.5 text-left transition-all duration-300 ease-standard",
+                        "w-full rounded-lg px-3 py-2 text-left transition-colors duration-200 ease-standard",
                         "hover:bg-surface-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric",
-                        isActive ? "bg-electric-soft text-ink shadow-[inset_0_0_0_1px_var(--electric-soft)]" : "text-ink"
+                        isActive ? "bg-electric-soft text-ink" : "text-ink"
                       )}
                     >
                       <span className="flex items-start gap-2">
-                        <MessageSquare size={14} className={cn("mt-0.5 flex-shrink-0", isActive ? "text-electric" : "text-ink-faint")} />
+                        <MessageSquare
+                          size={13}
+                          className={cn(
+                            "mt-0.5 flex-shrink-0",
+                            isActive ? "text-electric" : "text-ink-faint"
+                          )}
+                        />
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-small font-medium leading-snug">{conv.title}</span>
-                          <span className="block text-micro text-ink-muted">{getRelativeTime(conv.updatedAt)}</span>
+                          <span className="block truncate text-small font-medium leading-snug">
+                            {conv.title}
+                          </span>
+                          <span className="block text-[11px] text-ink-faint">
+                            {getRelativeTime(conv.updatedAt)}
+                          </span>
                         </span>
                       </span>
                     </button>
@@ -161,14 +193,14 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
                       type="button"
                       onClick={(e) => handleDeleteConversation(e, conv.id)}
                       className={cn(
-                        "absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-ink-muted opacity-0",
-                        "transition-all duration-200 ease-standard hover:bg-wrong-soft hover:text-wrong",
+                        "absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-ink-faint opacity-0",
+                        "transition-all duration-150 ease-standard hover:bg-wrong-soft hover:text-wrong",
                         "focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric",
                         "group-hover:opacity-100 group-focus-within:opacity-100"
                       )}
                       aria-label="Delete conversation"
                     >
-                      <Trash2 size={13} />
+                      <Trash2 size={12} />
                     </button>
                   </li>
                 )
@@ -180,108 +212,48 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
             <button
               type="button"
               onClick={() => setShowAll((v) => !v)}
-              className="mx-2 mt-2 flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-micro text-ink-muted transition-colors duration-200 ease-standard hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
+              className="mx-2 mt-1 flex items-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] text-ink-muted transition-colors duration-150 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
             >
-              {showAll ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-              {showAll ? "Show less" : `See all (${conversations.length})`}
+              {showAll ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
+              {showAll ? "Show less" : `Show all (${conversations.length})`}
             </button>
           )}
 
-          <GroupLabel>Learning Library</GroupLabel>
-          <ul className="space-y-1">
-            {LIBRARY_LINKS.map(({ href, label, icon: Icon }) => {
-              const isActive = pathname === href
-              return (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    onClick={handleLinkClick}
-                    className={cn(
-                      "flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-small transition-all duration-300 ease-standard",
-                      "hover:bg-surface-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric",
-                      isActive ? "bg-electric-soft font-medium text-ink" : "text-ink-muted hover:text-ink"
-                    )}
-                  >
-                    <Icon size={15} className={isActive ? "text-electric" : "text-ink-faint"} />
-                    {label}
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
+          <GroupLabel>Learn</GroupLabel>
+          <NavList items={LEARN_LINKS} pathname={pathname} onClick={handleLinkClick} />
 
           <GroupLabel>Saved</GroupLabel>
-          <ul className="space-y-1">
-            {SAVED_LINKS.map(({ href, label, icon: Icon }) => {
-              const isActive = pathname === href
-              return (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    onClick={handleLinkClick}
-                    className={cn(
-                      "flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-small transition-all duration-300 ease-standard",
-                      "hover:bg-surface-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric",
-                      isActive ? "bg-electric-soft font-medium text-ink" : "text-ink-muted hover:text-ink"
-                    )}
-                  >
-                    <Icon size={15} className={isActive ? "text-electric" : "text-ink-faint"} />
-                    {label}
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
+          <NavList items={SAVED_LINKS} pathname={pathname} onClick={handleLinkClick} />
 
-          <details className="group/platform mt-1">
-            <summary className="flex cursor-pointer list-none items-center justify-between px-4 pb-2 pt-4 text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">
-              <span>Platform</span>
-              <ChevronDown size={12} className="transition-transform duration-300 ease-standard group-open/platform:rotate-180" />
-            </summary>
-            <ul className="space-y-1">
-              {PLATFORM_LINKS.map(({ href, label, icon: Icon }) => {
-                const isActive = pathname === href
-                return (
-                  <li key={href}>
-                    <Link
-                      href={href}
-                      onClick={handleLinkClick}
-                      className={cn(
-                        "flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-small transition-all duration-300 ease-standard",
-                        "hover:bg-surface-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric",
-                        isActive ? "bg-electric-soft font-medium text-ink" : "text-ink-muted hover:text-ink"
-                      )}
-                    >
-                      <Icon size={15} className={isActive ? "text-electric" : "text-ink-faint"} />
-                      {label}
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
-          </details>
+          <GroupLabel>Platform</GroupLabel>
+          <NavList items={PLATFORM_LINKS} pathname={pathname} onClick={handleLinkClick} />
         </div>
 
-        <div className="border-t border-rule/70 px-4 py-3">
-          <div className="mb-3 rounded-xl bg-surface-subtle px-3 py-2">
-            <p className="text-micro font-semibold uppercase tracking-[0.16em] text-ink-faint">Phase 0B.2</p>
-            <p className="text-small text-ink-muted">{getProviderStatusLabel(providerStatus)}</p>
+        {/* Footer */}
+        <div className="border-t border-rule/70 px-3 py-3">
+          <div className="mb-2 rounded-lg bg-surface-subtle px-3 py-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
+              Mode
+            </p>
+            <p className="text-small text-ink-muted">
+              {getProviderStatusLabel(providerStatus)}
+            </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 text-[11px] text-ink-muted">
             <Link
               href="/about"
               onClick={handleLinkClick}
-              className="flex items-center gap-1.5 rounded-lg px-1 py-1 text-micro text-ink-muted transition-colors duration-200 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
+              className="flex items-center gap-1 rounded-md px-2 py-1.5 hover:bg-surface-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
             >
-              <Info size={12} />
+              <Info size={11} />
               About
             </Link>
             <button
               type="button"
               onClick={() => setSettingsOpen(true)}
-              className="flex items-center gap-1.5 rounded-lg px-1 py-1 text-micro text-ink-muted transition-colors duration-200 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
+              className="flex items-center gap-1 rounded-md px-2 py-1.5 hover:bg-surface-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
             >
-              <Settings size={12} />
+              <Settings size={11} />
               Settings
             </button>
             <button
@@ -289,12 +261,11 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
               onClick={() => {
                 window.dispatchEvent(new KeyboardEvent("keydown", { key: "?", bubbles: true }))
               }}
-              className="ml-auto flex items-center gap-1.5 rounded-lg px-1 py-1 text-micro text-ink-muted transition-colors duration-200 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
-              aria-label="Show keyboard shortcuts"
-              title="Show keyboard shortcuts (press ?)"
+              className="ml-auto flex items-center gap-1 rounded-md px-2 py-1.5 hover:bg-surface-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
+              aria-label="Keyboard shortcuts"
+              title="Keyboard shortcuts (press ?)"
             >
-              <Keyboard size={12} />
-              <span className="hidden font-mono lg:inline">?</span>
+              <Keyboard size={11} />
             </button>
           </div>
         </div>
@@ -302,5 +273,48 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
 
       <SettingsDrawer open={settingsOpen} onOpenChange={setSettingsOpen} />
     </>
+  )
+}
+
+interface NavItem {
+  href: string
+  label: string
+  icon: LucideIcon
+}
+
+function NavList({
+  items,
+  pathname,
+  onClick,
+}: {
+  items: NavItem[]
+  pathname: string
+  onClick: () => void
+}) {
+  return (
+    <ul className="space-y-0.5">
+      {items.map(({ href, label, icon: Icon }) => {
+        const isActive = pathname === href
+        return (
+          <li key={href}>
+            <Link
+              href={href}
+              onClick={onClick}
+              className={cn(
+                "flex items-center gap-2 rounded-lg px-3 py-2 text-small transition-colors duration-200 ease-standard",
+                "hover:bg-surface-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric",
+                isActive ? "bg-electric-soft font-medium text-ink" : "text-ink-muted hover:text-ink"
+              )}
+            >
+              <Icon
+                size={14}
+                className={isActive ? "text-electric" : "text-ink-faint"}
+              />
+              {label}
+            </Link>
+          </li>
+        )
+      })}
+    </ul>
   )
 }
