@@ -1,13 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { Menu, ShieldCheck } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { getProviderStatusLabel, useProviderStatus } from "./useProviderStatus"
-import { ModuleSwitcher } from "./ModuleSwitcher"
-import { MODULES } from "@/lib/orion/modules"
 
 interface HeaderProps {
   className?: string
@@ -17,14 +14,6 @@ interface HeaderProps {
 export function Header({ className, onMenuClick }: HeaderProps) {
   const { status } = useProviderStatus()
   const providerLabel = getProviderStatusLabel(status)
-  const pathname = usePathname()
-
-  // Derive current module from the URL: /m/[id]/* → that module; otherwise default.
-  const moduleMatch = pathname.match(/^\/m\/([^/]+)/)
-  const currentModuleId =
-    moduleMatch && MODULES.some((m) => m.id === moduleMatch[1])
-      ? moduleMatch[1]
-      : "hand"
 
   return (
     <header className={cn("sticky top-0 z-40 flex-shrink-0 border-b border-rule/70 bg-bg/95 backdrop-blur", className)}>
@@ -50,7 +39,7 @@ export function Header({ className, onMenuClick }: HeaderProps) {
           <span className="font-fraunces text-ink-faint sm:text-h3" aria-hidden="true">·</span>
         </Link>
 
-        <ModuleSwitcher currentModuleId={currentModuleId} variant="header" />
+        <span className="hidden rounded-full bg-surface-subtle px-2.5 py-1 text-micro font-semibold uppercase tracking-[0.14em] text-ink-muted sm:inline-flex">Hand module</span>
 
         <div className="flex-1" />
 

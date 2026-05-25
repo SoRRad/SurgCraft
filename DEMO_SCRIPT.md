@@ -8,11 +8,17 @@ Use this ~6-minute path for a Phase 0B.2 faculty demo. Run in mock/demo mode unl
 - Confirm no API key is required.
 - Open http://localhost:3000.
 
+### Fast demo path (15 seconds)
+
+- On first load, click **Continue in Demo Mode**.
+- App enters `/c` immediately with a sample learner profile.
+- Start chat without completing onboarding questions.
+
 ## Walk-through (5–6 minutes)
 
-1. **First-run onboarding.** Complete as a PGY-2 or M4 using a synthetic learner profile. Show the privacy contract and the "edit later in Settings" affordance.
+1. **First-run onboarding (optional full path).** Complete as a PGY-2 or M4 using a synthetic learner profile, or mention the Demo Mode shortcut for faculty walkthrough speed.
 2. **Chat empty state.** Point out:
-   - The ORION wordmark and the "Hand" module chip in the header (clickable — opens the **Module switcher**).
+   - The ORION wordmark and compact Hand module label in the header.
    - The "Educational only · No PHI" pill in the header.
    - **Today's Pearl** card under the input.
    - Quick-start cards + topic-index link.
@@ -23,18 +29,15 @@ Use this ~6-minute path for a Phase 0B.2 faculty demo. Run in mock/demo mode unl
 7. **Mistake Museum.** Open `/mistakes`. The Mistake Museum is **decision-time cognitive errors only**. Click "Show details" on a card to expand. Point out the cross-link to the paired Do-Not-Miss entry.
 8. **Do-Not-Miss.** Open `/donotmiss`. These are **recognition-time red flags only**. The two libraries are strictly separated by intent; cross-links connect paired topics.
 9. **Topic index.** Open `/topics`. One unified index linking every topic to its case, decision mistake, and recognition red flag.
-10. **Modules.** Open `/modules` (or click the chip in the header). Hand is active; Bariatric, Foot & Ankle, Plastic, Pediatric, Vascular are placeholders awaiting faculty champions. Click one to see the recruitment page.
-11. **Faculty review portal.** Open `/admin/review`. The page renders `CONTENT_REVIEW.md` and stats — every authored claim is tracked here for review.
-12. **Save a pearl.** Bookmark an assistant answer. Open `/pearls` to see it. Pearls are local to this browser.
-13. **Flag a response.** Open Settings → Review flags. Note that flags are local in Phase 0B and not yet routed to faculty.
-14. **Export / Settings.** Show export/import in Settings. Close with the keyboard shortcut panel (press `?`).
+10. **Save a pearl.** Bookmark an assistant answer. Open `/pearls` to see it. Pearls are local to this browser.
+11. **Flag a response.** Open Settings → Review flags. Note that flags are local in Phase 0B and not yet routed to faculty.
+12. **Export / Settings.** Show export/import in Settings. Close with the keyboard shortcut panel (press `?`).
 
 ## Talking points for close
 
 - Local demo content; no real patient data.
-- Needs faculty verification — visible at `/admin/review` and `CONTENT_REVIEW.md`.
+- Needs faculty verification — tracked in `CONTENT_REVIEW.md` and in-page verification labels.
 - No PHI; not for clinical decisions.
-- Modules are intentionally a separate concept so ORION can grow beyond Hand as faculty champions sign on.
 - RAG, accounts, faculty admin UI, and persisted analytics planned for Phase 0C.
 
 ## Faculty feedback questions
@@ -45,4 +48,3 @@ Use this ~6-minute path for a Phase 0B.2 faculty demo. Run in mock/demo mode unl
 - What should be faculty-verified first?
 - Would this be useful for rotating learners?
 - What would make you uncomfortable about resident use?
-- Are you (or do you know) a faculty member who could champion another module (Bariatric, Foot & Ankle, Plastic, Pediatric, Vascular)?

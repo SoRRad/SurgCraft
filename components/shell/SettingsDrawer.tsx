@@ -149,6 +149,11 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
         <div className="flex-1 space-y-5 overflow-y-auto px-6 py-5">
           <section className="rounded-2xl bg-bg-elevated p-4 shadow-soft">
             <p className="mb-3 text-micro font-semibold uppercase tracking-[0.18em] text-ink-faint">Profile</p>
+            {user?.testMode && (
+              <div className="mb-3 rounded-xl border border-electric-soft bg-electric-soft/40 px-3 py-2 text-small text-ink">
+                Profile: Demo learner / Test mode
+              </div>
+            )}
             <div className="space-y-4">
               <div>
                 <Label htmlFor="settings-handle" className="text-small">Handle</Label>
@@ -337,4 +342,3 @@ export function SettingsDrawer({ open, onOpenChange }: SettingsDrawerProps) {
     </Sheet>
   )
 }
-

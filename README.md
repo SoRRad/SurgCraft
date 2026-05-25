@@ -3,7 +3,7 @@
 **ORION** — **O**perative **R**easoning and **I**nteractive **O**nline **N**avigator.
 A multi-module surgical education platform for medical students, residents, and fellows.
 
-Piloting at Mayo Clinic. Phase 0B.2: chat-first, local-first, deterministic mock provider by default.
+Designed for a planned Mayo Clinic pilot. Phase 0B.2: chat-first, local-first, deterministic mock provider by default.
 
 ---
 
@@ -26,7 +26,7 @@ ORION is built as a platform that hosts multiple surgical subspecialty modules. 
 | Pediatric | 🟡 In development | Common pediatric surgical conditions, age-specific differentials. |
 | Vascular | 🟡 In development | Limb ischemia, aneurysmal disease, access surgery. |
 
-In-development modules show a faculty-recruitment page. We are actively seeking a faculty champion per module.
+Additional modules are deferred for now; Phase 0B.2 faculty demos focus on the Hand module only.
 
 ---
 
@@ -57,7 +57,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. You'll land on onboarding, then the chat interface. The app ships with a deterministic mock provider that uses keyword matching and canned hand surgery content.
+Open http://localhost:3000. On first load you can either complete onboarding or click **Continue in Demo Mode** to enter chat immediately with a sample learner profile. The app ships with a deterministic mock provider that uses keyword matching and canned hand surgery content.
 
 ## Run it with real Claude (live mode)
 
@@ -166,7 +166,7 @@ Full policy + faculty workflow expectations are in `/about` inside the running a
 
 Every authored clinical claim is centrally tracked in [`CONTENT_REVIEW.md`](./CONTENT_REVIEW.md) with columns for reviewer, date, and status. No piece of content reaches a pilot resident until its row reads `approved` or `approved-with-edits`.
 
-An in-app faculty review portal is available at `/admin/review` and renders directly from `CONTENT_REVIEW.md`.
+An in-app Content Review page is available at `/admin/review` (local read-only) and renders from `CONTENT_REVIEW.md`.
 
 ---
 
@@ -183,4 +183,4 @@ An in-app faculty review portal is available at `/admin/review` and renders dire
 
 ## Acknowledgments
 
-ORION Surgery is being built as a pilot in collaboration with Mayo Clinic faculty. Specific contributors will be acknowledged in `/about` as content is reviewed and approved.
+ORION Surgery is being developed for Mayo Clinic pilot evaluation in collaboration with Mayo Clinic faculty. Specific contributors will be acknowledged in `/about` as content is reviewed and approved.

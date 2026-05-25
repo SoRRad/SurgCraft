@@ -10,6 +10,11 @@ Complete this checklist before faculty demo. ORION · Hand is educational only, 
 | [ ] | Run `npm install`. | Dependencies install successfully. |
 | [ ] | Run `npm run dev`. | App starts locally. |
 | [ ] | Complete onboarding with a synthetic learner profile. | `/` redirects to `/c` after onboarding. |
+| [ ] | From onboarding, click `Continue in Demo Mode`. | User is taken directly to `/c` without completing onboarding questions. |
+| [ ] | Open Settings after Demo Mode entry. | Profile area shows `Demo learner / Test mode`. |
+| [ ] | Send chat messages after Demo Mode entry. | Chat works without completing full onboarding. |
+| [ ] | Return to onboarding and complete full setup path manually. | Normal onboarding flow still works and saves profile. |
+| [ ] | Clear all local data from Settings. | App returns to onboarding and requires profile setup again. |
 | [ ] | Confirm Header and Settings provider status. | Provider shows `Mock demo`; Settings says no external AI API is being used. |
 | [ ] | Confirm chat empty state warning. | Educational-only and no-PHI text is visible. |
 | [ ] | Confirm quick-start cards. | Cards are keyboard reachable and send the expected prompt. |
@@ -21,14 +26,11 @@ Complete this checklist before faculty demo. ORION · Hand is educational only, 
 | [ ] | Open Mistake Museum. | Page loads. Cards are collapsed by default with a "Show why it happens..." disclosure. Each card frames a decision-time cognitive error. Cross-link to paired Do-Not-Miss entry appears when relevant. |
 | [ ] | Open Do-Not-Miss. | Page loads. Cards frame recognition-time red flags, escalation language is visible. Cross-link to paired Mistake entry appears when relevant. |
 | [ ] | Open Topic index (`/topics`). | One unified index with Cases / Decision mistakes / Do-Not-Miss columns per topic. |
-| [ ] | Open Modules (`/modules`). | Hand shows as Active; Bariatric, Foot & Ankle, Plastic, Pediatric, Vascular show as In development with faculty-recruitment notes. |
-| [ ] | Click any in-development module. | Loads `/m/[id]` placeholder with "what it will include at launch" + faculty recruitment CTA. |
-| [ ] | Open the Module switcher chip in the header. | Dropdown shows all modules, current marked. Picking a module routes correctly. |
+| [ ] | Click "New conversation" in the sidebar after an active chat. | App routes to `/c` and clears prior messages in the composer view. |
+| [ ] | Open invalid case route (`/case/invalid-case`). | Graceful "Case not found" state appears with Back to cases/chat actions. |
 | [ ] | Type `/` in chat input. | Slash palette appears with /case, /quiz, /pearl, /mistake, /donotmiss. Tab/Enter expand the command. |
 | [ ] | Press `?` anywhere outside an input. | Keyboard shortcuts panel opens. Press Escape to close. |
-| [ ] | Press `g` then `m` (outside an input). | Navigates to /modules. Try other chords from the panel. |
 | [ ] | Empty chat shows "Today's pearl" card. | Pearl content rotates by day; attribution visible. |
-| [ ] | Open Faculty review portal (`/admin/review`). | Renders CONTENT_REVIEW.md with stats cards (Mistakes / Do-Not-Miss / Pearls). |
 | [ ] | Open a case and reveal cards. | Progress updates, management stays gated, and commit-before-management is visible before management reveal. |
 | [ ] | Save a pearl from an assistant answer. | Bookmark state turns on and `/pearls` shows the saved item. |
 | [ ] | Unsave the same pearl from chat. | Bookmark state turns off and the item disappears from `/pearls`. |
@@ -71,4 +73,3 @@ Complete this checklist before faculty demo. ORION · Hand is educational only, 
 | [ ] | Confirm educational-only disclaimer is visible. | Disclaimer appears in About and chat/privacy surfaces. |
 | [ ] | Confirm no runtime route links point to removed legacy paths. | No `/dashboard` links are present. |
 | [ ] | Confirm faculty verification messaging. | UI states that faculty verification workflow is planned for Phase 0C. |
-

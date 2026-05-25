@@ -17,6 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
+import { createTestModeUser, saveDemoUser } from "@/lib/demo/demo-user"
+import type { Role, Specialty } from "@/lib/supabase/types"
 
 // -- Handle generator ----------------------------------------------------------
 const HANDLE_PREFIXES = [
@@ -90,8 +92,8 @@ export default function OnboardingPage() {
   const router = useRouter()
   const [showPrivacy, setShowPrivacy] = useState(true)
   const [handle, setHandle] = useState("")
-  const [role, setRole] = useState("")
-  const [specialty, setSpecialty] = useState("")
+  const [role, setRole] = useState<Role | "">("")
+  const [specialty, setSpecialty] = useState<Specialty | "">("")
   const [onHandService, setOnHandService] = useState(false)
   const [primaryGoal, setPrimaryGoal] = useState("")
   const [comfort, setComfort] = useState<ComfortMap>(defaultComfort)
@@ -121,15 +123,20 @@ export default function OnboardingPage() {
 
     const userData = {
       handle: handle.trim(),
-      role,
-      specialty,
+      role: role as Role,
+      specialty: specialty as Specialty,
       onHandService,
       primaryGoal,
       comfort,
       createdAt: new Date().toISOString(),
     }
 
-    localStorage.setItem("surgicraft_demo_user", JSON.stringify(userData))
+    saveDemoUser(userData)
+    router.push("/c")
+  }
+
+  function handleEnterTestMode() {
+    saveDemoUser(createTestModeUser())
     router.push("/c")
   }
 
@@ -158,6 +165,15 @@ export default function OnboardingPage() {
                 </p>
               </div>
             </div>
+            <div className="rounded-2xl border border-rule/70 bg-bg-elevated p-4 shadow-soft">
+              <p className="text-small font-semibold text-ink">Need a fast demo path?</p>
+              <p className="mt-1 text-small text-ink-muted">
+                Skip setup and explore ORION with a sample learner profile. You can reset or edit this later in Settings.
+              </p>
+              <Button type="button" variant="outline" className="mt-3 w-full sm:w-auto" onClick={handleEnterTestMode}>
+                Continue in Demo Mode
+              </Button>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} noValidate className="space-y-10">
@@ -168,7 +184,7 @@ export default function OnboardingPage() {
               <Label htmlFor="role-select" className="sr-only">
                 Training level
               </Label>
-              <Select value={role} onValueChange={setRole}>
+              <Select value={role} onValueChange={(value) => setRole(value as Role)}>
                 <SelectTrigger id="role-select" aria-required="true">
                   <SelectValue placeholder="Select your training level..." />
                 </SelectTrigger>
@@ -195,7 +211,7 @@ export default function OnboardingPage() {
               <Label htmlFor="specialty-select" className="sr-only">
                 Specialty
               </Label>
-              <Select value={specialty} onValueChange={setSpecialty}>
+              <Select value={specialty} onValueChange={(value) => setSpecialty(value as Specialty)}>
                 <SelectTrigger id="specialty-select" aria-required="true">
                   <SelectValue placeholder="Select your specialty..." />
                 </SelectTrigger>
@@ -348,4 +364,3 @@ export default function OnboardingPage() {
     </>
   )
 }
-
