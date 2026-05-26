@@ -1,0 +1,1 @@
+import Link from 'next/link';import { OPPORTUNITY_BUNDLES } from '@/lib/opportunities/data';export default function Page(){return <main className='p-6'><h1 className='text-2xl'>Opportunity Bundles</h1>{OPPORTUNITY_BUNDLES.map(b=><div key={b.id}><Link href={`/opportunities/bundles/${b.id}`}>{b.title}</Link></div>)}</main>}

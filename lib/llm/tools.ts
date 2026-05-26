@@ -9,6 +9,10 @@ import { MISTAKE_MUSEUM, DO_NOT_MISS, PEARLS, PEARL_IDS } from "@/lib/demo/demo-
 import case001 from "@/content/cases/001-fight-bite.json"
 import case002 from "@/content/cases/002-mallet-finger.json"
 import case003 from "@/content/cases/003-distal-radius.json"
+import { OPPORTUNITIES, getOpportunityById } from "@/lib/opportunities/data"
+import { getBundleById, getBundleOpportunities } from "@/lib/opportunities/bundles"
+import { filterOpportunities } from "@/lib/opportunities/filter"
+import { getUpcomingDeadlines } from "@/lib/opportunities/deadlines"
 
 const CASE_MAP: Record<string, { id: string; title: string; stem: string; difficulty: string; estimatedMinutes: number; tags: string[] }> = {
   "001-fight-bite": case001,
@@ -142,8 +146,34 @@ export const allTools = {
     }),
     execute: async (input) => input,
   }),
+  show_opportunity: tool({
+    description: "Return one known local Opportunity Hub record by ID.",
+    inputSchema: z.object({ opportunity_id: z.string() }).strict(),
+    execute: async ({ opportunity_id }) => getOpportunityById(opportunity_id) ?? null,
+  }),
+  show_opportunity_list: tool({
+    description: "Query local Opportunity Hub opportunities with strict filters.",
+    inputSchema: z.object({
+      query: z.string().optional(),
+      type: z.string().optional(),
+      category: z.string().optional(),
+      deadlineStatus: z.string().optional(),
+      careerStage: z.string().optional(),
+      maxResults: z.number().int().min(1).max(20).default(8),
+    }).strict(),
+    execute: async ({ maxResults, ...rest }) => filterOpportunities(OPPORTUNITIES, rest).slice(0, maxResults),
+  }),
+  show_opportunity_bundle: tool({
+    description: "Show one known opportunity bundle and linked opportunities.",
+    inputSchema: z.object({ bundle_id: z.string() }).strict(),
+    execute: async ({ bundle_id }) => ({ bundle: getBundleById(bundle_id) ?? null, opportunities: getBundleOpportunities(bundle_id) }),
+  }),
+  show_deadline_list: tool({
+    description: "Return upcoming local deadlines.",
+    inputSchema: z.object({ days: z.number().int().min(1).max(365).default(90), maxResults: z.number().int().min(1).max(20).default(10) }).strict(),
+    execute: async ({ days, maxResults }) => getUpcomingDeadlines(OPPORTUNITIES, days).slice(0, maxResults),
+  }),
 }
 
 export type ToolName = keyof typeof allTools
-
 

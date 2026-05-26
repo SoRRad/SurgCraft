@@ -43,3 +43,6 @@ Use this ~6-minute path for a Phase 0B.2 faculty demo. Run in mock/demo mode unl
 - Would this be useful for rotating learners?
 - What would make you uncomfortable about resident use?
 - Are you (or do you know) a faculty member who could champion another module (Bariatric, Foot & Ankle, Plastic, Pediatric, Vascular)?
+
+## Optional 3-minute Opportunity Hub demo
+1) Open Opportunity Hub 2) Filter Hand Surgery 3) Show open deadlines 4) Filter Funding/Grants 5) Save one 6) Compare two 7) Export ICS 8) Ask ORION about hand meetings/grants deadlines.

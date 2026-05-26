@@ -111,3 +111,6 @@ Any future content addition that cites a textbook, journal, or guideline must ad
 | 2026-05-24 | Claude (cleanup pass) | Initial creation during the SurgiCraft polish pass. |
 | 2026-05-25 | Claude (ORION rebrand) | Rebrand to ORION Surgery; added cross-link columns to Mistake / Do-Not-Miss tables; portal at /admin/review. |
 | 2026-05-25 | Claude (navy refresh + library merge) | Repalette to navy + dark mode; module selector on landing; merged /topics, /mistakes, /donotmiss into /library with search; added /resources; added voice TTS/STT; added Mayo affiliation + public-Mayo pearls E7/E8 + Mayo-internal placeholder section. |
+
+## Opportunity Hub Content
+Tracks local curated/static opportunity records with reviewStatus and source trust labels; deadlines/eligibility/funding must be verified on official websites before submission.
