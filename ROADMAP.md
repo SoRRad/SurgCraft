@@ -196,3 +196,5 @@ Success metrics:
 - Voice mode
 - Native mobile app or PWA polish
 - EPIC integration scoping, only if governance supports it
+
+- Phase 0B.3 Opportunity Hub integration (local/static opportunities + chat tool integration).

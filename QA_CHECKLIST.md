@@ -73,3 +73,5 @@ Complete this checklist before faculty demo. ORION · Hand is educational only, 
 | [ ] | Confirm educational-only disclaimer is visible. | Disclaimer appears in About and chat/privacy surfaces. |
 | [ ] | Confirm no leaderboards or public-ranking surfaces. | None exist; About says no leaderboards at any phase. |
 | [ ] | Confirm faculty verification messaging. | UI states that faculty verification workflow is planned for Phase 0C. |
+
+- [ ] Opportunity Hub: /opportunities, filters/search, save/compare, calendar export, slash commands.
