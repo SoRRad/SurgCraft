@@ -1,0 +1,2 @@
+import { OpportunityCard } from '@/components/opportunities/OpportunityCard'
+export function OpportunityBundleResult({data}:{data:any}){if(!data?.bundle)return <p className='text-xs'>No curated bundle found.</p>;return <div><p className='font-semibold'>{data.bundle.title}</p><p className='text-xs mb-2'>Verify official websites before submission.</p><div className='space-y-2'>{(data.opportunities||[]).slice(0,3).map((o:any)=><OpportunityCard key={o.id} opportunity={o}/>)}</div></div>}

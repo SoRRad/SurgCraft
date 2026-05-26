@@ -1,0 +1,8 @@
+"use client"
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { OpportunityCard } from '@/components/opportunities/OpportunityCard'
+import { OPPORTUNITIES } from '@/lib/opportunities/data'
+import { clearSavedOpportunities, listSavedOpportunityIds } from '@/lib/opportunities/storage'
+import { downloadTextFile, opportunitiesToCsv, opportunityDeadlinesToIcs } from '@/lib/opportunities/export'
+export default function Page(){const [ids,setIds]=useState<string[]>([]);useEffect(()=>{const load=()=>setIds(listSavedOpportunityIds());load();window.addEventListener('orion:opportunities:saved-updated',load);return()=>window.removeEventListener('orion:opportunities:saved-updated',load)},[]);const items=OPPORTUNITIES.filter(o=>ids.includes(o.id));return <main className='p-6 space-y-3'><h1 className='text-2xl'>Saved opportunities</h1><p className='text-xs'>Local/static demo data. Verify official websites before submission.</p>{items.length===0?<div><p>No saved opportunities yet.</p><Link href='/opportunities'>Browse Opportunity Hub</Link></div>:<><div className='flex gap-2'><button className='border rounded px-2' onClick={()=>downloadTextFile('saved-opportunities.csv',opportunitiesToCsv(items),'text/csv')}>Export CSV</button><button className='border rounded px-2' onClick={()=>downloadTextFile('saved-deadlines.ics',opportunityDeadlinesToIcs(items),'text/calendar')}>Export ICS</button><button className='border rounded px-2' onClick={()=>clearSavedOpportunities()}>Clear saved</button></div><div className='grid md:grid-cols-2 gap-3'>{items.map(o=><OpportunityCard key={o.id} opportunity={o}/>)}</div></>}</main>}

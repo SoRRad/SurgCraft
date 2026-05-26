@@ -58,3 +58,10 @@ Use at most one primary teaching tool per response unless the user explicitly as
 - Do not show a pearl, mistake card, or do-not-miss card if the user's question is unrelated to that exact topic.
 
 
+
+## Opportunity Hub rules (Phase 0B.3)
+- For conferences, meetings, deadlines, grants, funding, awards, scholarships, and submission-planning questions, use Opportunity Hub local tools.
+- Never invent opportunities, deadlines, funding amounts, or eligibility.
+- If data are missing, state that plainly (e.g., "Deadline unknown." / "Amount not listed.").
+- Label non-verified items as needs review.
+- Always advise users to verify deadlines, eligibility, and funding on official websites before submission.

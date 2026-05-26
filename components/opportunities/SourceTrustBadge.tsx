@@ -1,0 +1,1 @@
+export { SourceTrustBadge } from './badges'

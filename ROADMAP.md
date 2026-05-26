@@ -10,7 +10,7 @@ The app remains educational only. It must not guide real patient care, must not 
 
 ## Current State
 
-**Phase:** 0B.2 faculty-demo polish
+**Phase:** 0B.3 Opportunity Hub MVP
 **Runtime dependency:** none in demo mode
 **Persistence:** browser `localStorage` only
 **Live LLM:** Anthropic Claude is the first live provider
@@ -107,7 +107,7 @@ Gate:
 
 ---
 
-## Planned Phase 0B.3 - Ollama / Local Model Provider
+## Active Phase 0B.3 - Opportunity Hub MVP
 
 Goal: support a no-cloud live model for development and demos where internet/API spending is undesirable.
 
@@ -125,7 +125,7 @@ Gate:
 
 ---
 
-## Planned Phase 0B.4 - OpenAI Provider
+## Planned Phase 0B.4 - Ollama / Local Model Provider
 
 Goal: prove provider portability beyond Anthropic.
 
@@ -196,3 +196,8 @@ Success metrics:
 - Voice mode
 - Native mobile app or PWA polish
 - EPIC integration scoping, only if governance supports it
+
+- Phase 0B.3 Opportunity Hub integration (local/static opportunities + chat tool integration).
+
+
+Phase 0B.3 uses the existing ORION chatbot/provider layer only, with local/static Opportunity Hub data, no live web search, and no external opportunity APIs.

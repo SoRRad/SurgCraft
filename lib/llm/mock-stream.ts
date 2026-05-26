@@ -7,6 +7,8 @@ import { findTutorAnswer } from "@/lib/llm/local-demo-engine"
 import case001 from "@/content/cases/001-fight-bite.json"
 import case002 from "@/content/cases/002-mallet-finger.json"
 import case003 from "@/content/cases/003-distal-radius.json"
+import { OPPORTUNITIES, OPPORTUNITY_BUNDLES } from "@/lib/opportunities/data"
+import { getUpcomingDeadlines, getFundingOpportunities } from "@/lib/opportunities/deadlines"
 
 type MockCase = {
   id: string
@@ -30,6 +32,9 @@ type MockToolCall =
   | { tool: "show_donotmiss"; args: { donotmiss_id: string } }
   | { tool: "start_quiz"; args: { topic: string; intensity: string } }
   | { tool: "suggest_followups"; args: { chips: string[] } }
+  | { tool: "show_opportunity_list"; args: { query?: string; maxResults: number } }
+  | { tool: "show_deadline_list"; args: { days: number; maxResults: number } }
+  | { tool: "show_opportunity_bundle"; args: { bundle_id: string } }
 
 function detectMockTools(userMessage: string): MockToolCall[] {
   const q = userMessage.toLowerCase()
@@ -123,6 +128,9 @@ function buildFollowupChips(q: string, usedTools: MockToolCall[]): string[] {
   else if (q.includes("mallet")) chips.push("What happens if untreated?")
   else if (q.includes("fight bite")) chips.push("What bug can I not miss?")
   else chips.push("What changes management?")
+  if (q.includes("conference") || q.includes("grant") || q.includes("funding") || q.includes("deadline")) {
+    chips.splice(0, chips.length, "Browse Opportunity Hub", "Show deadlines soon", "Show funding opportunities", "Compare saved opportunities")
+  }
 
   return chips.slice(0, 4)
 }
@@ -143,6 +151,14 @@ async function executeToolMock(toolCall: MockToolCall): Promise<unknown> {
     case "start_quiz":
     case "suggest_followups":
       return toolCall.args
+    case "show_opportunity_list":
+      return OPPORTUNITIES.filter((o) => !toolCall.args.query || `${o.title} ${o.description} ${o.tags.join(" ")}`.toLowerCase().includes(toolCall.args.query.toLowerCase())).slice(0, toolCall.args.maxResults)
+    case "show_deadline_list":
+      return getUpcomingDeadlines(OPPORTUNITIES, toolCall.args.days).slice(0, toolCall.args.maxResults)
+    case "show_opportunity_bundle": {
+      const b = OPPORTUNITY_BUNDLES.find((x) => x.id === toolCall.args.bundle_id)
+      return { bundle: b ?? null, opportunities: OPPORTUNITIES.filter((o) => b?.recommendedOpportunityIds.includes(o.id)) }
+    }
     default:
       return null
   }
@@ -201,4 +217,3 @@ export function createMockUIMessageStreamResponse(userMessage: string) {
 
   return createUIMessageStreamResponse({ stream })
 }
-

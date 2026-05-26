@@ -13,6 +13,7 @@ import {
   Layers,
   Library,
   LinkIcon,
+  CalendarDays,
   type LucideIcon,
   MessageSquare,
   Plus,
@@ -52,6 +53,12 @@ const SAVED_LINKS = [
 
 const PLATFORM_LINKS = [
   { href: "/modules", label: "Modules", icon: Layers },
+]
+const RESEARCH_LINKS = [
+  { href: "/opportunities", label: "Opportunity Hub", icon: BookOpen },
+  { href: "/opportunities/bundles", label: "Bundles", icon: Library },
+  { href: "/opportunities/saved", label: "Saved opportunities", icon: Bookmark },
+  { href: "/opportunities/calendar", label: "Deadline calendar", icon: CalendarDays },
 ]
 
 interface SidebarInnerProps {
@@ -225,6 +232,8 @@ export function SidebarInner({ onClose }: SidebarInnerProps) {
 
           <GroupLabel>Platform</GroupLabel>
           <NavList items={PLATFORM_LINKS} pathname={pathname} onClick={handleLinkClick} />
+          <GroupLabel>Research</GroupLabel>
+          <NavList items={RESEARCH_LINKS} pathname={pathname} onClick={handleLinkClick} />
         </div>
 
         {/* Footer */}

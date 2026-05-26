@@ -17,6 +17,11 @@ import { InlineMistakeCard } from "./tool-results/InlineMistakeCard"
 import { DoNotMissCard } from "./tool-results/DoNotMissCard"
 import { QuizStarter } from "./tool-results/QuizStarter"
 import { FollowupChips } from "./tool-results/FollowupChips"
+import { OpportunityCardResult } from "./tool-results/OpportunityCardResult"
+import { OpportunityListResult } from "./tool-results/OpportunityListResult"
+import { OpportunityBundleResult } from "./tool-results/OpportunityBundleResult"
+import { DeadlineListResult } from "./tool-results/DeadlineListResult"
+import { OpportunityCompareResult } from "./tool-results/OpportunityCompareResult"
 import { TodaysPearl } from "./TodaysPearl"
 import { SlashPalette } from "./SlashPalette"
 import { MicButton, ReadAloudButton } from "./VoiceControls"
@@ -53,6 +58,12 @@ const QUICK_STARTS = [
     prompt: "Walk me through red flags in hand-surgery presentations.",
     helper: "Don't miss these",
     icon: Eye,
+  },
+  {
+    label: "Find opportunities",
+    prompt: "Show funding opportunities for surgical education.",
+    helper: "Conferences and grants",
+    icon: Bookmark,
   },
 ]
 
@@ -173,6 +184,16 @@ function ToolPartRender({
       if (!data) return null
       return <FollowupChips chips={data.chips} onChipClick={(chip) => onSendMessage(chip)} />
     }
+    case "show_opportunity":
+      return <OpportunityCardResult data={output as any} />
+    case "show_opportunity_list":
+      return <OpportunityListResult data={output as any} />
+    case "show_opportunity_bundle":
+      return <OpportunityBundleResult data={output as any} />
+    case "show_deadline_list":
+      return <DeadlineListResult data={output as any} />
+    case "show_opportunity_compare":
+      return <OpportunityCompareResult data={output as any} />
     default:
       return null
   }
@@ -977,4 +998,3 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
     </div>
   )
 }
-

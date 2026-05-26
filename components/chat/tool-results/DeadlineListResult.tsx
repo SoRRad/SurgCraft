@@ -1,0 +1,1 @@
+export function DeadlineListResult({data}:{data:any[]}){if(!data?.length)return <p className='text-xs'>No curated upcoming deadlines found.</p>;return <ul className='text-sm list-disc pl-4'>{data.map((o:any)=><li key={o.id}>{o.title}: {o.deadlineDate ?? 'Deadline unknown.'}</li>)}</ul>}

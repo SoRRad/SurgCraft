@@ -1,0 +1,1 @@
+export function OpportunityCompareResult({data}:{data:any[]}){if(!data?.length)return <p className='text-xs'>No opportunities available for compare.</p>;return <div className='text-sm space-y-1'>{data.map((o:any)=><div key={o.id} className='border rounded p-2'>{o.title} — {o.type} — {o.deadlineDate ?? 'Deadline unknown.'}</div>)}</div>}

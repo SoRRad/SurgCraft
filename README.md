@@ -170,3 +170,6 @@ Every authored clinical claim is centrally tracked in [`CONTENT_REVIEW.md`](./CO
 ## Acknowledgments
 
 ORION Surgery is being developed for Mayo Clinic pilot evaluation in collaboration with Mayo Clinic faculty. Specific contributors will be acknowledged in `/about` as content is reviewed and approved.
+
+## Opportunity Hub (Phase 0B.3)
+Local/static research opportunities for conferences, meetings, deadlines, grants, funding, awards, bundles, saved, compare, and ICS/CSV export. Conferences/meetings/grants/funding/deadlines share one unified Opportunity schema. Uses one existing ORION chatbot/provider layer only (no separate chatbot or API); no live web search. Always verify official sources.

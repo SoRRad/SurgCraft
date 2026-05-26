@@ -1,0 +1,1 @@
+export { OpportunityTypeBadge } from './badges'
