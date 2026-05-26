@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { notFound } from "next/navigation"
 import { ArrowLeft, CheckCircle, Lock, MessageSquare } from "lucide-react"
 import { ChatLayout } from "@/components/chat/ChatLayout"
 import { SectionMarker } from "@/components/shell/SectionMarker"
@@ -60,7 +59,7 @@ function firstSentence(text: string): string {
 function CaseCardRevealed({ card }: { card: CardData }) {
   return (
     <div
-      className="animate-fade-up overflow-hidden rounded-2xl border border-rule/70 bg-bg-elevated shadow-soft"
+      className="animate-fade-up overflow-hidden rounded-3xl bg-bg-elevated shadow-[0_10px_30px_rgba(32,32,30,0.08)] ring-1 ring-rule/60"
       style={{ animationDuration: "420ms", animationTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)" }}
     >
       <div className="border-b border-rule/70 bg-surface-subtle/60 px-5 py-3">
@@ -77,7 +76,7 @@ function CaseCardRevealed({ card }: { card: CardData }) {
 
 function PearlCard({ pearl }: { pearl: { id: string; text: string; attribution: string } }) {
   return (
-    <div className="rounded-2xl border border-terracotta-soft bg-terracotta-soft/35 p-4 shadow-soft">
+    <div className="rounded-3xl bg-terracotta-soft/35 p-4 shadow-[0_10px_30px_rgba(185,94,69,0.12)] ring-1 ring-terracotta-soft/70">
       <p className="text-body text-ink leading-relaxed mb-2">{pearl.text}</p>
       <p className="text-micro text-terracotta font-medium">{pearl.attribution}</p>
       <p className="text-micro text-ink-muted mt-2">
@@ -91,18 +90,43 @@ function PearlCard({ pearl }: { pearl: { id: string; text: string; attribution: 
 
 export default function CaseCanvasPage({ params }: { params: { id: string } }) {
   const caseData = CASES[params.id]
-  if (!caseData) notFound()
 
-  const orderedCards = CARD_ORDER.filter((k) => k in caseData.cards)
+  const orderedCards = CARD_ORDER.filter((k) => caseData && k in caseData.cards)
   const revealableCards = orderedCards.filter((k) => k !== "chief_complaint" && k !== "management")
-  const hasManagement = "management" in caseData.cards
+  const hasManagement = !!caseData && "management" in caseData.cards
 
   const [revealed, setRevealed] = useState<string[]>(["chief_complaint"])
   const [managementOverride, setManagementOverride] = useState(false)
   const [summaryLines, setSummaryLines] = useState<string[]>([
-    firstSentence(caseData.cards["chief_complaint"]?.content ?? ""),
+    firstSentence(caseData?.cards["chief_complaint"]?.content ?? ""),
   ])
   const [commitment, setCommitment] = useState("")
+
+  if (!caseData) {
+    return (
+      <ChatLayout>
+        <div className="flex flex-1 items-center justify-center px-6 py-16">
+          <div className="w-full max-w-xl rounded-3xl bg-bg-elevated/98 p-1 shadow-[0_20px_60px_rgba(32,32,30,0.12)]">
+            <div className="rounded-[calc(1.5rem-4px)] bg-bg-elevated p-8 text-center ring-1 ring-rule/50">
+            <p className="text-micro font-semibold uppercase tracking-[0.16em] text-ink-faint">Case</p>
+            <h1 className="mt-2 font-fraunces text-h2 text-ink">Case not found</h1>
+            <p className="mt-3 text-small leading-relaxed text-ink-muted">
+              This case does not exist in the current ORION Hand demo content set.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+              <Button asChild variant="outline">
+                <Link href="/case">Back to cases</Link>
+              </Button>
+              <Button asChild>
+                <Link href="/c">Back to chat</Link>
+              </Button>
+            </div>
+            </div>
+          </div>
+        </div>
+      </ChatLayout>
+    )
+  }
 
   const managementRevealed = revealed.includes("management")
   const nonManagementRevealed = revealed.filter((k) => k !== "chief_complaint" && k !== "management")
@@ -169,11 +193,11 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
               </p>
             </section>
 
-            <section className="rounded-2xl border border-rule/70 bg-bg-elevated p-4 shadow-soft" aria-label="Case progress">
+            <section className="rounded-3xl bg-bg-elevated p-5 shadow-[0_14px_34px_rgba(32,32,30,0.08)] ring-1 ring-rule/60" aria-label="Case progress">
               <div className="mb-2 flex items-center justify-between gap-3">
                 <p className="text-small font-semibold text-ink">Reasoning checkpoint</p>
                 <p className="text-micro text-ink-muted">
-                  Information gathered: {informationGathered}/{informationTotal}
+                  Data points: {informationGathered}/{informationTotal}
                 </p>
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-surface-subtle">
@@ -268,7 +292,7 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
               </div>
 
               {hasManagement && managementUnlocked && !managementRevealed && (
-                <div className="mt-4 rounded-2xl border border-rule/70 bg-bg-elevated p-4 shadow-soft">
+                <div className="mt-4 rounded-3xl bg-bg-elevated p-5 shadow-[0_14px_34px_rgba(32,32,30,0.08)] ring-1 ring-rule/60">
                   <label htmlFor="case-commitment" className="text-small font-semibold text-ink">
                     Commit before revealing management
                   </label>
@@ -305,6 +329,25 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
                     Compare the revealed plan with your commitment. This is a reasoning exercise, not a grade.
                   </p>
                 </div>
+
+                
+                <section className="rounded-2xl bg-bg-elevated p-4 ring-1 ring-rule/70 shadow-soft">
+                  <p className="text-small font-semibold text-ink">Learning checkpoint</p>
+                  <p className="mt-1 text-small text-ink-muted">Reasoning summary (local only, non-punitive).</p>
+                  <div className="mt-3 h-2 rounded-full bg-surface-subtle"><div className="h-2 rounded-full bg-correct" style={{width:`${Math.min(100,Math.round((informationGathered/informationTotal)*100))}%`}}/></div>
+                  <ul className="mt-3 space-y-1 text-small text-ink">
+                    <li><strong>Case completed:</strong> Yes</li>
+                    <li><strong>Information gathered:</strong> {informationGathered}/{informationTotal}</li>
+                    <li><strong>Diagnosis (your commitment):</strong> {commitment || "Not documented"}</li>
+                    <li><strong>Key clues recognized:</strong> {nonManagementRevealed.length} card domains explored</li>
+                    <li><strong>Important missed items:</strong> Review unrevealed/late-revealed clues</li>
+                    <li><strong>Management decision:</strong> Revealed and compared</li>
+                    <li><strong>Do-not-miss risk:</strong> Re-check escalation red flags</li>
+                    <li><strong>Best rounds one-liner:</strong> State diagnosis + first management move</li>
+                    <li><strong>Common mistake:</strong> Premature closure before full information gathering</li>
+                    <li><strong>Suggested next step:</strong> Review related topic card and rapid Q&A.</li>
+                  </ul>
+                </section>
 
                 {/* Teaching points */}
                 <section>
@@ -379,7 +422,7 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
                 What we know so far
                 <span className="text-ink-muted">v</span>
               </summary>
-              <div className="rounded-2xl border border-rule/70 bg-bg-elevated p-4 shadow-soft">
+              <div className="rounded-3xl bg-bg-elevated p-5 shadow-[0_14px_34px_rgba(32,32,30,0.08)] ring-1 ring-rule/60">
                 <p className="hidden lg:block font-fraunces text-h3 text-ink mb-3">
                   What we know
                 </p>
@@ -429,5 +472,4 @@ export default function CaseCanvasPage({ params }: { params: { id: string } }) {
     </ChatLayout>
   )
 }
-
 

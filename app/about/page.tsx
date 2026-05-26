@@ -2,7 +2,7 @@ import type { ReactNode } from "react"
 import Link from "next/link"
 import { AppShell } from "@/components/shell/AppShell"
 import { SectionMarker } from "@/components/shell/SectionMarker"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, Globe, Linkedin } from "lucide-react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -78,10 +78,10 @@ export default function AboutPage() {
             <strong>ORION Surgery</strong> is the platform. It is designed to host multiple surgical subspecialty modules, each with its own knowledge base, cases, Mistake Museum, Do-Not-Miss library, and pearl registry.
           </p>
           <p>
-            The active module today is <strong>Hand</strong> (hand surgery — trauma, infection, tendon, nerve, fracture). The platform is built so additional modules can be brought online when a faculty champion signs on to author and validate content. See <Link href="/modules" className="text-electric hover:underline">the module index</Link> for the full list and current status.
+            The active module today is <strong>Hand</strong> (hand surgery — trauma, infection, tendon, nerve, fracture). The platform is built so additional modules can be brought online when a faculty champion signs on to author and validate content. Additional modules are deferred until after the Hand faculty demo and pilot-readiness validation.
           </p>
           <p>
-            In the UI hierarchy, the wordmark stays <strong>ORION</strong> and the current module appears as a chip next to it. The chip is a switcher: tap it to jump between modules.
+            In the UI hierarchy, the wordmark stays <strong>ORION</strong> and the current module appears as a compact Hand label for clarity during the faculty demo.
           </p>
         </CollapsibleSection>
 
@@ -221,7 +221,7 @@ export default function AboutPage() {
               "No content leaves your browser in mock mode. In live mode, only chat messages reach Anthropic; the API key stays on the server.",
               "Individual responses are private. Faculty and program directors cannot see how you score. Aggregate anonymized data — when introduced in Phase 0C — only describes platform-level usage.",
               "All conversations, pearls, and flags can be exported, imported, or cleared from Settings at any time.",
-              "No public ranking. No leaderboards. No scores visible to attendings.",
+              "No public ranking. No leaderboards. No user-to-user comparison.",
             ].map((rule) => (
               <li key={rule} className="flex gap-3 text-body">
                 <span className="mt-2 inline-block h-1 w-1 flex-shrink-0 rounded-full bg-correct" aria-hidden="true" />
@@ -319,15 +319,59 @@ export default function AboutPage() {
 
         {/* C9 — Acknowledgments */}
         <CollapsibleSection number="11" label="Team and acknowledgments" defaultOpen>
-          <div className="rounded-2xl border border-rule/60 bg-bg p-4">
-            <p className="font-fraunces text-micro font-semibold uppercase tracking-[0.18em] text-terracotta">
-              Project lead
-            </p>
-            <p className="mt-1 text-h3 font-fraunces text-ink">Reza Shahriarirad</p>
-            <p className="text-small text-ink-muted">Research Fellow</p>
-            <p className="mt-2 text-small text-ink-muted">
-              Design, engineering, and content scaffolding for ORION Surgery&apos;s Phase 0 prototype.
-            </p>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl border border-rule/60 bg-bg p-4">
+              <p className="font-fraunces text-micro font-semibold uppercase tracking-[0.18em] text-terracotta">
+                Project lead
+              </p>
+              <p className="mt-1 text-h3 font-fraunces text-ink">Reza Shahriarirad</p>
+              <p className="text-small text-ink-muted">Research Fellow</p>
+              <p className="mt-2 text-small text-ink-muted">
+                Design, engineering, and content scaffolding for ORION Surgery&apos;s Phase 0 prototype.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Link
+                  href="https://sorrad.github.io/RezaShahriarirad_CV/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-rule/70 px-2.5 py-1.5 text-small text-ink-muted transition-colors duration-200 hover:bg-surface-subtle hover:text-ink"
+                >
+                  <Globe size={14} />
+                  CV
+                </Link>
+                <Link
+                  href="https://www.linkedin.com/in/reza-shahriarirad/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-rule/70 px-2.5 py-1.5 text-small text-ink-muted transition-colors duration-200 hover:bg-surface-subtle hover:text-ink"
+                >
+                  <Linkedin size={14} />
+                  LinkedIn
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-rule/60 bg-bg p-4">
+              <p className="font-fraunces text-micro font-semibold uppercase tracking-[0.18em] text-terracotta">
+                Content collaborator
+              </p>
+              <p className="mt-1 text-h3 font-fraunces text-ink">Cameron Ward</p>
+              <p className="text-small text-ink-muted">Medical Student</p>
+              <p className="mt-2 text-small text-ink-muted">
+                Supports hand-surgery educational context creation and learner-facing content refinement for the ORION demo.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Link
+                  href="https://www.linkedin.com/in/cameron-ward-231a34179"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-rule/70 px-2.5 py-1.5 text-small text-ink-muted transition-colors duration-200 hover:bg-surface-subtle hover:text-ink"
+                >
+                  <Linkedin size={14} />
+                  LinkedIn
+                </Link>
+              </div>
+            </div>
           </div>
 
           <p className="text-small text-ink-muted">
@@ -335,7 +379,7 @@ export default function AboutPage() {
           </p>
 
           <p className="text-small text-ink-muted">
-            If you are a surgical educator interested in championing a module, see <Link href="/modules" className="text-electric hover:underline">the modules page</Link> for current openings and contact details.
+            If you are a surgical educator interested in championing a future module, contact the ORION team via About page channels.
           </p>
         </CollapsibleSection>
 

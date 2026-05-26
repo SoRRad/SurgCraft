@@ -38,42 +38,10 @@ const SUGGESTED_PROMPTS = [
 ]
 
 const QUICK_STARTS = [
-  {
-    label: "Manage a fight bite",
-    prompt: "How do I manage a fight bite?",
-    helper: "High-yield infection framing",
-    icon: Sparkles,
-  },
-  {
-    label: "Walk me through a case",
-    prompt: "Walk me through a fight bite case.",
-    helper: "Progressive reveal",
-    icon: BookOpen,
-  },
-  {
-    label: "Quiz me",
-    prompt: "Quiz me on flexor tendon zones.",
-    helper: "One question at a time",
-    icon: ClipboardList,
-  },
-  {
-    label: "Common mistakes",
-    prompt: "Common mistakes in mallet finger.",
-    helper: "Error patterns",
-    icon: AlertTriangle,
-  },
-  {
-    label: "Do-not-miss",
-    prompt: "Walk me through do-not-miss diagnoses in hand surgery.",
-    helper: "Recognition clues",
-    icon: Eye,
-  },
-  {
-    label: "Prepare for rounds",
-    prompt: "Prepare me for hand surgery rounds on fight bites.",
-    helper: "One-liners and follow-ups",
-    icon: Sparkles,
-  },
+  { label: "Ask a hand surgery question", prompt: "Teach me high-yield hand surgery principles for rounds.", helper: "Core concepts", icon: Sparkles },
+  { label: "Work through a case", prompt: "Walk me through a fight bite case.", helper: "Progressive reveal", icon: BookOpen },
+  { label: "Practice rapid questions", prompt: "I want rapid Q&A on hand surgery.", helper: "One question at a time", icon: ClipboardList },
+  { label: "Prepare for the OR", prompt: "Help me prepare for distal radius ORIF.", helper: "Pre-op structure", icon: Eye },
 ]
 
 // -- UIMessage helpers ---------------------------------------------------------
@@ -485,11 +453,11 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
             ORION · Hand
           </p>
           <h1 className="mt-3 font-fraunces text-h1 leading-tight text-ink">
-            What are we working on today,{" "}
+            What would you like to practice,{" "}
             <span className="text-terracotta">{handle}</span>?
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-body text-ink-muted">
-            Ask a question, work through a case, quiz yourself, or review high-yield mistakes.
+            Choose one pathway to start. Keep it focused and practical.
           </p>
           <p className="mx-auto mt-3 max-w-xl rounded-full bg-surface-subtle px-4 py-2 text-small text-ink-muted">
             Educational only. No PHI: do not enter names, MRNs, DOBs, images, or patient identifiers.
@@ -529,7 +497,7 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {QUICK_STARTS.map(({ label, prompt, helper, icon: Icon }) => (
               <button
                 key={label}
@@ -551,11 +519,11 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-2">
-            {SUGGESTED_PROMPTS.slice(0, 3).map((p) => (
+            {["Browse topics","Mistake Museum","Do-Not-Miss"].map((p) => (
               <button
                 key={p}
                 type="button"
-                onClick={() => onSuggestedPrompt(p)}
+                onClick={() => { if (p==="Browse topics") window.location.href="/topics"; else if (p==="Mistake Museum") window.location.href="/mistakes"; else window.location.href="/donotmiss" }}
                 className="rounded-full border border-rule/70 bg-bg-elevated px-3 py-1.5 text-micro text-ink-muted transition-colors duration-300 ease-standard hover:border-electric/40 hover:text-electric focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
               >
                 {p}
@@ -565,7 +533,7 @@ function EmptyState({ handle, input, isLoading, onInputChange, onSubmit, onSugge
               href="/topics"
               className="rounded-full border border-rule/70 bg-bg-elevated px-3 py-1.5 text-micro text-ink-muted transition-colors duration-300 ease-standard hover:border-electric/40 hover:text-electric focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-electric"
             >
-              Browse topic index
+              Browse topics
             </a>
           </div>
         </form>
@@ -729,7 +697,17 @@ export function ChatExperience({ conversationId }: ChatExperienceProps) {
 
   useEffect(() => {
     setConvId(conversationId)
-    if (!conversationId) return
+
+    if (!conversationId) {
+      setConvTitle("")
+      setMsgMeta({})
+      setMessages([])
+      persistedMessageSnapshotsRef.current = new Map()
+      lastAssistantMsgIdRef.current = null
+      setSendError(null)
+      return
+    }
+
     const conv = getConversation(conversationId)
     if (!conv) return
     setConvTitle(conv.title)
