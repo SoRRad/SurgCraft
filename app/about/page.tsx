@@ -343,15 +343,6 @@ export default function AboutPage() {
             <p className="text-small text-ink-muted">Research Fellow</p>
             <p className="mt-2 text-small text-ink-muted">
               Design, engineering, and content scaffolding for ORION Surgery.
-               links: {
-      email: "mailto:Shahriarirad.reza@mayo.edu",
-      github: "https://github.com/SoRRad",
-      linkedin: "https://www.linkedin.com/in/reza-shahriarirad/",
-      scholar: "https://scholar.google.com/citations?user=mOE1KmEAAAAJ&hl=en",
-      cv: "https://sorrad.github.io/RezaShahriarirad_CV/",
-      pubmed: "https://www.ncbi.nlm.nih.gov/myncbi/reza.shahriari.1/bibliography/public/",
-      orcid: "https://orcid.org/0000-0001-5454-495X",
-    },
             </p>
           </div>
 
