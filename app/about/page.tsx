@@ -346,6 +346,17 @@ export default function AboutPage() {
             </p>
           </div>
 
+      <div className="rounded-2xl border border-rule/60 bg-bg p-4">
+            <p className="font-fraunces text-micro font-semibold uppercase tracking-[0.18em] text-terracotta">
+              Collaborator
+            </p>
+            <p className="mt-1 text-h3 font-fraunces text-ink">Cameron Ward</p>
+            <p className="text-small text-ink-muted">Medical Student</p>
+            <p className="mt-2 text-small text-ink-muted">
+              Content scaffolding for ORION Surgerys.
+            </p>
+          </div>
+          
           <p className="text-small text-ink-muted">
             Faculty champions, attending reviewers, and resident testers will be acknowledged here as each module&apos;s content is reviewed and approved. ORION is intended as a collaboration between the development team and surgical educators at Mayo Clinic.
           </p>
